@@ -132,15 +132,18 @@
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <!-- <h4>Menu</h4> -->
-        <a href="index.php" class="<?= basename($_SERVER['PHP_SELF']) == 'index.php' ? 'active' : '' ?>">
+        <a href="dashboard.php" class="<?= basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : '' ?>">
             <i class="bi bi-speedometer2 me-2"></i> Dashboard
         </a>
-        <a href="add_course.php" class="<?= basename($_SERVER['PHP_SELF']) == 'add_course.php' ? 'active' : '' ?>">
-            <i class="bi bi-journal-bookmark me-2"></i> Add Course
+         <a href="student_fees.php" class="<?= basename($_SERVER['PHP_SELF']) == 'student_fees.php' ? 'active' : '' ?>">
+            <i class="bi bi-journal-bookmark me-2"></i> Student Fees
+        </a>
+        <a href="student_list.php" class="<?= basename($_SERVER['PHP_SELF']) == 'student_list.php' ? 'active' : '' ?>">
+            <i class="bi bi-journal-bookmark me-2"></i> Student List
         </a>
 
-        <a href="student_fees.php" class="<?= basename($_SERVER['PHP_SELF']) == 'student_fees.php' ? 'active' : '' ?>">
-            <i class="bi bi-journal-bookmark me-2"></i> Student Fees
+        <a href="all_students.php" class="<?= basename($_SERVER['PHP_SELF']) == 'all_students.php' ? 'active' : '' ?>">
+            <i class="bi bi-journal-bookmark me-2"></i> All Students
         </a>
 
         <!-- <a href="#"><i class="bi bi-gear me-2"></i> Settings</a> -->

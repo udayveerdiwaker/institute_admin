@@ -1,10 +1,8 @@
 <?php
 include 'connection.php';
-
 $id = $_GET['id'];
 
 mysqli_query($conn, "DELETE FROM students WHERE id=$id");
-
-header("Location: all_students.php");
+header("Location: index.php");
 exit;
 ?>
