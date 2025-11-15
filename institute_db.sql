@@ -1,26 +1,10 @@
--- CREATE DATABASE IF NOT EXISTS institute_db;
--- USE institute_db;
-
--- CREATE TABLE students (
---     id INT AUTO_INCREMENT PRIMARY KEY,
---     name VARCHAR(100) NOT NULL,
---     course INT NOT NULL,
---     fees DECIMAL(10,2) NOT NULL,
---    date DATE DEFAULT CURRENT_DATE
-
--- );
-
-
 -- CREATE TABLE courses (
 --   id INT AUTO_INCREMENT PRIMARY KEY,
 --   course VARCHAR(100) NOT NULL,
 --   duration VARCHAR(50) NOT NULL,
 --   fees DECIMAL(10,2) NOT NULL,
---   date DATE DEFAULT CURRENT_DATE
+--   date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 -- );
-
-
-
 
 -- CREATE TABLE students (
 --   id INT AUTO_INCREMENT PRIMARY KEY,
@@ -34,24 +18,48 @@
 -- );
 
 
-CREATE TABLE student_fees (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  student_id INT NOT NULL,
-  course_id INT NOT NULL,
-  total_fee DECIMAL(10,2) NOT NULL,
-  paid_amount DECIMAL(10,2) DEFAULT 0,
-  remaining_amount DECIMAL(10,2) GENERATED ALWAYS AS (total_fee - paid_amount) STORED,
-  payment_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-  payment_mode VARCHAR(50) DEFAULT 'Cash',
-  remarks TEXT
+-- CREATE TABLE student_fees (
+--   id INT AUTO_INCREMENT PRIMARY KEY,
+--   student_id INT NOT NULL,
+--   course_id INT NOT NULL,
+--   total_fee DECIMAL(10,2) NOT NULL,
+--   paid_amount DECIMAL(10,2) DEFAULT 0,
+--   remaining_amount DECIMAL(10,2) GENERATED ALWAYS AS (total_fee - paid_amount) STORED,
+--   payment_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+--   payment_mode VARCHAR(50) DEFAULT 'Cash',
+--   remarks TEXT
+-- );
+
+
+CREATE TABLE students (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_name VARCHAR(255),
+    father_name VARCHAR(255),
+    dob DATE,
+    qualification VARCHAR(255),
+    photo VARCHAR(255),
+    course_id INT,
+    batch_time VARCHAR(100),
+    duration VARCHAR(100),
+    admission_date DATE,
+    address TEXT,
+    phone VARCHAR(20),
+    email VARCHAR(100),
+    extra_note TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
---------------------------------------------------------
--- FOREIGN KEYS (OPTIONAL)
---------------------------------------------------------
-ALTER TABLE students 
-ADD CONSTRAINT fk_course FOREIGN KEY (course) REFERENCES courses(id);
 
-ALTER TABLE student_fees
-ADD CONSTRAINT fk_student FOREIGN KEY (student_id) REFERENCES students(id),
-ADD CONSTRAINT fk_course_fee FOREIGN KEY (course_id) REFERENCES courses(id);
+
+
+CREATE TABLE student_fees (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT,
+    course_id INT,
+    total_fee DECIMAL(10,2),
+    paid_amount DECIMAL(10,2),
+    remaining DECIMAL(10,2),
+    payment_mode VARCHAR(50),
+    remarks TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

@@ -135,15 +135,15 @@
         <a href="dashboard.php" class="<?= basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : '' ?>">
             <i class="bi bi-speedometer2 me-2"></i> Dashboard
         </a>
-         <a href="student_fees.php" class="<?= basename($_SERVER['PHP_SELF']) == 'student_fees.php' ? 'active' : '' ?>">
-            <i class="bi bi-journal-bookmark me-2"></i> Student Fees
-        </a>
         <a href="student_list.php" class="<?= basename($_SERVER['PHP_SELF']) == 'student_list.php' ? 'active' : '' ?>">
-            <i class="bi bi-journal-bookmark me-2"></i> Student List
+            <i class="bi bi-journal-bookmark me-2"></i> Course List
+        </a>
+        <a href="add_fees.php" class="<?= basename($_SERVER['PHP_SELF']) == 'add_fees.php' ? 'active' : '' ?>">
+            <i class="bi bi-cash-stack me-2"></i> Fees Student
         </a>
 
         <a href="all_students.php" class="<?= basename($_SERVER['PHP_SELF']) == 'all_students.php' ? 'active' : '' ?>">
-            <i class="bi bi-journal-bookmark me-2"></i> All Students
+            <i class="bi bi-person-lines-fill me-2"></i> All Students
         </a>
 
         <!-- <a href="#"><i class="bi bi-gear me-2"></i> Settings</a> -->

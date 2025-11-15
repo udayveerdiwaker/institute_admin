@@ -1,56 +1,58 @@
-<?php include 'connection.php'; ?>
+<?php
+include 'connection.php';
 
-<?php include 'sidebar.php'; ?>
+include 'sidebar.php';
+?>
 
 <div class="main-content">
-
     <div class="container mt-4">
-        <h3 class="mb-4">All Students</h3>
-        <a href="add_student.php" class="btn btn-primary mb-3"><i class="bi bi-plus-circle"></i> Add Student</a>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3>All Students</h3>
+            <a href="new_registration.php" class="btn btn-success"><i class="bi bi-person-plus"></i> New
+                Registration</a>
+        </div>
 
-        <table class="table table-bordered table-striped">
-            <thead class="table-dark">
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Course</th>
-                    <th>Duration</th>
-                    <th>Fees</th>
-                    <th>Date</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <?php
-                $result = mysqli_query($conn, "SELECT students.*, courses.course AS course_name 
-                                           FROM students 
-                                           LEFT JOIN courses ON students.course = courses.id");
-
-                while ($row = mysqli_fetch_assoc($result)) {
-                ?>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover align-middle">
+                <thead class="table-dark">
                     <tr>
-                        <td><?= $row['id']; ?></td>
-                        <td><?= $row['name']; ?></td>
-                        <td><?= $row['course_name']; ?></td>
-                        <td><?= $row['duration']; ?></td>
-                        <td><?= $row['fees']; ?></td>
-                        <td><?= $row['date']; ?></td>
-                        <td>
-                            <a href="edit_student.php?id=<?= $row['id']; ?>" class="btn btn-primary btn-sm">
-                                Edit
-                            </a>
-
-                            <a href="delete_student.php?id=<?= $row['id']; ?>"
-                                class="btn btn-danger btn-sm"
-                                onclick="return confirm('Are you sure?')">
-                                Delete
-                            </a>
-                        </td>
+                        <th>ID</th>
+                        <th>Photo</th>
+                        <th>Name</th>
+                        <th>Course</th>
+                        <th>Phone</th>
+                        <th>Admission Date</th>
+                        <th>Actions</th>
                     </tr>
-                <?php } ?>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <?php
+          $sql = "SELECT s.*, c.course AS course_name FROM students s LEFT JOIN courses c ON s.course_id = c.id ORDER BY s.id DESC";
+          $res = mysqli_query($conn, $sql);
+          if ($res && mysqli_num_rows($res) > 0) {
+            while ($r = mysqli_fetch_assoc($res)) {
+              $photo = !empty($r['photo']) ? $r['photo'] : 'student_img/default.png';
+              echo "<tr>
+                      <td>{$r['id']}</td>
+                      <td><img src='{$photo}' style='width:48px;height:48px;object-fit:cover;border-radius:6px'></td>
+                      <td>{$r['student_name']}</td>
+                      <td>{$r['course_name']}</td>
+                      <td>{$r['phone']}</td>
+                      <td>{$r['admission_date']}</td>
+                      <td>
+                        <a href='student_view.php?id={$r['id']}' class='btn btn-sm btn-info'>View</a>
+                        <a href='student_edit.php?id={$r['id']}' class='btn btn-sm btn-warning'>Edit</a>
+                        <a href='student_delete.php?id={$r['id']}' class='btn btn-sm btn-danger' onclick=\"return confirm('Delete this student?')\">Delete</a>
+                      </td>
+                    </tr>";
+            }
+          } else {
+            echo "<tr><td colspan='7' class='text-center'>No students found</td></tr>";
+          }
+          ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
