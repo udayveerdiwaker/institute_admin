@@ -1,4 +1,6 @@
-<?php include 'connection.php'; ?>
+<?php
+ include 'connection.php';
+  ?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -135,10 +137,10 @@
         <a href="dashboard.php" class="<?= basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : '' ?>">
             <i class="bi bi-speedometer2 me-2"></i> Dashboard
         </a>
-        <a href="student_list.php" class="<?= basename($_SERVER['PHP_SELF']) == 'student_list.php' ? 'active' : '' ?>">
+        <a href="course_list.php" class="<?= basename($_SERVER['PHP_SELF']) == 'course_list.php' ? 'active' : '' ?>">
             <i class="bi bi-journal-bookmark me-2"></i> Course List
         </a>
-        <a href="add_fees.php" class="<?= basename($_SERVER['PHP_SELF']) == 'add_fees.php' ? 'active' : '' ?>">
+        <a href="student_fees.php" class="<?= basename($_SERVER['PHP_SELF']) == 'student_fees.php' ? 'active' : '' ?>">
             <i class="bi bi-cash-stack me-2"></i> Fees Student
         </a>
 

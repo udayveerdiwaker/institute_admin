@@ -1,6 +1,5 @@
 <?php
 include 'connection.php';
-include 'header.php';
 include 'sidebar.php';
 
 if (!isset($_GET['id'])) { header('Location: all_students.php'); exit; }
@@ -100,7 +99,7 @@ $fees_res = mysqli_query($conn, $fees_q);
                     </div>
 
                     <div class="mt-3">
-                        <a href="fees.php?student_id=<?= $student['id'] ?>" class="btn btn-primary">Add Payment</a>
+                        <a href="add_fees.php?student_id=<?= $student['id'] ?>" class="btn btn-primary">Add Payment</a>
                     </div>
                 </div>
             </div>

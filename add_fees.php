@@ -5,7 +5,7 @@ include 'sidebar.php';
 
 // fetch students & courses for dropdowns
 $students = mysqli_query($conn, "SELECT id, student_name FROM students ORDER BY student_name");
-$courses = mysqli_query($conn, "SELECT id, course, fee FROM courses ORDER BY course");
+$courses = mysqli_query($conn, "SELECT id, course, fees FROM courses ORDER BY course");
 
 $msg = '';
 if (isset($_POST['submit'])) {
@@ -13,12 +13,13 @@ if (isset($_POST['submit'])) {
     $course_id   = (int) $_POST['course_id'];
     $total_fee   = (float) $_POST['total_fee'];
     $paid_amount = (float) $_POST['paid_amount'];
+    $remaining_amount = (float) $_POST['remaining_amount'];
     $payment_mode = mysqli_real_escape_string($conn, $_POST['payment_mode']);
     $remarks     = mysqli_real_escape_string($conn, $_POST['remarks']);
 
     // If your table uses a generated remaining column, you don't need to set remaining.
-    $sql = "INSERT INTO student_fees (student_id, course_id, total_fee, paid_amount, payment_mode, remarks)
-            VALUES ('$student_id', '$course_id', '$total_fee', '$paid_amount', '$payment_mode', '$remarks')";
+    $sql = "INSERT INTO student_fees (student_id, course_id, total_fee, paid_amount, remaining, payment_mode, remarks)
+            VALUES ('$student_id', '$course_id', '$total_fee', '$paid_amount', '$remaining_amount', '$payment_mode', '$remarks')";
 
     if (mysqli_query($conn, $sql)) {
         $msg = "<div class='alert alert-success'>Payment recorded successfully.</div>";
@@ -55,8 +56,8 @@ if (isset($_POST['submit'])) {
               // Reset pointer and re-run for options (we used $courses once earlier)
               mysqli_data_seek($courses, 0);
               while ($c = mysqli_fetch_assoc($courses)) { ?>
-                            <option value="<?= $c['id'] ?>" data-fee="<?= $c['fee'] ?>">
-                                <?= htmlspecialchars($c['course']) ?> (₹<?= $c['fee'] ?>)</option>
+                            <option value="<?= $c['id'] ?>" data-fee="<?= $c['fees'] ?>">
+                                <?= htmlspecialchars($c['course']) ?> (₹<?= $c['fees'] ?>)</option>
                             <?php } ?>
                         </select>
                     </div>
@@ -74,7 +75,7 @@ if (isset($_POST['submit'])) {
 
                     <div class="col-md-4">
                         <label class="form-label">Remaining (₹)</label>
-                        <input type="number" step="0.01" id="remainingAmount" class="form-control" readonly>
+                        <input type="number" step="0.01" id="remainingAmount" name="remaining_amount" class="form-control" readonly>
                     </div>
 
                     <div class="col-md-4">

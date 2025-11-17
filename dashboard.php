@@ -35,12 +35,12 @@ $students = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS total FRO
 $courses = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS total FROM courses"))['total'];
 
 // TOTAL FEES COLLECTED
-// $paid = mysqli_fetch_assoc(mysqli_query($conn, "SELECT SUM(paid_amount) AS total FROM student_fees"))['total'];
-// $paid = $paid ? $paid : 0;
+$paid = mysqli_fetch_assoc(mysqli_query($conn, "SELECT SUM(paid_amount) AS total FROM student_fees"))['total'];
+$paid = $paid ? $paid : 0;
 
 // TOTAL PENDING FEES
-// $pending = mysqli_fetch_assoc(mysqli_query($conn, "SELECT SUM(remaining_amount) AS total FROM student_fees"))['total'];
-// $pending = $pending ? $pending : 0;
+$pending = mysqli_fetch_assoc(mysqli_query($conn, "SELECT SUM(remaining) AS total FROM student_fees"))['total'];
+$pending = $pending ? $pending : 0;
 ?>
 
 <div class="main-content">
@@ -70,22 +70,22 @@ $courses = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS total FROM
             </div>
 
             <!-- Fees Collected -->
-            <!-- <div class="col-md-3 col-6">
+            <div class="col-md-3 col-6">
                 <div class="card-box">
                     <div class="icon-box"><i class="bi bi-cash-stack"></i></div>
                     <h4 class="mt-2">₹<?= $paid ?></h4>
                     <p>Total Fees Collected</p>
                 </div>
-            </div> -->
+            </div>
 
             <!-- Pending Fees -->
-            <!-- <div class="col-md-3 col-6">
+            <div class="col-md-3 col-6">
                 <div class="card-box">
                     <div class="icon-box"><i class="bi bi-exclamation-circle"></i></div>
                     <h4 class="mt-2">₹<?= $pending ?></h4>
                     <p>Pending Fees</p>
                 </div>
-            </div> -->
+            </div>
 
         </div>
 
@@ -94,8 +94,8 @@ $courses = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS total FROM
         <div class="row mt-3">
 
             <div class="col-md-3 col-6">
-                <a href="add_student.php" class="btn btn-primary quick-btn">
-                    <i class="bi bi-person-plus"></i> Add Student
+                <a href="new_registration.php" class="btn btn-primary quick-btn">
+                    <i class="bi bi-person-plus"></i> Add Registration  
                 </a>
             </div>
 
@@ -106,13 +106,13 @@ $courses = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) AS total FROM
             </div>
 
             <div class="col-md-3 col-6">
-                <a href="fees.php" class="btn btn-warning quick-btn">
+                <a href="student_fees.php" class="btn btn-warning quick-btn">
                     <i class="bi bi-wallet2"></i> Fees Entry
                 </a>
             </div>
 
             <div class="col-md-3 col-6">
-                <a href="view_students.php" class="btn btn-dark quick-btn">
+                <a href="all_students.php" class="btn btn-dark quick-btn">
                     <i class="bi bi-eye"></i> View Students
                 </a>
             </div>
