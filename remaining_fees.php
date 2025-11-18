@@ -1,0 +1,84 @@
+<?php
+include 'connection.php';
+include 'sidebar.php';
+
+if (!isset($_GET['student_id'])) { header('Location: fees_list.php'); exit; }
+$student_id = (int)$_GET['student_id'];
+
+// fetch student and course info
+$sq = mysqli_query($conn, "SELECT s.*, c.course, c.fees AS course_fee FROM students s LEFT JOIN courses c ON s.course_id = c.id WHERE s.id = $student_id");
+$student = mysqli_fetch_assoc($sq);
+
+// compute total paid so far
+$sumQ = mysqli_query($conn, "SELECT SUM(paid_amount) AS total_paid FROM student_fees WHERE student_id = $student_id");
+$sumR = mysqli_fetch_assoc($sumQ);
+$total_paid = (float)($sumR['total_paid'] ?? 0);
+$total_fee = (float)$student['course_fee'];
+$remaining = $total_fee - $total_paid;
+
+$msg = '';
+if (isset($_POST['submit'])) {
+    $new_pay = (float)$_POST['new_payment'];
+    $mode = mysqli_real_escape_string($conn, $_POST['payment_mode']);
+    $remarks = mysqli_real_escape_string($conn, $_POST['remarks']);
+
+    if ($new_pay <= 0) {
+        $msg = "<div class='alert alert-danger'>Enter a valid amount</div>";
+    } elseif ($new_pay > $remaining) {
+        $msg = "<div class='alert alert-danger'>Cannot pay more than remaining</div>";
+    } else {
+        // prev_fee = total paid before this new payment
+        $prev_fee = $total_paid;
+
+        $ins = "INSERT INTO student_fees (student_id, course_id, total_fee, paid_amount, prev_fee, payment_mode, remarks)
+                VALUES ('$student_id','{$student['course_id']}','$total_fee','$new_pay','$prev_fee','$mode','$remarks')";
+        mysqli_query($conn, $ins);
+
+        header("Location: view_fees.php?student_id=$student_id");
+        exit;
+    }
+}
+?>
+
+<div class="main-content">
+  <div class="container mt-4">
+    <div class="card shadow-sm p-4">
+      <h4>Add Payment — <?= htmlspecialchars($student['student_name']) ?></h4>
+      <?= $msg ?>
+
+      <div class="row mb-3">
+        <div class="col-md-4"><strong>Course:</strong> <?= htmlspecialchars($student['course']) ?></div>
+        <div class="col-md-4"><strong>Total Fee:</strong> ₹<?= number_format($total_fee,2) ?></div>
+        <div class="col-md-4"><strong>Already Paid:</strong> ₹<?= number_format($total_paid,2) ?></div>
+      </div>
+
+      <form method="post">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label">New Payment (₹)</label>
+            <input type="number" step="0.01" name="new_payment" class="form-control" required>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Payment Mode</label>
+            <select name="payment_mode" class="form-control">
+              <option>Cash</option><option>Online</option><option>Cheque</option>
+            </select>
+          </div>
+
+          <div class="col-md-4">
+            <label class="form-label">Remarks</label>
+            <input type="text" name="remarks" class="form-control">
+          </div>
+
+          <div class="col-12 mt-3">
+            <button class="btn btn-primary" name="submit">Add Payment</button>
+            <a href="fees_list.php" class="btn btn-secondary">Back</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<?php include 'footer.php'; ?>

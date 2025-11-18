@@ -59,7 +59,6 @@ if (isset($_POST['update'])) {
     }
 }
 
-include 'header.php';
 include 'sidebar.php';
 ?>
 

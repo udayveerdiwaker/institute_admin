@@ -1,4 +1,8 @@
-<?php include 'sidebar.php'; ?>
+<?php
+
+use FontLib\Table\Type\head;
+
+ include 'sidebar.php'; ?>
 <?php include 'connection.php'; ?>
 
 <?php  
@@ -57,7 +61,9 @@ if (isset($_POST['submit'])) {
 
         mysqli_query($conn, $sql2);
 
-        echo "<script>alert('Student Registered Successfully'); window.location='all_students.php';</script>";
+        // echo "<script>alert('Student Registered Successfully'); window.location='all_students.php';</script>";
+        header("Location: all_students.php");
+        exit;
     }
 }
 ?>

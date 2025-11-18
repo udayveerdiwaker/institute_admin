@@ -67,19 +67,19 @@ $query = mysqli_query(
                                             <i class="bi bi-pencil-square"></i>
                                         </a>
 
-                                        <a href="delete_fees.php?id=<?= $row['id']; ?>"
+                                        <!-- <a href="delete_fees.php?id=<?= $row['id']; ?>"
                                             class="btn btn-sm btn-danger"
                                             onclick="return confirm('Are you sure you want to delete this record?');">
                                             <i class="bi bi-trash"></i>
-                                        </a>
+                                        </a> -->
                                         <a href="fees_receipt.php?id=<?= $row['id']; ?>"
                                             class="btn btn-sm btn-success" target="_blank">
                                             <i class="bi bi-receipt"></i>
                                         </a>
-                                        <!-- <a href="fees_receipt_pdf.php?id=<?= $row['id']; ?>"
+                                        <a href="fees_receipt_pdf.php?id=<?= $row['id']; ?>"
                                             class="btn btn-sm btn-danger" target="_blank">
                                             <i class="bi bi-file-earmark-pdf"></i>
-                                        </a> -->
+                                        </a>
 
                                     </td>
                                 </tr>

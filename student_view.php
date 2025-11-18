@@ -2,13 +2,20 @@
 include 'connection.php';
 include 'sidebar.php';
 
-if (!isset($_GET['id'])) { header('Location: all_students.php'); exit; }
+if (!isset($_GET['id'])) {
+    header('Location: all_students.php');
+    exit;
+}
 $id = (int) $_GET['id'];
 
 // fetch student
 $sq = "SELECT s.*, c.course AS course_name FROM students s LEFT JOIN courses c ON s.course_id = c.id WHERE s.id = $id";
 $res = mysqli_query($conn, $sq);
-if (!$res || mysqli_num_rows($res) == 0) { echo "<div class='main-content container mt-4'>Student not found.</div>"; include 'footer.php'; exit; }
+if (!$res || mysqli_num_rows($res) == 0) {
+    echo "<div class='main-content container mt-4'>Student not found.</div>";
+    include 'footer.php';
+    exit;
+}
 $student = mysqli_fetch_assoc($res);
 
 // fees history
@@ -63,7 +70,7 @@ $fees_res = mysqli_query($conn, $fees_q);
                     </div>
                 </div>
 
-                <div class="card p-3">
+                <!-- <div class="card p-3">
                     <h5>Fees History</h5>
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered">
@@ -80,28 +87,94 @@ $fees_res = mysqli_query($conn, $fees_q);
                             </thead>
                             <tbody>
                                 <?php if ($fees_res && mysqli_num_rows($fees_res) > 0) {
-                  while ($f = mysqli_fetch_assoc($fees_res)) {
-                    echo "<tr>
+                                    while ($f = mysqli_fetch_assoc($fees_res)) {
+                                        echo "<tr>
                             <td>{$f['id']}</td>
                             <td>₹{$f['total_fee']}</td>
                             <td>₹{$f['paid_amount']}</td>
                             <td>₹{$f['remaining']}</td>
                             <td>{$f['payment_mode']}</td>
                             <td>{$f['created_at']}</td>
-                            <td>".htmlspecialchars($f['remarks'])."</td>
+                            <td>" . htmlspecialchars($f['remarks']) . "</td>
                           </tr>";
-                  }
-                } else {
-                  echo "<tr><td colspan='7' class='text-center'>No payments found</td></tr>";
-                } ?>
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='7' class='text-center'>No payments found</td></tr>";
+                                } ?>
                             </tbody>
                         </table>
                     </div>
 
                     <div class="mt-3">
                         <a href="add_fees.php?student_id=<?= $student['id'] ?>" class="btn btn-primary">Add Payment</a>
+                        <a href="remaining.php?id=<?= $student['id'] ?>" class="btn btn-info">Add Remaining</a>
+
+                    </div>
+                </div> -->
+
+                <?php
+                // Fetch Fees History
+                $student_id = $student['id'];
+
+                $hist = mysqli_query($conn, "
+    SELECT * FROM student_fees
+    WHERE student_id = $student_id
+    ORDER BY id DESC
+");
+                ?>
+
+                <div class="card p-3">
+                    <h5>Fees History</h5>
+
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered">
+                            <thead class="table-light text-center">
+                                <tr>
+                                    <th>#</th>
+                                    <th>Total (₹)</th>
+                                    <th>Paid (₹)</th>
+                                    <th>Prev Paid (₹)</th>
+                                    <th>Mode</th>
+                                    <th>Remarks</th>
+                                    <th>Payment Date</th>
+
+                                    
+                                </tr>
+                            </thead>
+
+                            <tbody class="text-center">
+                                <?php
+                                $i = 1;
+                                if ($hist && mysqli_num_rows($hist) > 0) {
+                                    while ($h = mysqli_fetch_assoc($hist)) {
+
+                                        echo "<tr>
+                                <td>{$i}</td>
+                                <td>₹" . number_format($h['total_fee'], 2) . "</td>
+                                <td>₹" . number_format($h['paid_amount'], 2) . "</td>
+                                <td>₹" . number_format($h['prev_fee'] ?? 0, 2) . "</td>
+                                <td>" . htmlspecialchars($h['payment_mode']) . "</td>
+                                
+                                <td>" . htmlspecialchars($h['remarks']) . "</td>
+                                <td>{$h['created_at']}</td>
+                             </tr>";
+
+                                        $i++;
+                                    }
+                                } else {
+                                    echo "<tr><td colspan='7'>No payments yet</td></tr>";
+                                }
+                                ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-3">
+                        <a href="add_fees.php?student_id=<?= $student['id'] ?>" class="btn btn-primary">Add Payment</a>
+                        <a href="remaining.php?id=<?= $student['id'] ?>" class="btn btn-info">Add Remaining</a>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

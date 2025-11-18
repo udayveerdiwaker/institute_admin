@@ -140,7 +140,7 @@
         <a href="course_list.php" class="<?= basename($_SERVER['PHP_SELF']) == 'course_list.php' ? 'active' : '' ?>">
             <i class="bi bi-journal-bookmark me-2"></i> Course List
         </a>
-        <a href="student_fees.php" class="<?= basename($_SERVER['PHP_SELF']) == 'student_fees.php' ? 'active' : '' ?>">
+        <a href="fees_list.php" class="<?= basename($_SERVER['PHP_SELF']) == 'fees_list.php' ? 'active' : '' ?>">
             <i class="bi bi-cash-stack me-2"></i> Fees Student
         </a>
 
