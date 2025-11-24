@@ -15,7 +15,6 @@ $sumR = mysqli_fetch_assoc($sumQ);
 $total_paid = (float)($sumR['total_paid'] ?? 0);
 $total_fee = (float)$student['course_fee'];
 $remaining = $total_fee - $total_paid;
-  
 
 $msg = '';
 if (isset($_POST['submit'])) {
@@ -31,21 +30,14 @@ if (isset($_POST['submit'])) {
         // prev_fee = total paid before this new payment
         $prev_fee = $total_paid;
 
-        // ❗ FIX: calculate NEW remaining (remaining after this payment)
-        $new_remaining = $remaining - $new_pay;
-
-        $ins = "INSERT INTO student_fees 
-                (student_id, course_id, total_fee, paid_amount, prev_fee, remaining, payment_mode, remarks)
-                VALUES 
-                ('$student_id','{$student['course_id']}','$total_fee','$new_pay','$prev_fee','$new_remaining','$mode','$remarks')";
-        
+        $ins = "INSERT INTO student_fees (student_id, course_id, total_fee, paid_amount, prev_fee, payment_mode, remarks)
+                VALUES ('$student_id','{$student['course_id']}','$total_fee','$new_pay','$prev_fee','$mode','$remarks')";
         mysqli_query($conn, $ins);
 
         header("Location: view_fees.php?student_id=$student_id");
         exit;
     }
 }
-
 ?>
 
 <div class="main-content">

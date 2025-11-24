@@ -76,7 +76,7 @@ $overall_remaining = $total_fee - $total_paid;
                         <div>
                             <a href="add_fees.php?student_id=<?= $student_id ?>" class="btn btn-sm btn-primary">Add Payment</a>
                             <a href="remaining.php?student_id=<?= $student_id ?>" class="btn btn-sm btn-info">Add Remaining</a>
-                            <a href="combined_receipt.php?student_id=<?= $student_id ?>" class="btn btn-sm btn-success" target="_blank">Combined Receipt</a>
+                            <a href="combined_receipt.php?student_id=<?= $student_id ?>" class="btn btn-sm btn-success">Combined Receipt</a>
                             <a href="combined_receipt_pdf.php?student_id=<?= $student_id ?>" class="btn btn-sm btn-danger" target="_blank">Combined PDF</a>
                         </div>
                     </div>
@@ -121,12 +121,10 @@ $overall_remaining = $total_fee - $total_paid;
                                 <td>" . htmlspecialchars($f['payment_mode']) . "</td>
                                 <td>" . htmlspecialchars($f['remarks']) . "</td>
                                 <td>
-                                  <a href='receipt.php?fee_id={$f['id']}' class='btn btn-sm btn-success' target='_blank'>  <i class='bi bi-receipt'></i></a>
-                                  <a href='receipt_pdf.php?fee_id={$f['id']}' class='btn btn-sm btn-danger' target='_blank'><i class='bi bi-file-earmark-pdf'></i></a>
-                                  <a href='edit_fee.php?id={$f['id']}&student_id={$student_id}' class='btn btn-sm btn-warning'>                                            <i class='bi bi-pencil-square'></i>
-</a>
-                                  <a href='delete_fee.php?id={$f['id']}&student_id={$student_id}' class='btn btn-sm btn-outline-danger' onclick=\"return confirm('Delete this payment?')\">                                            <i class='bi bi-trash'></i>
-</a>
+                                  <a href='receipt.php?fee_id={$f['id']}' class='btn btn-sm btn-success' target='_blank'>Receipt</a>
+                                  <a href='receipt_pdf.php?fee_id={$f['id']}' class='btn btn-sm btn-danger' target='_blank'>PDF</a>
+                                  <a href='edit_fee.php?id={$f['id']}&student_id={$student_id}' class='btn btn-sm btn-warning'>Edit</a>
+                                  <a href='delete_fee.php?id={$f['id']}&student_id={$student_id}' class='btn btn-sm btn-outline-danger' onclick=\"return confirm('Delete this payment?')\">Delete</a>
                                 </td>
                               </tr>";
                                         $i++;
