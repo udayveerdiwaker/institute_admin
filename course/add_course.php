@@ -1,4 +1,4 @@
-<?php include 'connection.php'; ?>
+<?php include '../connection.php'; ?>
 
 <?php
 if (isset($_POST['submit'])) {
@@ -17,7 +17,7 @@ if (isset($_POST['submit'])) {
 ?>
 
 <div class="main-content">
-    <?php include 'sidebar.php'; ?>
+    <?php include '../sidebar.php'; ?>
 
     <div class="container mt-4">
         <div class="card shadow-sm p-4">
@@ -52,4 +52,4 @@ if (isset($_POST['submit'])) {
     </div>
 </div>
 
-<?php include 'footer.php'; ?>
+<?php include '../footer.php'; ?>

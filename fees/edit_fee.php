@@ -1,10 +1,10 @@
 <?php
 // edit_fee.php
-include 'connection.php';
-include 'sidebar.php';
-
+include '../connection.php';
+include '../sidebar.php';
+  
 if (!isset($_GET['id'])) {
-    header("Location: fees_list.php");
+    header("Location: ../fees/fees_list.php");
     exit;   
 }
 $id = (int) $_GET['id'];
@@ -90,4 +90,4 @@ if (isset($_POST['update'])) {
   </div>
 </div>
 
-<?php include 'footer.php'; ?>
+<?php include '../footer.php'; ?>

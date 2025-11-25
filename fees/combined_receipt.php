@@ -1,6 +1,6 @@
 <?php
 // combined_receipt.php
-include 'connection.php';
+include '../connection.php';
 
 if (!isset($_GET['student_id'])) die("Missing student_id");
 $student_id = (int) $_GET['student_id'];

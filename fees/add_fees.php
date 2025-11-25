@@ -2,8 +2,8 @@
 
 use FontLib\Table\Type\head;
 
-include 'connection.php';
-include 'sidebar.php';
+include '../connection.php';
+include '../sidebar.php';
 
 $msg = '';
 // fetch students & courses for convenience
@@ -27,7 +27,7 @@ if (isset($_POST['submit'])) {
             VALUES ('$student_id','$course_id','$total_fee','$paid_amount','$prev_fee','$payment_mode','$remarks')";
     if (mysqli_query($conn, $ins)) {
         // $msg = "<div class='alert alert-success'>Payment recorded.</div>";
-        header("Location: fees_list.php?student_id=$student_id");
+        header("Location: ../fees/fees_list.php?student_id=$student_id");
         exit;
     } else {
         $msg = "<div class='alert alert-danger'>Error: ".mysqli_error($conn)."</div>";
@@ -121,4 +121,4 @@ function recalc(){
 }
 </script>
 
-<?php include 'footer.php'; ?>
+<?php include '../footer.php'; ?>

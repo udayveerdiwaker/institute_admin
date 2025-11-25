@@ -1,6 +1,6 @@
 <?php
-include 'connection.php';
-include 'sidebar.php';
+include '../connection.php';
+include '../sidebar.php';
 ?>
 
 <div class="main-content">
@@ -69,4 +69,4 @@ include 'sidebar.php';
   </div>
 </div>
 
-<?php include 'footer.php'; ?>
+<?php include '../footer.php'; ?>

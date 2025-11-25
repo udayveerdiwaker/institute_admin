@@ -1,8 +1,8 @@
 <?php
-include 'connection.php';
-include 'sidebar.php';
+include '../connection.php';
+include '../sidebar.php';
 
-if (!isset($_GET['student_id'])) { header('Location: fees_list.php'); exit; }
+if (!isset($_GET['student_id'])) { header('Location: ../fees/fees_list.php'); exit; }
 $student_id = (int)$_GET['student_id'];
 
 // fetch student and course info
@@ -34,7 +34,7 @@ if (isset($_POST['submit'])) {
                 VALUES ('$student_id','{$student['course_id']}','$total_fee','$new_pay','$prev_fee','$mode','$remarks')";
         mysqli_query($conn, $ins);
 
-        header("Location: view_fees.php?student_id=$student_id");
+        header("Location: ../fees/view_fees.php?student_id=$student_id");
         exit;
     }
 }
@@ -81,4 +81,4 @@ if (isset($_POST['submit'])) {
   </div>
 </div>
 
-<?php include 'footer.php'; ?>
+<?php include '../footer.php'; ?>

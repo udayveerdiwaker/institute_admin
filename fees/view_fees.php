@@ -1,8 +1,8 @@
 <?php
-include 'connection.php';
-include 'sidebar.php';
+include '../connection.php';
+include '../sidebar.php';
 
-if (!isset($_GET['student_id'])) { header('Location: fees_list.php'); exit; }
+if (!isset($_GET['student_id'])) { header('Location: ../fees/fees_list.php'); exit; }
 $student_id = (int)$_GET['student_id'];
 
 $sq = mysqli_query($conn, "SELECT s.student_name, c.course, c.fees AS course_fee FROM students s LEFT JOIN courses c ON s.course_id = c.id WHERE s.id = $student_id");
@@ -81,4 +81,4 @@ $hist = mysqli_query($conn, "SELECT * FROM student_fees WHERE student_id = $stud
   </div>
 </div>
 
-<?php include 'footer.php'; ?>
+<?php include '../footer.php'; ?>

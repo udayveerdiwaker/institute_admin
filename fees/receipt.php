@@ -1,6 +1,6 @@
 <?php
 // receipt.php
-include 'connection.php';
+include '../connection.php';
 
 if (!isset($_GET['fee_id'])) die("Missing id");
 $fee_id = (int) $_GET['fee_id'];

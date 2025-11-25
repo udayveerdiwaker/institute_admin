@@ -1,7 +1,7 @@
 <?php
 // combined_receipt_pdf.php
 require 'dompdf/autoload.inc.php';
-include 'connection.php';
+include '../connection.php';
 
 use Dompdf\Dompdf;
 

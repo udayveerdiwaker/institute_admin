@@ -1,4 +1,4 @@
-<?php include 'connection.php'; ?>
+<?php include '../connection.php'; ?>
 
 <?php
 $id = $_GET['id'];
@@ -12,7 +12,7 @@ if (isset($_POST['update'])) {
     $fees = $_POST['fees'];
   $sql = "UPDATE courses SET course='$course', duration='$duration', fees='$fees' WHERE id=$id";
   if (mysqli_query($conn, $sql)) {
-    header("Location: course_list.php");
+    header("Location: ../course/course_list.php");
     exit;
   } else {
     echo "Error: " . mysqli_error($conn);
@@ -120,7 +120,7 @@ if (isset($_POST['update'])) {
     <button class="toggle-btn" onclick="toggleSidebar()"><i class="bi bi-list"></i></button>
 
     <div class="main-content">
-        <?php include 'sidebar.php'; ?>
+        <?php include '../sidebar.php'; ?>
 
         <div class="content">
             <div class="card p-4 shadow-sm">

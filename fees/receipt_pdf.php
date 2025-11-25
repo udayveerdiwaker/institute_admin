@@ -2,7 +2,7 @@
 // receipt_pdf.php
 // Requires Dompdf (release), put dompdf/ folder or use composer
 require 'dompdf/autoload.inc.php'; // or require 'vendor/autoload.php';
-include 'connection.php';
+include '../connection.php';
 
 use Dompdf\Dompdf;
 
