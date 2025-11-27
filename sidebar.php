@@ -1,19 +1,22 @@
 <?php
- include 'connection.php';
-  ?>
+include 'connection.php';
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang='en'>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <title>Institute Admin Panel</title>
 
     <!-- Bootstrap 5 -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet'>
 
     <!-- Bootstrap Icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css' rel='stylesheet'>
+
+    <link rel='stylesheet' href='assets/style.css'>
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css'>
 
     <style>
     body {
@@ -124,32 +127,32 @@
 
     <!-- Header -->
     <header>
-        <button class="menu-toggle" onclick="toggleSidebar()"><i class="bi bi-list"></i></button>
+        <button class='menu-toggle' onclick='toggleSidebar()'><i class='bi bi-list'></i></button>
         <h5>Admin Panel</h5>
-        <!-- <div class="d-flex align-items-center">
-            <i class="bi bi-person-circle me-2"></i> Admin
-        </div> -->
+        <!-- <div class = 'd-flex align-items-center'>
+<i class = 'bi bi-person-circle me-2'></i> Admin
+</div> -->
     </header>
 
     <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
+    <div class='sidebar' id='sidebar'>
         <!-- <h4>Menu</h4> -->
-        <a href="dashboard.php" class="<?= basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : '' ?>">
-            <i class="bi bi-speedometer2 me-2"></i> Dashboard
+        <a href='dashboard.php' class="<?= basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : '' ?>">
+            <i class='bi bi-speedometer2 me-2'></i> Dashboard
         </a>
-        <a href="course_list.php" class="<?= basename($_SERVER['PHP_SELF']) == 'course_list.php' ? 'active' : '' ?>">
-            <i class="bi bi-journal-bookmark me-2"></i> Course List
+        <a href='course_list.php' class="<?= basename($_SERVER['PHP_SELF']) == 'course_list.php' ? 'active' : '' ?>">
+            <i class='bi bi-journal-bookmark me-2'></i> Course List
         </a>
-        <a href="fees_list.php" class="<?= basename($_SERVER['PHP_SELF']) == 'fees_list.php' ? 'active' : '' ?>">
-            <i class="bi bi-cash-stack me-2"></i> Fees Student
-        </a>
-
-        <a href="all_students.php" class="<?= basename($_SERVER['PHP_SELF']) == 'all_students.php' ? 'active' : '' ?>">
-            <i class="bi bi-person-lines-fill me-2"></i> All Students
+        <a href='fees_list.php' class="<?= basename($_SERVER['PHP_SELF']) == 'fees_list.php' ? 'active' : '' ?>">
+            <i class='bi bi-cash-stack me-2'></i> Fees Student
         </a>
 
-        <!-- <a href="#"><i class="bi bi-gear me-2"></i> Settings</a> -->
-        <a href="#"><i class="bi bi-box-arrow-right me-2"></i> Logout</a>
+        <a href='all_students.php' class="<?= basename($_SERVER['PHP_SELF']) == 'all_students.php' ? 'active' : '' ?>">
+            <i class='bi bi-person-lines-fill me-2'></i> All Students
+        </a>
+
+        <!-- <a href = '#'><i class = 'bi bi-gear me-2'></i> Settings</a> -->
+        <a href='logout.php'><i class='bi bi-box-arrow-right me-2'></i> Logout</a>
     </div>
 
     <script>

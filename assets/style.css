@@ -1,0 +1,98 @@
+/* ===== GLOBAL ===== */
+body {
+  background: #f5f6fa;
+  font-family: "Poppins", sans-serif;
+}
+
+.main-content {
+  padding-left: 260px; /* space for sidebar */
+}
+
+/* Mobile sidebar behavior */
+@media (max-width: 768px) {
+  .main-content {
+    padding-left: 0;
+  }
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: none;
+}
+
+/* ===== PROFILE IMAGE ===== */
+.profile-photo {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 3px solid #eee;
+}
+
+/* ===== FEES SUMMARY ===== */
+.fees-box strong {
+  font-size: 14px;
+}
+
+.fees-box {
+  padding: 12px;
+  background: #f8f9fb;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+/* ===== BUTTONS ===== */
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 13px;
+}
+
+.btn-primary,
+.btn-warning,
+.btn-danger,
+.btn-info,
+.btn-success {
+  border-radius: 6px;
+}
+
+/* ===== PAYMENT TABLE ===== */
+.table {
+  font-size: 14px;
+}
+
+.table th {
+  white-space: nowrap;
+}
+
+.table td {
+  vertical-align: middle;
+}
+
+/* Mobile table scroll */
+.table-responsive {
+  overflow-x: auto;
+}
+
+/* ===== PROFILE LIST ===== */
+.list-group-item {
+  background: transparent;
+  font-size: 14px;
+  padding: 8px 5px;
+}
+
+/* ===== SPACING FIXES ===== */
+.mt-3,
+.mb-3 {
+  margin-top: 1rem !important;
+  margin-bottom: 1rem !important;
+}
+
+/* ===== CARD TITLES ===== */
+.card h5 {
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #333;
+}

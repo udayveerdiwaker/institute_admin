@@ -5,4 +5,4 @@
 -- );
 
 INSERT INTO admin_users (username, password)
-VALUES ('website', SHA2('websitebanaye', 256));
+VALUES ('website', SHA2('websitebanye', 256));
