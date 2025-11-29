@@ -1,54 +1,74 @@
-<?php 
+<?php
+include 'sidebar.php';
+?>
 
- include 'sidebar.php';  ?>
+<div class='main-content '>
+    <h3>Guest List</h3>
 
-<div class="main-content">
-  <div class="container mt-4">
+    <a href='add_guest.php' class='btn btn-success mb-3'>+ Add Guest</a>
 
-    <div class="d-flex justify-content-between mb-3">
-      <h4>Guest Entries</h4>
-      <a href="add_guest.php" class="btn btn-primary">+ Add Guest</a>
-    </div>
-
-    <div class="card shadow-sm">
-      <div class="table-responsive p-3">
-        <table class="table table-striped table-bordered">
-          <thead class="table-dark">
+    <table class='table table-bordered table-striped'>
+        <thead>
             <tr>
-              <th>ID</th>
-              <th>Guest Name</th>
-              <th>Phone</th>
-              <th>Purpose</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Action</th>
+                <th>#</th>
+                <th>Guest Name</th>
+                <th>Phone</th>
+                <th>Purpose</th>
+                <th>Date</th>
+                <th>Time</th>
+                <th>Attended By</th>
+                <th>Action</th>
             </tr>
-          </thead>
-          <tbody>
-          <?php
-            $q = mysqli_query($conn, "SELECT * FROM guest_entries ORDER BY id DESC");
-            while ($row = mysqli_fetch_assoc($q)) {
-          ?>
-            <tr>
-              <td><?= $row['id'] ?></td>
-              <td><?= $row['guest_name'] ?></td>
-              <td><?= $row['phone'] ?></td>
-              <td><?= $row['purpose'] ?></td>
-              <td><?= $row['visit_date'] ?></td>
-              <td><?= $row['visit_time'] ?></td>
-              <td>
-                <a href="view_guest.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-info">View</a>
-                <a href="delete_guest.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger"
-                   onclick="return confirm('Delete this entry?')">Delete</a>
-              </td>
-            </tr>
-          <?php } ?>
-          </tbody>
-        </table>
-      </div>
-    </div>
+        </thead>
 
-  </div>
+        <tbody>
+            <?php
+$i = 1;
+$q = mysqli_query( $conn, 'SELECT * FROM guests ORDER BY id DESC' );
+while( $row = mysqli_fetch_assoc( $q ) ) {
+    ?>
+            <tr>
+                <td>
+                    <?php echo $i++;
+    ?>
+                </td>
+                <td>
+                    <?php echo $row[ 'guest_name' ];
+    ?>
+                </td>
+                <td>
+                    <?php echo $row[ 'phone' ];
+    ?>
+                </td>
+                <td>
+                    <?php echo $row[ 'purpose' ];
+    ?>
+                </td>
+                <td>
+                    <?php echo $row[ 'visit_date' ];
+    ?>
+                </td>
+                <td>
+                    <?php echo $row[ 'visit_time' ];
+    ?>
+                </td>
+                <td>
+                    <?php echo $row[ 'attended_by' ];
+    ?>
+                </td>
+
+                <td>
+                    <a href="view_guest.php?id=<?= $row['id'] ?>" class='btn btn-info btn-sm'>View</a>
+                    <a href="edit_guest.php?id=<?= $row['id'] ?>" class='btn btn-primary btn-sm'>Edit</a>
+                    <a href="delete_guest.php?id=<?= $row['id'] ?>" class='btn btn-danger btn-sm '
+                        onclick="return confirm('Delete this student?')">Delete</a>
+                </td>
+            </tr>
+            <?php }
+    ?>
+        </tbody>
+    </table>
 </div>
 
-<?php include 'footer.php'; ?>
+<?php include 'footer.php';
+    ?>

@@ -140,17 +140,17 @@ $overall_remaining = $total_fee - $total_paid;
                 <div class='row mt-3'>
 
                     <div class='col-md-6 summary-box'>
-                        <strong>Total Fee:</strong><br> ₹<?php echo number_format( $total_fee );
+                        <strong>Total Fee:</strong> ₹<?php echo number_format( $total_fee );
 ?>
                     </div>
 
                     <div class='col-md-6 summary-box'>
-                        <strong>Total Paid:</strong><br> ₹<?php echo number_format( $total_paid );
+                        <strong>Total Paid:</strong> ₹<?php echo number_format( $total_paid );
 ?>
                     </div>
 
                     <div class='col-md-6 summary-box'>
-                        <strong>Remaining:</strong><br> ₹<?php echo number_format( $overall_remaining );
+                        <strong>Remaining:</strong> ₹<?php echo number_format( $overall_remaining );
 ?>
                     </div>
 

@@ -1,9 +1,9 @@
-CREATE TABLE guest_entries (
+CREATE TABLE guests (
     id INT AUTO_INCREMENT PRIMARY KEY,
     guest_name VARCHAR(150),
     phone VARCHAR(20),
     address TEXT,
-    purpose VARCHAR(255),
+    purpose VARCHAR(200),
     visit_date DATE,
     visit_time TIME,
     comments TEXT,

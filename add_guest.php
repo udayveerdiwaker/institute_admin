@@ -1,61 +1,81 @@
-<?php    
-include("sidebar.php"); ?>
+<?php
+include 'sidebar.php';
+?>
 
-<div class="main-content">
-    <div class="card shadow p-4">
-        <h3 class="mb-3">Guest Entry Form</h3>
+<div class='main-content'>
+    <h3>Add Guest Entry</h3>
 
-        <form action="insert_guest.php" method="POST">
+    <?php
+if ( isset( $_POST[ 'submit' ] ) ) {
+    $name = $_POST[ 'guest_name' ];
+    $phone = $_POST[ 'phone' ];
+    $address = $_POST[ 'address' ];
+    $purpose = $_POST[ 'purpose' ];
+    $date = $_POST[ 'visit_date' ];
+    $time = $_POST[ 'visit_time' ];
+    $comments = $_POST[ 'comments' ];
+    $attended = $_POST[ 'attended_by' ];
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Guest Name</label>
-                    <input type="text" name="guest_name" class="form-control" required>
-                </div>
+    $insert = "INSERT INTO guests (guest_name, phone, address, purpose, visit_date, visit_time, comments, attended_by)
+                   VALUES ('$name','$phone','$address','$purpose','$date','$time','$comments','$attended')";
 
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Phone</label>
-                    <input type="text" name="phone" class="form-control" required>
-                </div>
+    if ( mysqli_query( $conn, $insert ) ) {
+        echo "<div class='alert alert-success'>Guest Entry Added Successfully</div>";
+    } else {
+        echo "<div class='alert alert-danger'>Error Adding Guest</div>";
+    }
+}
+?>
 
-                <div class="col-md-12 mb-3">
-                    <label class="form-label">Address</label>
-                    <textarea name="address" class="form-control" required></textarea>
-                </div>
+    <form method='POST'>
+        <div class='row g-3'>
 
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Purpose of Visit</label>
-                    <input type="text" name="purpose" class="form-control" required>
-                </div>
-
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">Date</label>
-                    <input type="date" name="visit_date" class="form-control" required>
-                </div>
-
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">Time</label>
-                    <input type="time" name="visit_time" class="form-control" required>
-                </div>
-
-                <div class="col-md-12 mb-3">
-                    <label class="form-label">Final Comments</label>
-                    <textarea name="comments" class="form-control"></textarea>
-                </div>
-
-                <div class="col-md-12 mb-3">
-                    <label class="form-label">Attended By</label>
-                    <input type="text" name="attended_by" class="form-control">
-                </div>
-
-                <div class="col-12">
-                    <button class="btn btn-primary">Save Entry</button>
-                    <a href="list_guest.php" class="btn btn-secondary">View All</a>
-                </div>
+            <div class='col-md-6'>
+                <label>Guest Name</label>
+                <input type='text' name='guest_name' class='form-control' required>
             </div>
 
-        </form>
-    </div>
+            <div class='col-md-6'>
+                <label>Phone</label>
+                <input type='text' name='phone' class='form-control' required>
+            </div>
+
+            <div class='col-md-12'>
+                <label>Address</label>
+                <textarea name='address' class='form-control'></textarea>
+            </div>
+
+            <div class='col-md-6'>
+                <label>Purpose of Visit</label>
+                <input type='text' name='purpose' class='form-control' required>
+            </div>
+
+            <div class='col-md-3'>
+                <label>Date</label>
+                <input type='date' name='visit_date' class='form-control' required>
+            </div>
+
+            <div class='col-md-3'>
+                <label>Time</label>
+                <input type='time' name='visit_time' class='form-control' required>
+            </div>
+
+            <div class='col-md-12'>
+                <label>Final Comments</label>
+                <textarea name='comments' class='form-control'></textarea>
+            </div>
+
+            <div class='col-md-6'>
+                <label>Attended By</label>
+                <input type='text' name='attended_by' class='form-control' required>
+            </div>
+
+            <div class='col-md-12 mt-3'>
+                <button class='btn btn-primary' name='submit'>Save Entry</button>
+            </div>
+        </div>
+    </form>
 </div>
 
-<?php include("footer.php"); ?>
+<?php include 'footer.php';
+?>
