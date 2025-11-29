@@ -147,8 +147,12 @@ include 'connection.php';
             <i class='bi bi-cash-stack me-2'></i> Fees Student
         </a>
 
-        <a href='all_students.php' class="<?= basename($_SERVER['PHP_SELF']) == 'all_students.php' ? 'active' : '' ?>">
+        <a href='   all_students.php' class="<?= basename($_SERVER['PHP_SELF']) == 'all_students.php' ? 'active' : '' ?>">
             <i class='bi bi-person-lines-fill me-2'></i> All Students
+        </a>
+
+          <a href='list_guest.php' class="<?= basename($_SERVER['PHP_SELF']) == 'list_guest.php' ? 'active' : '' ?>">
+            <i class='bi bi-person-lines-fill me-2'></i> Guest Entries
         </a>
 
         <!-- <a href = '#'><i class = 'bi bi-gear me-2'></i> Settings</a> -->
