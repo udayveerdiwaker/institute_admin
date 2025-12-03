@@ -1,11 +1,9 @@
-<?php
-include 'sidebar.php';
-?>
-
 <div class='main-content'>
     <h3>Add Guest Entry</h3>
 
     <?php
+include 'connection.php';
+
 if ( isset( $_POST[ 'submit' ] ) ) {
     $name = $_POST[ 'guest_name' ];
     $phone = $_POST[ 'phone' ];
@@ -20,11 +18,14 @@ if ( isset( $_POST[ 'submit' ] ) ) {
                    VALUES ('$name','$phone','$address','$purpose','$date','$time','$comments','$attended')";
 
     if ( mysqli_query( $conn, $insert ) ) {
-        echo "<div class='alert alert-success'>Guest Entry Added Successfully</div>";
+        header( 'Location: list_guest.php' );
+        exit;
     } else {
         echo "<div class='alert alert-danger'>Error Adding Guest</div>";
     }
 }
+include 'sidebar.php';
+
 ?>
 
     <form method='POST'>

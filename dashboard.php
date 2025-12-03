@@ -1,6 +1,5 @@
 <?php
 
-
 session_start();
 
 if (!isset($_SESSION['admin_logged'])) {
@@ -15,6 +14,7 @@ error_reporting(E_ALL);
 
 include 'connection.php';
 include 'sidebar.php';
+
 
 // helper to run query and surface SQL errors (dev only)
 function runQuery($conn, $sql) {

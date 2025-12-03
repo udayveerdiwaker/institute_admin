@@ -2,10 +2,10 @@
 
 use FontLib\Table\Type\head;
 
- include 'sidebar.php'; ?>
-<?php include 'connection.php'; ?>
+ ?>
+<?php include 'connection.php'; 
 
-<?php  
+
 // Fetch courses
 $courses = mysqli_query($conn, "SELECT * FROM courses");
 
@@ -66,6 +66,7 @@ if (isset($_POST['submit'])) {
         exit;
     }
 }
+ include 'sidebar.php';
 ?>
 
 <style>
