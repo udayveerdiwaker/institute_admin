@@ -137,22 +137,30 @@ include 'connection.php';
     <!-- Sidebar -->
     <div class='sidebar' id='sidebar'>
         <!-- <h4>Menu</h4> -->
-        <a href='dashboard.php' class="<?= basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : '' ?>">
+        <a href='dashboard.php' class="<?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : '' ?>">
             <i class='bi bi-speedometer2 me-2'></i> Dashboard
         </a>
-        <a href='course_list.php' class="<?= basename($_SERVER['PHP_SELF']) == 'course_list.php' ? 'active' : '' ?>">
+        <a href='course_list.php'
+            class="<?php echo basename($_SERVER['PHP_SELF']) == 'course_list.php' ? 'active' : '' ?>">
             <i class='bi bi-journal-bookmark me-2'></i> Course List
         </a>
-        <a href='fees_list.php' class="<?= basename($_SERVER['PHP_SELF']) == 'fees_list.php' ? 'active' : '' ?>">
+        <a href='fees_list.php' class="<?php echo basename($_SERVER['PHP_SELF']) == 'fees_list.php' ? 'active' : '' ?>">
             <i class='bi bi-cash-stack me-2'></i> Fees Student
         </a>
 
-        <a href='   all_students.php' class="<?= basename($_SERVER['PHP_SELF']) == 'all_students.php' ? 'active' : '' ?>">
+        <a href='   all_students.php'
+            class="<?php echo basename($_SERVER['PHP_SELF']) == 'all_students.php' ? 'active' : '' ?>">
             <i class='bi bi-person-lines-fill me-2'></i> All Students
         </a>
 
-          <a href='list_guest.php' class="<?= basename($_SERVER['PHP_SELF']) == 'list_guest.php' ? 'active' : '' ?>">
+        <a href='list_guest.php'
+            class="<?php echo basename($_SERVER['PHP_SELF']) == 'list_guest.php' ? 'active' : '' ?>">
             <i class='bi bi-person-lines-fill me-2'></i> Guest Entries
+        </a>
+
+        <a href='manage_exam.php'
+            class="<?php echo basename($_SERVER['PHP_SELF']) == 'manage_exam.php' ? 'active' : '' ?>">
+            <i class='bi bi-person-lines-fill me-2'></i> Manage Exam
         </a>
 
         <!-- <a href = '#'><i class = 'bi bi-gear me-2'></i> Settings</a> -->
