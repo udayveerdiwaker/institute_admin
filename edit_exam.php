@@ -19,7 +19,7 @@ if ( isset( $_POST[ 'update' ] ) ) {
 
         <div class='mb-3'>
             <label>Exam Name</label>
-            <input type='text' name='exam_name' class='form-control' value="<?php echo $exam['exam_name']; ?>" required>
+            <input type='text' name='exam_name' class='form-control' value="<?php echo $exam['title']; ?>" required>
         </div>
 
         <div class='mb-3'>
@@ -46,7 +46,7 @@ if ( isset( $_POST[ 'update' ] ) ) {
 
         <div class='mb-3'>
             <label>Description</label>
-            <textarea name='exam_description' class='form-control'><?php echo $exam[ 'exam_description' ];
+            <textarea name='exam_description' class='form-control'><?php echo $exam[ 'duration_minutes' ];
 ?></textarea>
         </div>
 
