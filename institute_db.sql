@@ -72,4 +72,6 @@
 
 
 ALTER TABLE student_fees 
-ADD COLUMN discount DECIMAL(10,2) DEFAULT 0;
+ADD discount DECIMAL(10,2) DEFAULT 0 AFTER total_fee;
+-- ALTER TABLE student_fees 
+-- ADD remaining_amount DECIMAL(10,2) GENERATED ALWAYS AS (total_fee - paid

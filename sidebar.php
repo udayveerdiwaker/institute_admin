@@ -158,9 +158,8 @@ include 'connection.php';
             <i class='bi bi-person-lines-fill me-2'></i> Guest Entries
         </a>
 
-          <a href='report.php'
-            class="<?php echo basename($_SERVER['PHP_SELF']) == 'report.php' ? 'active' : '' ?>">
-            <i class='bi bi-person-lines-fill me-2'></i> Report
+        <a href='report.php' class="<?php echo basename($_SERVER['PHP_SELF']) == 'report.php' ? 'active' : '' ?>">
+            <i class='bi bi-person-lines-fill me-2'></i> Reporting
         </a>
 
 

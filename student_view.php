@@ -192,6 +192,7 @@ while ( $fee = mysqli_fetch_assoc( $fees_res ) ) {
         <td>" . htmlspecialchars( $fee[ 'remarks' ] ) . "</td>
 
         <td>
+            <a href='receipt.php?fee_id=" . $fee[ 'id' ] . "' target='_blank' class='btn btn-sm btn-success mb-1'><i class='bi bi-receipt'></i></a>
             <a href='edit_fee.php?id=" . $fee[ 'id' ] . "' class='btn btn-sm btn-warning mb-1'><i class='bi bi-pencil-square'></i></a>
             <a href='delete_fee.php?id=" . $fee[ 'id' ] . '&student_id=' . $student_id . "' class='btn btn-sm btn-danger mb-1' onclick=\"return confirm( 'Delete this payment?' )\"><i class='bi bi-trash'></i></a>
         </td>
