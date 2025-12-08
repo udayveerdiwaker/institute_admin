@@ -158,9 +158,15 @@ include 'connection.php';
             <i class='bi bi-person-lines-fill me-2'></i> Guest Entries
         </a>
 
-        <a href='list_exam.php' class="<?php echo basename($_SERVER['PHP_SELF']) == 'list_exam.php' ? 'active' : '' ?>">
-            <i class='bi bi-person-lines-fill me-2'></i> List Exam
+          <a href='report.php'
+            class="<?php echo basename($_SERVER['PHP_SELF']) == 'report.php' ? 'active' : '' ?>">
+            <i class='bi bi-person-lines-fill me-2'></i> Report
         </a>
+
+
+        <!-- <a href='list_exam.php' class="<?php echo basename($_SERVER['PHP_SELF']) == 'list_exam.php' ? 'active' : '' ?>">
+            <i class='bi bi-person-lines-fill me-2'></i> List Exam
+        </a> -->
 
         <!-- <a href = '#'><i class = 'bi bi-gear me-2'></i> Settings</a> -->
         <a href='logout.php'><i class='bi bi-box-arrow-right me-2'></i> Logout</a>

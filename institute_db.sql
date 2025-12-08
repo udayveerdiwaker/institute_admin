@@ -67,5 +67,9 @@
 -- ALTER TABLE student_fees 
 -- ADD fees_prev DECIMAL(10,2) DEFAULT 0 AFTER paid_amount;
 
+-- ALTER TABLE student_fees 
+-- ADD prev_fee DECIMAL(10,2) DEFAULT 0 AFTER paid_amount;
+
+
 ALTER TABLE student_fees 
-ADD prev_fee DECIMAL(10,2) DEFAULT 0 AFTER paid_amount;
+ADD COLUMN discount DECIMAL(10,2) DEFAULT 0;
