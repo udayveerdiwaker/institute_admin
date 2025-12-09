@@ -1,86 +1,89 @@
-<?php include 'connection.php'; ?>
-<?php include 'sidebar.php'; ?>
+<?php 
+session_start();
 
-<!DOCTYPE html>
-<html lang="en">
+if (!isset($_SESSION['admin_logged'])) {
+    header("Location: login.php");
+    exit;
+}
+// dashboard.php - full UI + PHP + Charts (monthly & yearly)
+// Turn on errors for debugging (remove in production)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Institute Admin Panel</title>
+include 'connection.php'; 
+ include 'sidebar.php';
+?>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-    <style>
-    body {
-        background-color: #f4f6f9;
-        font-family: 'Segoe UI', sans-serif;
+<style>
+body {
+    background-color: #f4f6f9;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100vh;
+    overflow: hidden;
+}
+
+
+.content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+table {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+th {
+    background: #212529 !important;
+    color: #fff !important;
+}
+
+.toggle-btn {
+    display: none;
+    background: #212529;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        left: -250px;
+        top: 0;
+        height: 100%;
+        z-index: 1000;
     }
 
-    .wrapper {
-        display: flex;
-        flex-wrap: nowrap;
-        height: 100vh;
-        overflow: hidden;
-    }
-
-
-    .content {
-        flex: 1;
-        padding: 20px;
-        overflow-y: auto;
-    }
-
-    table {
-        background: #fff;
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    }
-
-    th {
-        background: #212529 !important;
-        color: #fff !important;
+    .sidebar.show {
+        left: 0;
     }
 
     .toggle-btn {
-        display: none;
-        background: #212529;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        font-size: 20px;
-        cursor: pointer;
+        display: block;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 1100;
     }
 
-    @media (max-width: 768px) {
-        .sidebar {
-            position: fixed;
-            left: -250px;
-            top: 0;
-            height: 100%;
-            z-index: 1000;
-        }
-
-        .sidebar.show {
-            left: 0;
-        }
-
-        .toggle-btn {
-            display: block;
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            z-index: 1100;
-        }
-
-        .content {
-            padding-top: 60px;
-        }
+    .content {
+        padding-top: 60px;
     }
-    </style>
+}
+</style>
 </head>
 
 <body>
