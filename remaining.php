@@ -21,6 +21,7 @@ $remaining = $total_fee - $total_paid;
 $msg = '';
 if ( isset( $_POST[ 'submit' ] ) ) {
     $new_pay = ( float )$_POST[ 'new_payment' ];
+    $date = mysqli_real_escape_string( $conn, $_POST[ 'fees_date' ] );
     $mode = mysqli_real_escape_string( $conn, $_POST[ 'payment_mode' ] );
     $remarks = mysqli_real_escape_string( $conn, $_POST[ 'remarks' ] );
 
@@ -36,9 +37,9 @@ if ( isset( $_POST[ 'submit' ] ) ) {
         $new_remaining = $remaining - $new_pay;
 
         $ins = "INSERT INTO student_fees 
-                (student_id, course_id, total_fee, paid_amount, prev_fee, remaining, payment_mode, remarks)
+                (student_id, course_id, total_fee, paid_amount, prev_fee, remaining, payment_mode, remarks, fees_date)
                 VALUES 
-                ('$student_id','{$student['course_id']}','$total_fee','$new_pay','$prev_fee','$new_remaining','$mode','$remarks')";
+                ('$student_id','{$student['course_id']}','$total_fee','$new_pay','$prev_fee','$new_remaining','$mode','$remarks','{$date}')";
 
         mysqli_query( $conn, $ins );
 
@@ -91,6 +92,10 @@ include 'sidebar.php';
                     <div class='col-md-4'>
                         <label class='form-label'>Remarks</label>
                         <input type='text' name='remarks' class='form-control'>
+                    </div>
+                    <div class='col-md-4'>
+                        <label class='form-label'>Date</label>
+                        <input type='date' name='fees_date' class='form-control'>
                     </div>
 
                     <div class='col-12 mt-3'>

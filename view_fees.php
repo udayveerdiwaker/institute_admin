@@ -20,46 +20,46 @@ $hist = mysqli_query($conn, "SELECT * FROM student_fees WHERE student_id = $stud
 ?>
 
 <div class="main-content">
-  <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h4>Payment History — <?= htmlspecialchars($stu['student_name']) ?></h4>
-      <div>
-        <a href="remaining.php?student_id=<?= $student_id ?>" class="btn btn-primary btn-sm">Add Payment</a>
-        <a href="fees_list.php" class="btn btn-secondary btn-sm">Back</a>
-      </div>
-    </div>
+    <div class="container mt-4">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4>Payment History — <?= htmlspecialchars($stu['student_name']) ?></h4>
+            <div>
+                <a href="remaining.php?student_id=<?= $student_id ?>" class="btn btn-primary btn-sm">Add Payment</a>
+                <a href="fees_list.php" class="btn btn-secondary btn-sm">Back</a>
+            </div>
+        </div>
 
-    <div class="card p-3 mb-3">
-      <div class="row">
-        <div class="col-md-3"><strong>Course:</strong> <?= htmlspecialchars($stu['course']) ?></div>
-        <div class="col-md-3"><strong>Total Fee:</strong> ₹<?= number_format($total_fee,2) ?></div>
-        <div class="col-md-3"><strong>Paid:</strong> ₹<?= number_format($total_paid,2) ?></div>
-        <div class="col-md-3"><strong>Remaining:</strong> ₹<?= number_format($remaining,2) ?></div>
-      </div>
-    </div>
+        <div class="card p-3 mb-3">
+            <div class="row">
+                <div class="col-md-3"><strong>Course:</strong> <?= htmlspecialchars($stu['course']) ?></div>
+                <div class="col-md-3"><strong>Total Fee:</strong> ₹<?= number_format($total_fee,2) ?></div>
+                <div class="col-md-3"><strong>Paid:</strong> ₹<?= number_format($total_paid,2) ?></div>
+                <div class="col-md-3"><strong>Remaining:</strong> ₹<?= number_format($remaining,2) ?></div>
+            </div>
+        </div>
 
-    <div class="card shadow-sm">
-      <div class="card-body table-responsive">
-        <table class="table table-bordered table-hover">
-          <thead class="table-dark text-center">
-            <tr>
-              <th>#</th>
-              <th>Payment Date</th>
-              <th>Paid (₹)</th>
-              <th>Prev Paid (₹)</th>
-              <th>Mode</th>
-              <th>Remarks</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody class="text-center">
-            <?php
+        <div class="card shadow-sm">
+            <div class="card-body table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-dark text-center">
+                        <tr>
+                            <th>#</th>
+                            <th>Payment Date</th>
+                            <th>Paid (₹)</th>
+                            <th>Prev Paid (₹)</th>
+                            <th>Mode</th>
+                            <th>Remarks</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="text-center">
+                        <?php
             $i = 1;
             if ($hist && mysqli_num_rows($hist) > 0) {
               while ($h = mysqli_fetch_assoc($hist)) {
                 echo "<tr>
                         <td>{$i}</td>
-                        <td>{$h['created_at']}</td>
+                        <td>{$h['fees_date']}</td>
                         <td>₹".number_format($h['paid_amount'],2)."</td>
                         <td>₹".number_format($h['prev_fee'] ?? 0,2)."</td>
                         <td>".htmlspecialchars($h['payment_mode'])."</td>
@@ -74,11 +74,11 @@ $hist = mysqli_query($conn, "SELECT * FROM student_fees WHERE student_id = $stud
               echo "<tr><td colspan='7'>No payments yet</td></tr>";
             }
             ?>
-          </tbody>
-        </table>
-      </div>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <?php include 'footer.php'; ?>

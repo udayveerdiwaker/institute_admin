@@ -56,8 +56,8 @@ if (isset($_POST['submit'])) {
         $student_id = mysqli_insert_id($conn);
 
         // Insert fees
-        $sql2 = "INSERT INTO student_fees (student_id, course_id, total_fee, paid_amount, remaining, payment_mode, remarks)
-                 VALUES ('$student_id', '$course_id', '$total_fee', '$paid_amount', '$remaining', '$payment_mode', '$remarks')";
+        $sql2 = "INSERT INTO student_fees (student_id, course_id, total_fee, paid_amount, remaining, payment_mode, remarks, fees_date)
+                 VALUES ('$student_id', '$course_id', '$total_fee', '$paid_amount', '$remaining', '$payment_mode', '$remarks', '$admission_date')";
 
         mysqli_query($conn, $sql2);
 
@@ -208,6 +208,11 @@ if (isset($_POST['submit'])) {
                             <option>Online</option>
                             <option>Cheque</option>
                         </select>
+                    </div>
+
+                    <div class="col-md-8 mb-3">
+                        <label>Date</label>
+                        <input type="date" name="fees_date" class="form-control">
                     </div>
 
                     <div class="col-md-8 mb-3">

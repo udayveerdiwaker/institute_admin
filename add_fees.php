@@ -13,6 +13,7 @@ if (isset($_POST['submit'])) {
     $course_id = (int)$_POST['course_id'];
     $total_fee = (float)$_POST['total_fee'];
     $paid_amount = (float)$_POST['paid_amount'];
+    $date = mysqli_real_escape_string($conn, $_POST['fees_date']);
     $payment_mode = mysqli_real_escape_string($conn, $_POST['payment_mode']);
     $remarks = mysqli_real_escape_string($conn, $_POST['remarks']);
 
@@ -22,8 +23,8 @@ if (isset($_POST['submit'])) {
     $prev_fee = (float)($sumR['total_paid'] ?? 0);
 
     // insert new payment row
-    $ins = "INSERT INTO student_fees (student_id, course_id, total_fee, paid_amount, prev_fee, payment_mode, remarks)
-            VALUES ('$student_id','$course_id','$total_fee','$paid_amount','$prev_fee','$payment_mode','$remarks')";
+    $ins = "INSERT INTO student_fees (student_id, course_id, total_fee, paid_amount, prev_fee, payment_mode, remarks, fees_date)
+            VALUES ('$student_id','$course_id','$total_fee','$paid_amount','$prev_fee','$payment_mode','$remarks', '$date')";
     if (mysqli_query($conn, $ins)) {
         // $msg = "<div class='alert alert-success'>Payment recorded.</div>";
         header("Location: fees_list.php?student_id=$student_id");
@@ -81,6 +82,11 @@ include 'sidebar.php';
                     <div class="col-md-4">
                         <label class="form-label">Remaining (auto)</label>
                         <input type="text" id="remaining" class="form-control" readonly>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Date</label>
+                        <input type="date" name="fees_date" id="date" class="form-control" required>
                     </div>
 
                     <div class="col-md-6">
