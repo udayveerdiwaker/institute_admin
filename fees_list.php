@@ -23,8 +23,14 @@ $course_id = '';
 
 if (!empty($_GET['student_name'])) {
     $student_name = mysqli_real_escape_string($conn, $_GET['student_name']);
-    $where .= " AND s.student_name LIKE '%$student_name%'";
+    $where .= " AND s.student_name LIKE '$student_name%'";
 }
+
+// if (!empty($_GET['student_name'])) {
+//     $student_name = mysqli_real_escape_string($conn, $_GET['student_name']);
+//     $where .= " AND s.student_name LIKE '$student_name%'";
+// }
+
 
 if (!empty($_GET['course_id'])) {
     $course_id = (int)$_GET['course_id'];
@@ -40,7 +46,7 @@ $courses = mysqli_query($conn, "SELECT id, course FROM courses ORDER BY course")
 
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><i class="bi bi-cash-coin"></i> Fees / Students</h3>
-            <a href="add_fees.php" class="btn btn-primary">
+            <a href="fees_add.php" class="btn btn-primary">
                 <i class="bi bi-plus-circle"></i> Add Payment
             </a>
         </div>
@@ -133,13 +139,13 @@ $courses = mysqli_query($conn, "SELECT id, course FROM courses ORDER BY course")
                             ₹".number_format($remaining,2)."
                         </td>
                         <td>
-                          <a href='view_fees.php?student_id={$student_id}' 
+                          <a href='fees_view.php?student_id={$student_id}' 
                              class='btn btn-sm btn-info'>
                              <i class='bi bi-eye'></i>
                           </a>
-                          <a href='remaining.php?student_id={$student_id}' 
+                          <a href='fees_remaining.php?student_id={$student_id}' 
                              class='btn btn-sm btn-primary'>
-                             Add Payment
+                             Remaining
                           </a>
                         </td>
                       </tr>";

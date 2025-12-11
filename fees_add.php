@@ -2,7 +2,20 @@
 
 use FontLib\Table\Type\head;
 
+session_start();
+
+if (!isset($_SESSION['admin_logged'])) {
+    header("Location: login.php");
+    exit;
+}
+// dashboard.php - full UI + PHP + Charts (monthly & yearly)
+// Turn on errors for debugging (remove in production)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include 'connection.php';
+
 
 $msg = '';
 // fetch students & courses for convenience

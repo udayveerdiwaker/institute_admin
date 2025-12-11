@@ -96,7 +96,7 @@ th {
         <div class="content">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h3>Course List</h3>
-                <a href="add_course.php" class="btn btn-success"><i class="bi bi-plus-circle"></i> Add Course</a>
+                <a href="course_add.php" class="btn btn-success"><i class="bi bi-plus-circle"></i> Add Course</a>
             </div>
 
             <div class="table-responsive">
@@ -125,8 +125,8 @@ th {
                 <td>{$row['duration']}</td>
                 <td>{$row['fees']}</td>
                  <td>
-                  <a href='edit_course.php?id={$row['id']}' class='btn btn-sm btn-warning'><i class='bi bi-pencil-square'></i></a>
-                  <a href='delete_course.php?id={$row['id']}' class='btn btn-sm btn-danger' onclick='return confirm(\"Delete this course?\")'><i class='bi bi-trash'></i></a>
+                  <a href='course_edit.php?id={$row['id']}' class='btn btn-sm btn-warning'><i class='bi bi-pencil-square'></i></a>
+                  <a href='course_delete.php?id={$row['id']}' class='btn btn-sm btn-danger' onclick='return confirm(\"Delete this course?\")'><i class='bi bi-trash'></i></a>
                 </td>
        
              

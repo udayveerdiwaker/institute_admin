@@ -49,7 +49,7 @@ $q = mysqli_query($conn, $sql);
         <div class="col-md-6 d-flex gap-2">
             <button class="btn btn-primary">Search</button>
             <a href="list_guest.php" class="btn btn-secondary">Reset</a>
-            <a href="add_guest.php" class="btn btn-success">+ Add Guest</a>
+            <a href="guest_add.php" class="btn btn-success">+ Add Guest</a>
         </div>
     </form>
 
@@ -83,9 +83,9 @@ $q = mysqli_query($conn, $sql);
                 <td><?= htmlspecialchars($row['visit_time']) ?></td>
                 <td><?= htmlspecialchars($row['attended_by']) ?></td>
                 <td>
-                    <a href="view_guest.php?id=<?= $row['id'] ?>" class="btn btn-info btn-sm">View</a>
-                    <a href="edit_guest.php?id=<?= $row['id'] ?>" class="btn btn-primary btn-sm">Edit</a>
-                    <a href="delete_guest.php?id=<?= $row['id'] ?>" class="btn btn-danger btn-sm"
+                    <a href="guest_view.php?id=<?= $row['id'] ?>" class="btn btn-info btn-sm">View</a>
+                    <a href="guest_edit.php?id=<?= $row['id'] ?>" class="btn btn-primary btn-sm">Edit</a>
+                    <a href="guest_delete.php?id=<?= $row['id'] ?>" class="btn btn-danger btn-sm"
                         onclick="return confirm('Delete this guest?')">Delete</a>
                 </td>
             </tr>

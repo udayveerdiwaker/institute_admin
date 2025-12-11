@@ -1,4 +1,18 @@
-<?php include 'connection.php'; ?>
+<?php session_start();
+
+if (!isset($_SESSION['admin_logged'])) {
+    header("Location: login.php");
+    exit;
+}
+// dashboard.php - full UI + PHP + Charts (monthly & yearly)
+// Turn on errors for debugging (remove in production)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+include 'connection.php';
+
+?>
 
 <?php
 $id = $_GET['id'];
@@ -20,100 +34,89 @@ if (isset($_POST['update'])) {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<style>
+body {
+    background-color: #f4f6f9;
+    font-family: 'Segoe UI', sans-serif;
+}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Student | Admin Panel</title>
+.wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    height: 100vh;
+    overflow: hidden;
+}
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+.sidebar {
+    width: 250px;
+    background: #343a40;
+    color: white;
+    transition: all 0.3s ease;
+}
 
-    <style>
-    body {
-        background-color: #f4f6f9;
-        font-family: 'Segoe UI', sans-serif;
-    }
+.sidebar h4 {
+    padding: 20px;
+    background: #212529;
+    text-align: center;
+    margin: 0;
+}
 
-    .wrapper {
-        display: flex;
-        flex-wrap: nowrap;
-        height: 100vh;
-        overflow: hidden;
-    }
+.sidebar a {
+    display: block;
+    color: #ddd;
+    text-decoration: none;
+    padding: 12px 20px;
+    transition: background 0.2s;
+}
 
+.sidebar a:hover,
+.sidebar a.active {
+    background: #495057;
+    color: #fff;
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.toggle-btn {
+    display: none;
+    background: #212529;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
     .sidebar {
-        width: 250px;
-        background: #343a40;
-        color: white;
-        transition: all 0.3s ease;
+        position: fixed;
+        left: -250px;
+        top: 0;
+        height: 100%;
+        z-index: 1000;
     }
 
-    .sidebar h4 {
-        padding: 20px;
-        background: #212529;
-        text-align: center;
-        margin: 0;
-    }
-
-    .sidebar a {
-        display: block;
-        color: #ddd;
-        text-decoration: none;
-        padding: 12px 20px;
-        transition: background 0.2s;
-    }
-
-    .sidebar a:hover,
-    .sidebar a.active {
-        background: #495057;
-        color: #fff;
-    }
-
-    .content {
-        flex: 1;
-        padding: 20px;
-        overflow-y: auto;
+    .sidebar.show {
+        left: 0;
     }
 
     .toggle-btn {
-        display: none;
-        background: #212529;
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        font-size: 20px;
-        cursor: pointer;
+        display: block;
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 1100;
     }
 
-    @media (max-width: 768px) {
-        .sidebar {
-            position: fixed;
-            left: -250px;
-            top: 0;
-            height: 100%;
-            z-index: 1000;
-        }
-
-        .sidebar.show {
-            left: 0;
-        }
-
-        .toggle-btn {
-            display: block;
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            z-index: 1100;
-        }
-
-        .content {
-            padding-top: 60px;
-        }
+    .content {
+        padding-top: 60px;
     }
-    </style>
+}
+</style>
 </head>
 
 <body>

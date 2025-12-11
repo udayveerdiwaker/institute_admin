@@ -1,4 +1,19 @@
-<?php include 'connection.php'; ?>
+<?php
+session_start();
+
+if (!isset($_SESSION['admin_logged'])) {
+    header("Location: login.php");
+    exit;
+}
+// dashboard.php - full UI + PHP + Charts (monthly & yearly)
+// Turn on errors for debugging (remove in production)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+include 'connection.php';
+include 'sidebar.php';
+ ?>
 
 <?php
 if (isset($_POST['submit'])) {
@@ -8,7 +23,7 @@ if (isset($_POST['submit'])) {
 
     $sql = "INSERT INTO courses (course, duration, fees) VALUES ('$course', '$duration', '$fees')";
     if (mysqli_query($conn, $sql)) {
-        header("Location: index.php");
+        header("Location: course_list.php");
         exit;
     } else {
         echo "Error: " . mysqli_error($conn);
@@ -17,7 +32,6 @@ if (isset($_POST['submit'])) {
 ?>
 
 <div class="main-content">
-    <?php include 'sidebar.php'; ?>
 
     <div class="container mt-4">
         <div class="card shadow-sm p-4">

@@ -126,14 +126,14 @@ $overall_remaining = $total_fee - $total_paid;
                     <h5>Fees Summary</h5>
 
                     <div class='d-flex flex-wrap gap-2'>
-                        <a href="add_fees.php?student_id=<?= $student_id ?>" class='btn btn-sm btn-primary'>Add
+                        <a href="fees_add.php?student_id=<?= $student_id ?>" class='btn btn-sm btn-primary'>Add
                             Payment</a>
-                        <a href="remaining.php?student_id=<?= $student_id ?>" class='btn btn-sm btn-info'>Add
+                        <a href="fees_remaining.php?student_id=<?= $student_id ?>" class='btn btn-sm btn-info'>Add
                             Remaining</a>
-                        <a href="combined_receipt.php?student_id=<?= $student_id ?>" target='_blank'
+                        <!-- <a href="combined_receipt.php?student_id=<?= $student_id ?>" target='_blank'
                             class='btn btn-sm btn-success'>Receipt</a>
                         <a href="combined_receipt_pdf.php?student_id=<?= $student_id ?>" target='_blank'
-                            class='btn btn-sm btn-danger'>PDF</a>
+                            class='btn btn-sm btn-danger'>PDF</a> -->
                     </div>
                 </div>
 
@@ -184,7 +184,7 @@ while ( $fee = mysqli_fetch_assoc( $fees_res ) ) {
 
     echo "<tr>
         <td>" . $counter++ . "</td>
-        <td>" . htmlspecialchars( $fee[ 'created_at' ] ) . "</td>
+        <td>" . htmlspecialchars( $fee[ 'fees_date' ] ) . "</td>
         <td>₹" . number_format( $fee[ 'paid_amount' ] ) . "</td>
         <td>₹" . number_format( $fee[ 'prev_fee' ] ) . "</td>
         <td>₹" . number_format( $row_remaining, 2 ) . "</td>
@@ -192,9 +192,9 @@ while ( $fee = mysqli_fetch_assoc( $fees_res ) ) {
         <td>" . htmlspecialchars( $fee[ 'remarks' ] ) . "</td>
 
         <td>
-            <a href='receipt.php?fee_id=" . $fee[ 'id' ] . "' target='_blank' class='btn btn-sm btn-success mb-1'><i class='bi bi-receipt'></i></a>
-            <a href='edit_fee.php?id=" . $fee[ 'id' ] . "' class='btn btn-sm btn-warning mb-1'><i class='bi bi-pencil-square'></i></a>
-            <a href='delete_fee.php?id=" . $fee[ 'id' ] . '&student_id=' . $student_id . "' class='btn btn-sm btn-danger mb-1' onclick=\"return confirm( 'Delete this payment?' )\"><i class='bi bi-trash'></i></a>
+            <a href='fees_receipt.php?fee_id=" . $fee[ 'id' ] . "' target='_blank' class='btn btn-sm btn-success mb-1'><i class='bi bi-receipt'></i></a>
+            <a href='fees_edit.php?id=" . $fee[ 'id' ] . "' class='btn btn-sm btn-warning mb-1'><i class='bi bi-pencil-square'></i></a>
+            <a href='fees_delete.php?id=" . $fee[ 'id' ] . '&student_id=' . $student_id . "' class='btn btn-sm btn-danger mb-1' onclick=\"return confirm( 'Delete this payment?' )\"><i class='bi bi-trash'></i></a>
         </td>
     </tr>";
 }

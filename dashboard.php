@@ -214,8 +214,8 @@ if ($res) {
                 <h5 class="mb-0">Analytics</h5>
                 <div>
                     <a class="btn btn-sm btn-primary" href="new_registration.php">New Registration</a>
-                    <a class="btn btn-sm btn-success" href="add_course.php">Add Course</a>
-                    <a class="btn btn-sm btn-warning" href="add_fees.php">Add Payment</a>
+                    <a class="btn btn-sm btn-success" href="course_add.php">Add Course</a>
+                    <a class="btn btn-sm btn-warning" href="fees_add.php">Add Payment</a>
                 </div>
             </div>
 

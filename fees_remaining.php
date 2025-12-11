@@ -1,4 +1,16 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['admin_logged'])) {
+    header("Location: login.php");
+    exit;
+}
+// dashboard.php - full UI + PHP + Charts (monthly & yearly)
+// Turn on errors for debugging (remove in production)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include 'connection.php';
 
 if ( !isset( $_GET[ 'student_id' ] ) ) {
@@ -43,7 +55,7 @@ if ( isset( $_POST[ 'submit' ] ) ) {
 
         mysqli_query( $conn, $ins );
 
-        header( "Location: view_fees.php?student_id=$student_id" );
+        header( "Location: fees_view.php?student_id=$student_id" );
         exit;
     }
 }

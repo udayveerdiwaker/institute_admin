@@ -1,4 +1,16 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['admin_logged'])) {
+    header("Location: login.php");
+    exit;
+}
+// dashboard.php - full UI + PHP + Charts (monthly & yearly)
+// Turn on errors for debugging (remove in production)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include 'connection.php';
 include 'sidebar.php';
 
@@ -11,13 +23,13 @@ $month = $_GET['month'] ?? date('m');
 
 $where = "1";
 if ($from && $to) {
-    $where .= " AND DATE(sf.created_at) BETWEEN '$from' AND '$to'";
+    $where .= " AND DATE(sf.fees_date) BETWEEN '$from' AND '$to'";
 }
 if ($type == 'monthly') {
-    $where .= " AND YEAR(sf.created_at)='$year' AND MONTH(sf.created_at)='$month'";
+    $where .= " AND YEAR(sf.fees_date)='$year' AND MONTH(sf.fees_date)='$month'";
 }
 if ($type == 'yearly') {
-    $where .= " AND YEAR(sf.created_at)='$year'";
+    $where .= " AND YEAR(sf.fees_date)='$year'";
 }
 
 /* ================= paid AMOUNT ================= */
@@ -64,10 +76,10 @@ $student_q = mysqli_query($conn,$sql_student_cheque);
 
 /* ================= MONTHLY ================= */
 $sql_month = "
-    SELECT DATE_FORMAT(sf.created_at,'%b %Y') AS m, SUM(sf.paid_amount) AS amt
+    SELECT DATE_FORMAT(sf.fees_date,'%b %Y') AS m, SUM(sf.paid_amount) AS amt
     FROM student_fees sf
     WHERE LOWER(sf.payment_mode)='cheque'
-    GROUP BY YEAR(sf.created_at),MONTH(sf.created_at)
+    GROUP BY YEAR(sf.fees_date),MONTH(sf.fees_date)
 ";
 $mq = mysqli_query($conn,$sql_month);
 $months=[];$month_amt=[];
@@ -75,10 +87,10 @@ while($r=mysqli_fetch_assoc($mq)){ $months[]=$r['m']; $month_amt[]=$r['amt']; }
 
 /* ================= YEARLY ================= */
 $sql_year = "
-    SELECT YEAR(sf.created_at) y, SUM(sf.paid_amount) amt
+    SELECT YEAR(sf.fees_date) y, SUM(sf.paid_amount) amt
     FROM student_fees sf
     WHERE LOWER(sf.payment_mode)='cheque'
-    GROUP BY YEAR(sf.created_at)
+    GROUP BY YEAR(sf.fees_date)
 ";
 $yq = mysqli_query($conn,$sql_year);
 $years=[];$year_amt=[];

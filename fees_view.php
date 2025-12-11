@@ -1,4 +1,16 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['admin_logged'])) {
+    header("Location: login.php");
+    exit;
+}
+// dashboard.php - full UI + PHP + Charts (monthly & yearly)
+// Turn on errors for debugging (remove in production)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include 'connection.php';
 include 'sidebar.php';
 
@@ -24,7 +36,8 @@ $hist = mysqli_query($conn, "SELECT * FROM student_fees WHERE student_id = $stud
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4>Payment History — <?= htmlspecialchars($stu['student_name']) ?></h4>
             <div>
-                <a href="remaining.php?student_id=<?= $student_id ?>" class="btn btn-primary btn-sm">Add Payment</a>
+                <a href="fees_remaining.php?student_id=<?= $student_id ?>" class="btn btn-primary btn-sm">Add
+                    Payment</a>
                 <a href="fees_list.php" class="btn btn-secondary btn-sm">Back</a>
             </div>
         </div>
@@ -65,7 +78,7 @@ $hist = mysqli_query($conn, "SELECT * FROM student_fees WHERE student_id = $stud
                         <td>".htmlspecialchars($h['payment_mode'])."</td>
                         <td>".htmlspecialchars($h['remarks'])."</td>
                         <td>
-                          <a href='delete_fee.php?id={$h['id']}&student_id={$student_id}' class='btn btn-sm btn-danger' onclick=\"return confirm('Delete this payment?')\">Delete</a>
+                          <a href='fees_delete.php?id={$h['id']}&student_id={$student_id}' class='btn btn-sm btn-danger' onclick=\"return confirm('Delete this payment?')\">Delete</a>
                         </td>
                       </tr>";
                 $i++;
