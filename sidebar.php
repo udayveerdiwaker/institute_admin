@@ -162,6 +162,11 @@ include 'connection.php';
             <i class='bi bi-person-lines-fill me-2'></i> Reporting
         </a>
 
+        <a href='expense_list.php'
+            class="<?php echo basename($_SERVER['PHP_SELF']) == 'expense_list.php' ? 'active' : '' ?>">
+            <i class='bi bi-person-lines-fill me-2'></i> Expense List
+        </a>
+
 
         <!-- <a href='list_exam.php' class="<?php echo basename($_SERVER['PHP_SELF']) == 'list_exam.php' ? 'active' : '' ?>">
             <i class='bi bi-person-lines-fill me-2'></i> List Exam
