@@ -102,7 +102,7 @@ $remarks = nl2br(htmlspecialchars($r['remarks'] ?? ''));
             <div class="col-md-6">
                 <strong>Course:</strong> <?= $course ?><br>
                 <strong>Payment Mode:</strong> <?= $mode ?><br>
-                <strong>Remarks:</strong> <?= $remarks ?>
+                <!-- <strong>Remarks:</strong> <?= $remarks ?> -->
             </div>
         </div>
 

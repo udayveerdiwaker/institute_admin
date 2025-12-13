@@ -20,8 +20,21 @@ if ( !$res || mysqli_num_rows( $res ) == 0 ) {
 $student = mysqli_fetch_assoc( $res );
 
 // Fetch payments ( history )
-$fees_q = "SELECT * FROM student_fees WHERE student_id = $student_id ORDER BY created_at DESC";
-$fees_res = mysqli_query( $conn, $fees_q );
+// $fees_q = "SELECT * FROM student_fees WHERE student_id = $student_id ORDER BY created_at DESC";
+// $fees_res = mysqli_query( $conn, $fees_q );
+
+$fees_res = mysqli_query($conn,"
+    SELECT *
+    FROM student_fees
+    WHERE student_id = $student_id
+    ORDER BY fees_date DESC, id DESC
+");
+
+
+// $today = date('Y-m-d');
+// $is_today = ($fee['fees_date'] === $today);
+// $row_class = $is_today ? "table-warning fw-bold" : "";
+
 
 // Compute totals
 $sumQ = mysqli_query( $conn, "SELECT SUM(paid_amount) AS total_paid, MAX(total_fee) AS total_fee FROM student_fees WHERE student_id = $student_id" );
@@ -126,8 +139,8 @@ $overall_remaining = $total_fee - $total_paid;
                     <h5>Fees Summary</h5>
 
                     <div class='d-flex flex-wrap gap-2'>
-                        <a href="fees_add.php?student_id=<?= $student_id ?>" class='btn btn-sm btn-primary'>Add
-                            Payment</a>
+                        <!-- <a href="fees_add.php?student_id=<?= $student_id ?>" class='btn btn-sm btn-primary'>Add
+                            Payment</a> -->
                         <a href="fees_remaining.php?student_id=<?= $student_id ?>" class='btn btn-sm btn-info'>Add
                             Remaining</a>
                         <!-- <a href="combined_receipt.php?student_id=<?= $student_id ?>" target='_blank'
@@ -177,27 +190,49 @@ $overall_remaining = $total_fee - $total_paid;
                         </thead>
                         <tbody>
                             <?php
-$counter = 1;
 
-while ( $fee = mysqli_fetch_assoc( $fees_res ) ) {
-    $row_remaining = isset( $fee[ 'remaining' ] ) ? $fee[ 'remaining' ] : ( ( $fee[ 'total_fee' ] ?? 0 ) - ( $fee[ 'paid_amount' ] ?? 0 ) );
+                     
+
+                       $counter = 1;
+
+while ($fee = mysqli_fetch_assoc($fees_res)) {
+
+    $total_fee = (float)($fee['total_fee'] ?? 0);
+    $paid      = (float)($fee['paid_amount'] ?? 0);
+    $prev      = (float)($fee['prev_fee'] ?? 0);
+
+    $remaining = $total_fee - ($prev + $paid);
 
     echo "<tr>
-        <td>" . $counter++ . "</td>
-        <td>" . htmlspecialchars( $fee[ 'fees_date' ] ) . "</td>
-        <td>₹" . number_format( $fee[ 'paid_amount' ] ) . "</td>
-        <td>₹" . number_format( $fee[ 'prev_fee' ] ) . "</td>
-        <td>₹" . number_format( $row_remaining, 2 ) . "</td>
-        <td>" . htmlspecialchars( $fee[ 'payment_mode' ] ) . "</td>
-        <td>" . htmlspecialchars( $fee[ 'remarks' ] ) . "</td>
-
+        <td>{$counter}</td>
+        <td>".date('d-m-Y', strtotime($fee['fees_date']))."</td>
+        <td>₹".number_format($paid,2)."</td>
+        <td>₹".number_format($prev,2)."</td>
+        <td>₹".number_format($remaining,2)."</td>
+        <td>".htmlspecialchars($fee['payment_mode'])."</td>
+        <td>".htmlspecialchars($fee['remarks'])."</td>
         <td>
-            <a href='fees_receipt.php?fee_id=" . $fee[ 'id' ] . "' target='_blank' class='btn btn-sm btn-success mb-1'><i class='bi bi-receipt'></i></a>
-            <a href='fees_edit.php?id=" . $fee[ 'id' ] . "' class='btn btn-sm btn-warning mb-1'><i class='bi bi-pencil-square'></i></a>
-            <a href='fees_delete.php?id=" . $fee[ 'id' ] . '&student_id=' . $student_id . "' class='btn btn-sm btn-danger mb-1' onclick=\"return confirm( 'Delete this payment?' )\"><i class='bi bi-trash'></i></a>
+            <a href='fees_receipt.php?fee_id={$fee['id']}' target='_blank'
+               class='btn btn-sm btn-success'><i class='bi bi-receipt'></i></a>
+
+            <a href='fees_edit.php?id={$fee['id']}'
+               class='btn btn-sm btn-warning'><i class='bi bi-pencil-square'></i></a>
+
+            
         </td>
     </tr>";
+//     $isToday = ($fee['fees_date'] == date('Y-m-d')) ? 'table-success' : '';
+// echo "<tr class='$isToday'>";
+
+
+// <a href='fees_delete.php?id={$fee['id']}&student_id={$student_id}'
+//                class='btn btn-sm btn-danger'
+//                onclick=\"return confirm('Delete this payment?')\">
+//                <i class='bi bi-trash'></i>
+//             </a>
+    $counter++;
 }
+
 ?>
                         </tbody>
                     </table>

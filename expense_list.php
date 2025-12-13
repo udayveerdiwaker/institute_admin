@@ -16,11 +16,23 @@ include 'connection.php';
 include 'sidebar.php';
 
 // date filters via GET
+$exp_name = !empty($_GET['exp_name']) ? $_GET['exp_name'] : '';
+if ($exp_name) {
+    $exp_name_esc = mysqli_real_escape_string($conn, $exp_name);
+    $where = "name LIKE '$exp_name_esc%'";
+} else {
+    $where = "1";
+}   
 $from = !empty($_GET['from']) ? $_GET['from'] : '';
 $to   = !empty($_GET['to']) ? $_GET['to'] : '';
-$where = "1";
-if ($from) { $from_esc = mysqli_real_escape_string($conn, $from); $where .= " AND expense_date >= '$from_esc'"; }
-if ($to)   { $to_esc   = mysqli_real_escape_string($conn, $to);   $where .= " AND expense_date <= '$to_esc'"; }
+if ($from) {
+    $from_esc = mysqli_real_escape_string($conn, $from);
+    $where .= " AND expense_date >= '$from_esc'";
+}   
+if ($to) {
+    $to_esc = mysqli_real_escape_string($conn, $to);
+    $where .= " AND expense_date <= '$to_esc'";
+}
 
 // totals
 $tq = mysqli_query($conn, "SELECT COALESCE(SUM(amount),0) AS total_amount FROM expenses WHERE $where");
@@ -63,12 +75,20 @@ $list_q = mysqli_query($conn, "SELECT * FROM expenses WHERE $where ORDER BY expe
         <div class="card p-3 mb-3">
             <form method="get" class="row g-2 align-items-end">
                 <div class="col-md-3">
+                    <label class="form-label">Expense Name</label>
+                    <input type="text" name="exp_name" class="form-control" value="<?= htmlspecialchars($exp_name) ?>">
+                </div>
+                <div class="col-md-3">
                     <label class="form-label">From</label>
                     <input type="date" name="from" class="form-control" value="<?= htmlspecialchars($from) ?>">
                 </div>
+
                 <div class="col-md-3">
                     <label class="form-label">To</label>
                     <input type="date" name="to" class="form-control" value="<?= htmlspecialchars($to) ?>">
+                </div>
+                <div class="col-md-3 text-end">
+                    <h5>Total: ₹<?= number_format($total_amount,2) ?></h5>
                 </div>
                 <div class="col-md-2">
                     <button class="btn btn-primary w-100">Filter</button>
@@ -76,9 +96,7 @@ $list_q = mysqli_query($conn, "SELECT * FROM expenses WHERE $where ORDER BY expe
                 <div class="col-md-2">
                     <a href="expense_list.php" class="btn btn-secondary w-100">Reset</a>
                 </div>
-                <div class="col-md-2 text-end">
-                    <h5>Total: ₹<?= number_format($total_amount,2) ?></h5>
-                </div>
+
             </form>
         </div>
 
