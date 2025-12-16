@@ -14,6 +14,7 @@ error_reporting(E_ALL);
 include 'connection.php';
 include 'sidebar.php';
 
+
 /* ================= FILTERS ================= */
 $from = $_GET['from'] ?? '';
 $to   = $_GET['to'] ?? '';
