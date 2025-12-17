@@ -1,8 +1,9 @@
 <?php
+
 include 'connection.php';
 
 
-$limit = 10;
+$limit = 1;
 
 // Get page number correctly
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -140,7 +141,7 @@ include 'sidebar.php';
 
 
 
-$i = 1;
+     $i = $offset + 1;
 
 
 if ($res && mysqli_num_rows($res) > 0) {
@@ -203,23 +204,23 @@ if ($res && mysqli_num_rows($res) > 0) {
             <ul class="pagination">
 
                 <li class="page-item <?= ($page == 1) ? 'disabled' : '' ?>">
-                    <a class="page-link" href="?page=1&search=<?= urlencode($search) ?>">First</a>
+                    <a class="page-link" href="?page=1">First</a>
                 </li>
 
                 <li class="page-item <?= ($page == 1) ? 'disabled' : '' ?>">
-                    <a class="page-link" href="?page=<?= $page - 1 ?>&search=<?= urlencode($search) ?>">‹ Prev</a>
+                    <a class="page-link" href="?page=<?= $page - 1 ?>">Prev</a>
                 </li>
 
-                <li class="page-item active">
+                <li class=" page-item active">
                     <span class="page-link"><?= $page ?> / <?= $total_pages ?></span>
                 </li>
 
                 <li class="page-item <?= ($page == $total_pages) ? 'disabled' : '' ?>">
-                    <a class="page-link" href="?page=<?= $page + 1 ?>&search=<?= urlencode($search) ?>">Next ›</a>
+                    <a class="page-link" href="?page=<?= $page + 1 ?>">Next ›</a>
                 </li>
 
                 <li class="page-item <?= ($page == $total_pages) ? 'disabled' : '' ?>">
-                    <a class="page-link" href="?page=<?= $total_pages ?>&search=<?= urlencode($search) ?>">Last</a>
+                    <a class="page-link" href="?page=<?= $total_pages ?>">Last</a>
                 </li>
 
             </ul>
