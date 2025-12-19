@@ -71,7 +71,12 @@
 -- ADD prev_fee DECIMAL(10,2) DEFAULT 0 AFTER paid_amount;
 
 
-ALTER TABLE student_fees 
-ADD discount DECIMAL(10,2) DEFAULT 0 AFTER total_fee;
+-- ALTER TABLE student_fees 
+-- ADD discount DECIMAL(10,2) DEFAULT 0 AFTER total_fee;
 -- ALTER TABLE student_fees 
 -- ADD remaining_amount DECIMAL(10,2) GENERATED ALWAYS AS (total_fee - paid
+
+
+ALTER TABLE courses
+ADD monthly_fee DECIMAL(10,2) NOT NULL AFTER fees,
+ADD course_details TEXT AFTER monthly_fee;

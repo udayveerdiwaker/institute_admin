@@ -11,58 +11,82 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+
 include 'connection.php';
-include 'sidebar.php';
- ?>
 
-<?php
-if (isset($_POST['submit'])) {
-    $course = $_POST['course'];
-    $duration = $_POST['duration'];
-    $fees = $_POST['fees'];
+$edit_id = $_GET['edit'] ?? '';
+$course = $fees = $monthly_fee = $details = '';
 
-    $sql = "INSERT INTO courses (course, duration, fees) VALUES ('$course', '$duration', '$fees')";
-    if (mysqli_query($conn, $sql)) {
-        header("Location: course_list.php");
-        exit;
-    } else {
-        echo "Error: " . mysqli_error($conn);
-    }
+if($edit_id){
+    $q = mysqli_query($conn,"SELECT * FROM courses WHERE id='$edit_id'");
+    $data = mysqli_fetch_assoc($q);
+    $course = $data['course'];
+    $fees = $data['fees'];
+    $monthly_fee = $data['monthly_fee'];
+    $details = $data['course_details'];
 }
+
+/* SAVE */
+if(isset($_POST['save'])){
+    $course = $_POST['course'];
+    $fees = $_POST['fees'];
+    $monthly_fee = $_POST['monthly_fee'];
+    $details = $_POST['course_details'];
+
+    if($edit_id){
+        mysqli_query($conn,"
+        UPDATE courses SET
+        course='$course',
+        fees='$fees',
+        monthly_fee='$monthly_fee',
+        course_details='$details'
+        WHERE id='$edit_id'
+        ");
+    } else {
+        mysqli_query($conn,"
+        INSERT INTO courses(course,fees,monthly_fee,course_details)
+        VALUES('$course','$fees','$monthly_fee','$details')
+        ");
+    }
+    header("Location: course_list.php");
+    exit;
+}
+include 'sidebar.php';
+
 ?>
 
 <div class="main-content">
-
     <div class="container mt-4">
-        <div class="card shadow-sm p-4">
-            <h4 class="mb-4"><i class="bi bi-journal-bookmark"></i> Add New Course</h4>
 
-            <form action="" method="post">
-                <div class="mb-3">
-                    <label class="form-label">Course Name</label>
-                    <input type="text" name="course" class="form-control" placeholder="Enter course name" required>
-                </div>
+        <h4><?= $edit_id?'Edit':'Add' ?> Course</h4>
 
-                <div class="mb-3">
-                    <label class="form-label">Duration</label>
-                    <input type="text" name="duration" class="form-control" placeholder="e.g. 3 Months / 1 Year"
-                        required>
-                </div>
+        <form method="post" class="card p-4 shadow">
 
-                <div class="mb-3">
-                    <label class="form-label">Fees (₹)</label>
-                    <input type="number" name="fees" class="form-control" step="0.01" placeholder="Enter course fee"
-                        required>
-                </div>
+            <div class="mb-3">
+                <label>Course Name</label>
+                <input type="text" name="course" class="form-control" value="<?= htmlspecialchars($course) ?>" required>
+            </div>
 
-                <button type="submit" name="submit" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i> Add Course
-                </button>
-                <a href="index.php" class="btn btn-secondary">
-                    <i class="bi bi-arrow-left"></i> Back
-                </a>
-            </form>
-        </div>
+            <div class="mb-3">
+                <label>Total Fees</label>
+                <input type="number" name="fees" class="form-control" value="<?= $fees ?>" required>
+            </div>
+
+            <div class="mb-3">
+                <label>Monthly Fee</label>
+                <input type="number" name="monthly_fee" class="form-control" value="<?= $monthly_fee ?>" required>
+            </div>
+
+            <div class="mb-3">
+                <label>Course Details</label>
+                <textarea name="course_details" class="form-control"
+                    rows="4"><?= htmlspecialchars($details) ?></textarea>
+            </div>
+
+            <button name="save" class="btn btn-success">Save</button>
+            <a href="course_list.php" class="btn btn-secondary">Cancel</a>
+
+        </form>
     </div>
 </div>
 

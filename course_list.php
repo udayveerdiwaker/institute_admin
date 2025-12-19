@@ -15,100 +15,84 @@ error_reporting(E_ALL);
 include 'connection.php';
 include 'sidebar.php';
 
-/* ===== PAGINATION SETTINGS ===== */
-$limit = 10; // records per page
-$page = isset($_GET['page']) && $_GET['page'] > 0 ? (int)$_GET['page'] : 1;
+$limit = 10;
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$page = max($page,1);
 $offset = ($page - 1) * $limit;
 
-/* ===== TOTAL RECORDS ===== */
-$count_q = mysqli_query($conn, "SELECT COUNT(*) AS total FROM courses");
-$count_r = mysqli_fetch_assoc($count_q);
-$total_records = $count_r['total'];
-
+/* TOTAL COUNT */
+$count_sql = "SELECT COUNT(*) AS total FROM courses";
+$count_res = mysqli_fetch_assoc(mysqli_query($conn,$count_sql));
+$total_records = $count_res['total'];
 $total_pages = ceil($total_records / $limit);
 
-/* ===== FETCH COURSES ===== */
+/* FETCH DATA */
 $sql = "SELECT * FROM courses ORDER BY id DESC LIMIT $offset, $limit";
-$res = mysqli_query($conn, $sql);
+$res = mysqli_query($conn,$sql);
 ?>
 
 <div class="main-content">
     <div class="container mt-4">
 
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3>Course List</h3>
-            <a href="course_add.php" class="btn btn-success">+ Add Course</a>
-        </div>
+        <h4 class="mb-3">Course List</h4>
 
-        <div class="card shadow-sm">
-            <div class="card-body table-responsive">
-                <table class="table table-bordered table-hover text-center">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>#</th>
-                            <th>Course Name</th>
-                            <th>Fees (₹)</th>
-                            <th>Duration</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        if ($res && mysqli_num_rows($res) > 0) {
-                            $i = $offset + 1;
-                            while ($row = mysqli_fetch_assoc($res)) {
-                                echo "<tr>
-                                    <td>{$i}</td>
-                                    <td>".htmlspecialchars($row['course'])."</td>
-                                    <td>₹".number_format($row['fees'],2)."</td>
-                                    <td>".htmlspecialchars($row['duration'])."</td>
-                                    <td>
-                                        <a href='course_edit.php?id={$row['id']}' class='btn btn-sm btn-warning'><i class='bi bi-pencil-square'></i></a>
-                                        <a href='course_delete.php?id={$row['id']}' 
-                                           class='btn btn-sm btn-danger'
-                                           onclick=\"return confirm('Delete this course?')\"><i class='bi bi-trash'></i></a>
-                                    </td>
-                                </tr>";
-                                $i++;
-                            }
-                        } else {
-                            echo "<tr><td colspan='5'>No courses found</td></tr>";
-                        }
-                        ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <table class="table table-bordered table-striped text-center">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Course Name</th>
+                    <th>Duration</th>
+                    <th>Fees</th>
+                    <th>Monthly Fee</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php $i=$offset+1; while($row=mysqli_fetch_assoc($res)){ ?>
+                <tr>
+                    <td><?= $i++ ?></td>
+                    <td><?= htmlspecialchars($row['course']) ?></td>
+                    <td><?= htmlspecialchars($row['duration']) ?></td>
+                    <td>₹<?= number_format($row['fees'],2) ?></td>
+                    <td>₹<?= number_format($row['monthly_fee'],2) ?></td>
+                    <td>
+                        <a href="course_view.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-info">
+                            <i class="bi bi-eye"></i>
+                        </a>
+                        <a href="course_add.php?edit=<?= $row['id'] ?>" class="btn btn-sm btn-warning">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a href="course_delete.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger"
+                            onclick="return confirm('Are you sure you want to delete this course?');">
+                            <i class="bi bi-trash"></i>
+                    </td>
+                </tr>
+                <?php } ?>
+            </tbody>
+        </table>
 
-        <!-- ===== PAGINATION UI ===== -->
+        <!-- PAGINATION -->
         <?php if ($total_pages > 1): ?>
         <div class="d-flex justify-content-center mt-4">
             <ul class="pagination">
 
-                <!-- First -->
-                <li class="page-item <?= ($page == 1) ? 'disabled' : '' ?>">
+                <li class="page-item <?= ($page==1)?'disabled':'' ?>">
                     <a class="page-link" href="?page=1">First</a>
                 </li>
 
-                <!-- Prev -->
-                <li class="page-item <?= ($page == 1) ? 'disabled' : '' ?>">
-                    <a class="page-link" href="?page=<?= $page - 1 ?>">Prev</a>
+                <li class="page-item <?= ($page==1)?'disabled':'' ?>">
+                    <a class="page-link" href="?page=<?= $page-1 ?>">Prev</a>
                 </li>
 
-                <!-- Current Page -->
                 <li class="page-item active">
-                    <span class="page-link">
-                        <?= $page ?> / <?= $total_pages ?>
-                    </span>
+                    <span class="page-link"><?= $page ?> / <?= $total_pages ?></span>
                 </li>
 
-                <!-- Next -->
-                <li class="page-item <?= ($page == $total_pages) ? 'disabled' : '' ?>">
-                    <a class="page-link" href="?page=<?= $page + 1 ?>">Next ›</a>
+                <li class="page-item <?= ($page==$total_pages)?'disabled':'' ?>">
+                    <a class="page-link" href="?page=<?= $page+1 ?>">Next</a>
                 </li>
 
-                <!-- Last -->
-                <li class="page-item <?= ($page == $total_pages) ? 'disabled' : '' ?>">
+                <li class="page-item <?= ($page==$total_pages)?'disabled':'' ?>">
                     <a class="page-link" href="?page=<?= $total_pages ?>">Last</a>
                 </li>
 
