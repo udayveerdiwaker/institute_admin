@@ -33,8 +33,12 @@ $res = mysqli_query($conn,$sql);
 
 <div class="main-content">
     <div class="container mt-4">
-
-        <h4 class="mb-3">Course List</h4>
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3>Course List</h3>
+            <a href="course_add.php" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Add Course
+            </a>
+        </div>
 
         <table class="table table-bordered table-striped text-center">
             <thead class="table-dark">

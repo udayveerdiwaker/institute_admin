@@ -15,12 +15,14 @@ error_reporting(E_ALL);
 include 'connection.php';
 
 $edit_id = $_GET['edit'] ?? '';
-$course = $fees = $monthly_fee = $details = '';
+$course = $duration = $fees = $monthly_fee = $details = '';
+
 
 if($edit_id){
     $q = mysqli_query($conn,"SELECT * FROM courses WHERE id='$edit_id'");
     $data = mysqli_fetch_assoc($q);
     $course = $data['course'];
+    $duration = $data['duration'];
     $fees = $data['fees'];
     $monthly_fee = $data['monthly_fee'];
     $details = $data['course_details'];
@@ -29,6 +31,7 @@ if($edit_id){
 /* SAVE */
 if(isset($_POST['save'])){
     $course = $_POST['course'];
+    $duration = $_POST['duration'];
     $fees = $_POST['fees'];
     $monthly_fee = $_POST['monthly_fee'];
     $details = $_POST['course_details'];
@@ -37,6 +40,7 @@ if(isset($_POST['save'])){
         mysqli_query($conn,"
         UPDATE courses SET
         course='$course',
+        duration='$duration',
         fees='$fees',
         monthly_fee='$monthly_fee',
         course_details='$details'
@@ -44,8 +48,8 @@ if(isset($_POST['save'])){
         ");
     } else {
         mysqli_query($conn,"
-        INSERT INTO courses(course,fees,monthly_fee,course_details)
-        VALUES('$course','$fees','$monthly_fee','$details')
+        INSERT INTO courses(course,duration,fees,monthly_fee,course_details)
+        VALUES('$course','$duration','$fees','$monthly_fee','$details')
         ");
     }
     header("Location: course_list.php");
@@ -66,7 +70,11 @@ include 'sidebar.php';
                 <label>Course Name</label>
                 <input type="text" name="course" class="form-control" value="<?= htmlspecialchars($course) ?>" required>
             </div>
-
+            <div class="mb-3">
+                <label>Duration</label>
+                <input type="text" name="duration" class="form-control" value="<?= htmlspecialchars($duration) ?>"
+                    required>
+            </div>
             <div class="mb-3">
                 <label>Total Fees</label>
                 <input type="number" name="fees" class="form-control" value="<?= $fees ?>" required>
