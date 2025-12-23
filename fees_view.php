@@ -28,7 +28,7 @@ $total_fee = (float)$stu['course_fee'];
 $remaining = $total_fee - $total_paid;
 
 // history rows
-$hist = mysqli_query($conn, "SELECT * FROM student_fees WHERE student_id = $student_id ORDER BY id DESC");
+$hist = mysqli_query($conn, "SELECT * FROM student_fees WHERE student_id = $student_id ORDER BY fees_date DESC, id DESC");
 ?>
 
 <div class="main-content">

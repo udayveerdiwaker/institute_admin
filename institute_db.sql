@@ -80,3 +80,5 @@
 ALTER TABLE courses
 ADD monthly_fee DECIMAL(10,2) NOT NULL AFTER fees,
 ADD course_details TEXT AFTER monthly_fee;
+
+

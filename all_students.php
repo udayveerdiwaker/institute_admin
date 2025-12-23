@@ -3,7 +3,7 @@
 include 'connection.php';
 
 
-$limit = 1;
+$limit = 10;
 
 // Get page number correctly
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -42,7 +42,7 @@ $sql = "
     FROM students s
     LEFT JOIN courses c ON s.course_id = c.id
     WHERE $where
-    ORDER BY s.id DESC
+    ORDER BY s.admission_date DESC, s.id DESC
     LIMIT $limit OFFSET $offset
 ";
 $res = mysqli_query($conn, $sql);
