@@ -1,72 +1,81 @@
 <?php
+session_start();
+include 'connection.php';
 
-use FontLib\Table\Type\head;
-
- ?>
-<?php include 'connection.php'; 
-
+if (!isset($_SESSION['admin_logged'])) {
+    header("Location: login.php");
+    exit;
+}
 
 // Fetch courses
 $courses = mysqli_query($conn, "SELECT * FROM courses");
 
 if (isset($_POST['submit'])) {
 
-    // Personal Info
-    $student_name = $_POST['student_name'];
-    $father_name  = $_POST['father_name'];
-    $dob          = $_POST['dob'];
-    $qualification = $_POST['qualification'];
+    // ================= PERSONAL INFO =================
+    $student_name  = mysqli_real_escape_string($conn, $_POST['student_name']);
+    $father_name   = mysqli_real_escape_string($conn, $_POST['father_name']);
+    $dob           = $_POST['dob'];
+    $qualification = mysqli_real_escape_string($conn, $_POST['qualification']);
 
-    // Photo Upload
-    $photo_name = $_FILES['photo']['name'];
-    $photo_temp = $_FILES['photo']['tmp_name'];
-    $photo_path = "student_img/" . $photo_name;
+    // ================= IMAGE UPLOAD =================
+    $photo_name = "";
 
-    move_uploaded_file($photo_temp, $photo_path);
+    if (!empty($_FILES['photo']['name'])) {
+        $ext = pathinfo($_FILES['photo']['name'], PATHINFO_EXTENSION);
+        $photo_name = time() . "_" . rand(1000,9999) . "." . $ext;
+        $photo_tmp  = $_FILES['photo']['tmp_name'];
 
-    // Course Info
-    $course_id   = $_POST['course_id'];
-    $batch_time  = $_POST['batch_time'];
-    $duration    = $_POST['duration'];
+        move_uploaded_file($photo_tmp, "student_img/" . $photo_name);
+    }
+
+    // ================= COURSE INFO =================
+    $course_id      = $_POST['course_id'];
+    $batch_time     = $_POST['batch_time'];
+    $duration       = $_POST['duration'];
     $admission_date = $_POST['admission_date'];
 
-    // Contact Info
-    $address  = $_POST['address'];
-    $phone    = $_POST['phone'];
-    $email    = $_POST['email'];
-    $note     = $_POST['note'];
+    // ================= CONTACT INFO =================
+    $address = mysqli_real_escape_string($conn, $_POST['address']);
+    $phone   = mysqli_real_escape_string($conn, $_POST['phone']);
+    $email   = mysqli_real_escape_string($conn, $_POST['email']);
+    $note    = mysqli_real_escape_string($conn, $_POST['note']);
 
-    // Fees
-    $total_fee  = $_POST['total_fee'];
-    $paid_amount = $_POST['paid_amount'];
-    $remaining = $total_fee - $paid_amount;
+    // ================= FEES =================
+    $total_fee    = $_POST['total_fee'];
+    $paid_amount  = $_POST['paid_amount'];
+    $remaining    = $total_fee - $paid_amount;
     $payment_mode = $_POST['payment_mode'];
-    $remarks = $_POST['remarks'];
+    $remarks      = mysqli_real_escape_string($conn, $_POST['remarks']);
 
-    // Insert main student info
-    $sql1 = "INSERT INTO students (student_name, father_name, dob, qualification, photo, 
-                                   course_id, batch_time, duration, admission_date, 
-                                   address, phone, email, extra_note)
-             VALUES ('$student_name', '$father_name', '$dob', '$qualification', '$photo_path',
-                     '$course_id', '$batch_time', '$duration', '$admission_date',
-                     '$address', '$phone', '$email', '$note')";
+    // ================= INSERT STUDENT =================
+    $sql1 = "INSERT INTO students 
+        (student_name, father_name, dob, qualification, photo,
+         course_id, batch_time, duration, admission_date,
+         address, phone, email, extra_note)
+        VALUES
+        ('$student_name','$father_name','$dob','$qualification','$photo_name',
+         '$course_id','$batch_time','$duration','$admission_date',
+         '$address','$phone','$email','$note')";
 
     if (mysqli_query($conn, $sql1)) {
 
         $student_id = mysqli_insert_id($conn);
 
-        // Insert fees
-        $sql2 = "INSERT INTO student_fees (student_id, course_id, total_fee, paid_amount, remaining, payment_mode, remarks, fees_date)
-                 VALUES ('$student_id', '$course_id', '$total_fee', '$paid_amount', '$remaining', '$payment_mode', '$remarks', '$admission_date')";
+        // ================= INSERT FEES =================
+        mysqli_query($conn, "
+            INSERT INTO student_fees
+            (student_id, course_id, total_fee, paid_amount, remaining, payment_mode, remarks, fees_date)
+            VALUES
+            ('$student_id','$course_id','$total_fee','$paid_amount','$remaining','$payment_mode','$remarks','$admission_date')
+        ");
 
-        mysqli_query($conn, $sql2);
-
-        // echo "<script>alert('Student Registered Successfully'); window.location='all_students.php';</script>";
-        header("Location: all_students.php");
+        header("Location: all_students.php?msg=added");
         exit;
     }
 }
- include 'sidebar.php';
+
+include 'sidebar.php';
 ?>
 
 <style>

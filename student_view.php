@@ -53,9 +53,13 @@ $overall_remaining = $total_fee - $total_paid;
         <div class='col-lg-4 col-md-5'>
             <div class='card p-3 text-center'>
 
-                <img src="<?= !empty($student['photo']) ? htmlspecialchars($student['photo']) : 'student_img/default.png' ?>"
-                    class='profile-img mx-auto' alt='photo'>
+                <?php if (!empty($student['photo'])) { ?>
 
+                <img src="student_img/<?= $student['photo']; ?>" class='profile-img mx-auto' alt='photo'>
+                <?php } else { ?>
+                <p>No Photo Available</p>
+
+                <?php } ?>
                 <h4 class='mt-3'>
                     <?php echo htmlspecialchars( $student[ 'student_name' ] );
 ?>
@@ -91,8 +95,12 @@ $overall_remaining = $total_fee - $total_paid;
                 <!-- Buttons -->
                 <div class='action-buttons mt-3 d-grid'>
                     <a href="student_edit.php?id=<?= $student['id'] ?>" class='btn btn-warning'>Edit Student</a>
-                    <a href="student_delete.php?id=<?= $student['id'] ?>" class='btn btn-danger'
-                        onclick="return confirm('Delete this student?')">Delete Student</a>
+                    <a href="student_delete.php?id=<?= $student['id'] ?>"
+                        onclick="return confirm('Are you sure? This will delete student and image!')"
+                        class="btn btn-danger btn-sm">
+                        <i class="bi bi-trash"></i>
+                    </a>
+
                 </div>
 
             </div>

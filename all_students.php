@@ -1,65 +1,13 @@
 <?php
-
 include 'connection.php';
 
-
 $limit = 10;
-
-// Get page number correctly
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 if ($page < 1) $page = 1;
-
 $offset = ($page - 1) * $limit;
-
-// Search
-$search = isset($_GET['search']) ? trim($_GET['search']) : '';
-
-// WHERE condition
-$where = "1";
-if ($search !== '') {
-    $search = mysqli_real_escape_string($conn, $search);
-    $where .= " AND (
-        s.student_name LIKE '$search%' OR
-        s.phone LIKE '$search%' OR
-        c.course LIKE '$search%'
-    )";
-}
-
-
-$count_sql = "
-    SELECT COUNT(*) AS total
-    FROM students s
-    LEFT JOIN courses c ON s.course_id = c.id
-    WHERE $where
-";
-$count_res = mysqli_query($conn, $count_sql);
-$total_row = mysqli_fetch_assoc($count_res);
-
-$total_records = (int)$total_row['total'];
-$total_pages   = ceil($total_records / $limit);
-$sql = "
-    SELECT s.*, c.course AS course_name
-    FROM students s
-    LEFT JOIN courses c ON s.course_id = c.id
-    WHERE $where
-    ORDER BY s.admission_date DESC, s.id DESC
-    LIMIT $limit OFFSET $offset
-";
-$res = mysqli_query($conn, $sql);
-                        
-// $sql = "
-//     SELECT s.*, c.course AS course_name 
-//     FROM students s 
-//     LEFT JOIN courses c ON s.course_id = c.id 
-//     WHERE $where
-//     ORDER BY s.id DESC
-// ";
-
-// $res = mysqli_query($conn, $sql);
 
 /* ===== FILTER LOGIC ===== */
 $where = "1";
-
 $name = '';
 $course_id = '';
 
@@ -73,10 +21,32 @@ if (!empty($_GET['course_id'])) {
     $where .= " AND s.course_id = $course_id";
 }
 
-/* ===== FETCH COURSES FOR FILTER ===== */
+/* ===== COUNT ===== */
+$count_sql = "
+    SELECT COUNT(*) AS total
+    FROM students s
+    LEFT JOIN courses c ON s.course_id = c.id
+    WHERE $where
+";
+$count_res = mysqli_query($conn, $count_sql);
+$total_row = mysqli_fetch_assoc($count_res);
+$total_records = (int)$total_row['total'];
+$total_pages = ceil($total_records / $limit);
+
+/* ===== FETCH DATA ===== */
+$sql = "
+    SELECT s.*, c.course AS course_name
+    FROM students s
+    LEFT JOIN courses c ON s.course_id = c.id
+    WHERE $where
+    ORDER BY s.admission_date DESC, s.id DESC
+    LIMIT $limit OFFSET $offset
+";
+$res = mysqli_query($conn, $sql);
+
+/* ===== COURSE LIST ===== */
 $courseList = mysqli_query($conn, "SELECT id, course FROM courses ORDER BY course");
-?>
-<?php
+
 include 'sidebar.php';
 ?>
 <div class="main-content">
@@ -147,13 +117,15 @@ include 'sidebar.php';
 if ($res && mysqli_num_rows($res) > 0) {
     while ($r = mysqli_fetch_assoc($res)) {
 
-        $photo = !empty($r['photo']) ? $r['photo'] : 'student_img/default.png';
+    $photo = !empty($r['photo']) ? "student_img/" . $r['photo'] : 'student_img/default.png';
 
-        echo "<tr>
-                <td>{$i}</td>
-                <td>
-                    <img src='{$photo}' style='width:48px;height:48px;object-fit:cover;border-radius:6px;'>
-                </td>
+echo "<tr>
+        <td>{$i}</td>
+        <td>
+            <img src='{$photo}' 
+                 style='width:48px;height:48px;object-fit:cover;border-radius:6px;'>
+        </td>
+
                 <td>" . htmlspecialchars($r['student_name']) . "</td>
                 <td>" . htmlspecialchars($r['course_name'] ?? '-') . "</td>
                 <td>" . htmlspecialchars($r['phone']) . "</td>

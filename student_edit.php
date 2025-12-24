@@ -1,22 +1,39 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['admin_logged'])) {
+    header("Location: login.php");
+    exit;
+}
+
 include 'connection.php';
 
-if (!isset($_GET['id'])) { header('Location: all_students.php'); exit; }
-$id = (int) $_GET['id'];
+if (!isset($_GET['id'])) {
+    header("Location: all_students.php");
+    exit;
+}
 
-// fetch student & courses
+$id = (int)$_GET['id'];
+
+/* ===== FETCH STUDENT ===== */
 $student_q = mysqli_query($conn, "SELECT * FROM students WHERE id = $id");
-if (!$student_q || mysqli_num_rows($student_q) == 0) { header('Location: all_students.php'); exit; }
+if (!$student_q || mysqli_num_rows($student_q) == 0) {
+    header("Location: all_students.php");
+    exit;
+}
 $student = mysqli_fetch_assoc($student_q);
+
+/* ===== FETCH COURSES ===== */
 $courses = mysqli_query($conn, "SELECT * FROM courses");
 
+/* ===== UPDATE ===== */
 if (isset($_POST['update'])) {
-    // sanitize minimally
+
     $student_name = mysqli_real_escape_string($conn, $_POST['student_name']);
     $father_name  = mysqli_real_escape_string($conn, $_POST['father_name']);
     $dob          = $_POST['dob'];
     $qualification= mysqli_real_escape_string($conn, $_POST['qualification']);
-    $course_id    = (int) $_POST['course_id'];
+    $course_id    = (int)$_POST['course_id'];
     $batch_time   = mysqli_real_escape_string($conn, $_POST['batch_time']);
     $duration     = mysqli_real_escape_string($conn, $_POST['duration']);
     $admission_date = $_POST['admission_date'];
@@ -25,32 +42,38 @@ if (isset($_POST['update'])) {
     $email        = mysqli_real_escape_string($conn, $_POST['email']);
     $note         = mysqli_real_escape_string($conn, $_POST['note']);
 
-    // photo upload if new
-    $photo_path = $student['photo'];
-    if (!empty($_FILES['photo']['name'])) {
-        $photo_name = time() . "_" . basename($_FILES['photo']['name']);
-        $tmp = $_FILES['photo']['tmp_name'];
-        $dest = "student_img/" . $photo_name;
-        if (move_uploaded_file($tmp, $dest)) {
-            $photo_path = $dest;
-        }
+    /* ===== PHOTO HANDLING ===== */
+  $photo_name = $student['photo']; // old photo
+
+if (!empty($_FILES['photo']['name'])) {
+
+    // delete old photo
+    if (!empty($student['photo']) && file_exists("student_img/".$student['photo'])) {
+        unlink("student_img/".$student['photo']);
     }
 
-    $upd = "UPDATE students SET
-              student_name='$student_name',
-              father_name='$father_name',
-              dob='$dob',
-              qualification='$qualification',
-              photo='$photo_path',
-              course_id='$course_id',
-              batch_time='$batch_time',
-              duration='$duration',
-              admission_date='$admission_date',
-              address='$address',
-              phone='$phone',
-              email='$email',
-              extra_note='$note'
-            WHERE id=$id";
+    // upload new photo
+    $photo_name = time() . "_" . basename($_FILES['photo']['name']);
+    move_uploaded_file($_FILES['photo']['tmp_name'], "student_img/".$photo_name);
+}
+
+// UPDATE
+$upd = "UPDATE students SET
+    student_name='$student_name',
+    father_name='$father_name',
+    dob='$dob',
+    qualification='$qualification',
+    photo='$photo_name',
+    course_id='$course_id',
+    batch_time='$batch_time',
+    duration='$duration',
+    admission_date='$admission_date',
+    address='$address',
+    phone='$phone',
+    email='$email',
+    extra_note='$note'
+WHERE id=$id";
+
     if (mysqli_query($conn, $upd)) {
         header("Location: student_view.php?id=$id");
         exit;
@@ -62,14 +85,20 @@ if (isset($_POST['update'])) {
 include 'sidebar.php';
 ?>
 
+
 <div class="main-content">
     <div class="container mt-4">
-        <h3>Edit Student</h3>
 
-        <?php if (!empty($err)) echo "<div class='alert alert-danger'>$err</div>"; ?>
+        <h3 class="mb-3">Edit Student</h3>
 
-        <form method="POST" enctype="multipart/form-data" class="p-4 bg-white shadow-sm rounded">
+        <?php if (!empty($error)) { ?>
+        <div class="alert alert-danger"><?= $error ?></div>
+        <?php } ?>
+
+        <form method="POST" enctype="multipart/form-data" class="bg-white p-4 rounded shadow-sm">
+
             <div class="row">
+
                 <div class="col-md-6 mb-3">
                     <label>Student Name</label>
                     <input type="text" name="student_name" class="form-control"
@@ -93,18 +122,35 @@ include 'sidebar.php';
                         value="<?= htmlspecialchars($student['qualification']) ?>">
                 </div>
 
+
                 <div class="col-md-4 mb-3">
-                    <label>Photo (leave to keep)</label>
+                    <label>Change Photo</label>
                     <input type="file" name="photo" class="form-control">
                 </div>
+                <div class="col-md-4 mb-3">
+                    <label>Current Photo</label><br>
+
+                    <?php
+    $img = (!empty($student['photo']) && file_exists($student['photo']))
+        ? $student['photo']
+        : 'student_img/default.png';
+    ?>
+
+                    <img src="<?= $img ?>"
+                        style="width:90px;height:90px;object-fit:cover;border-radius:8px;border:1px solid #ccc;">
+                </div>
+
+
+
 
                 <div class="col-md-6 mb-3">
                     <label>Course</label>
                     <select name="course_id" class="form-control" required>
-                        <?php while($c = mysqli_fetch_assoc($courses)) {
-              $sel = ($student['course_id'] == $c['id']) ? 'selected' : '';
-              echo "<option value='{$c['id']}' $sel>{$c['course']}</option>";
-            } ?>
+                        <?php while ($c = mysqli_fetch_assoc($courses)) { ?>
+                        <option value="<?= $c['id'] ?>" <?= ($student['course_id'] == $c['id']) ? 'selected' : '' ?>>
+                            <?= htmlspecialchars($c['course']) ?>
+                        </option>
+                        <?php } ?>
                     </select>
                 </div>
 
@@ -149,10 +195,14 @@ include 'sidebar.php';
                     <input type="text" name="note" class="form-control"
                         value="<?= htmlspecialchars($student['extra_note']) ?>">
                 </div>
+
             </div>
 
-            <button name="update" class="btn btn-primary">Save Changes</button>
+            <button name="update" class="btn btn-primary">
+                <i class="bi bi-save"></i> Update Student
+            </button>
             <a href="student_view.php?id=<?= $id ?>" class="btn btn-secondary">Cancel</a>
+
         </form>
 
     </div>
