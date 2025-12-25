@@ -131,9 +131,8 @@ include 'sidebar.php';
                     <label>Current Photo</label><br>
 
                     <?php
-    $img = (!empty($student['photo']) && file_exists($student['photo']))
-        ? $student['photo']
-        : 'student_img/default.png';
+      $photo = !empty($student['photo']) ? "student_img/" . $student['photo'] : 'student_img/default.png';
+        $img = file_exists($photo) ? $photo : 'student_img/default.png';
     ?>
 
                     <img src="<?= $img ?>"
