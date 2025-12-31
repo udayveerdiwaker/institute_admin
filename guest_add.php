@@ -65,6 +65,16 @@ include 'sidebar.php';
                 <input type='text' name='purpose' class='form-control' required>
             </div>
 
+            <div class="col-md-6">
+                <label>Guest Type</label>
+                <select name="lead_type" class="form-control" required>
+                    <option value="">-- Select --</option>
+                    <option value="Hot" style="color:red;">Hot</option>
+                    <option value="Cold" style="color:green;">Cold</option>
+                </select>
+            </div>
+
+
             <div class='col-md-3'>
                 <label>Date</label>
                 <input type='date' name='visit_date' class='form-control' required>

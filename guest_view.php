@@ -29,6 +29,10 @@ $data = mysqli_fetch_assoc( $q );
                 <?php echo $data[ 'purpose' ];
 ?>
             </p>
+            <p><strong>Guest Type:</strong>
+                <?php echo $data[ 'lead_type' ];
+?>
+            </p>
             <p><strong>Date:</strong>
                 <?php echo $data[ 'visit_date' ];
 ?>

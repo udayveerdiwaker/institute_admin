@@ -12,7 +12,7 @@ $sql = "SELECT * FROM guests WHERE 1=1";
 
 // Apply filters
 if (!empty($guest_name)) {
-    $sql .= " AND guest_name LIKE '%" . mysqli_real_escape_string($conn, $guest_name) . "%'";
+    $sql .= " AND guest_name LIKE '" . mysqli_real_escape_string($conn, $guest_name) . "%'";
 }
 
 if (!empty($phone)) {
@@ -48,7 +48,7 @@ $q = mysqli_query($conn, $sql);
 
         <div class="col-md-6 d-flex gap-2">
             <button class="btn btn-primary">Search</button>
-            <a href="list_guest.php" class="btn btn-secondary">Reset</a>
+            <a href="guest_list.php" class="btn btn-secondary">Reset</a>
             <a href="guest_add.php" class="btn btn-success">+ Add Guest</a>
         </div>
     </form>
@@ -61,6 +61,7 @@ $q = mysqli_query($conn, $sql);
                 <th>Guest Name</th>
                 <th>Phone</th>
                 <th>Purpose</th>
+                <th>Guest Type</th>
                 <th>Date</th>
                 <th>Time</th>
                 <th>Attended By</th>
@@ -79,6 +80,7 @@ $q = mysqli_query($conn, $sql);
                 <td><?= htmlspecialchars($row['guest_name']) ?></td>
                 <td><?= htmlspecialchars($row['phone']) ?></td>
                 <td><?= htmlspecialchars($row['purpose']) ?></td>
+                <td><?= htmlspecialchars($row['lead_type']) ?></td>
                 <td><?= htmlspecialchars($row['visit_date']) ?></td>
                 <td><?= htmlspecialchars($row['visit_time']) ?></td>
                 <td><?= htmlspecialchars($row['attended_by']) ?></td>

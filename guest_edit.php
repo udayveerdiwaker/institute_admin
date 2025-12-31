@@ -14,6 +14,7 @@ if ( isset( $_POST[ 'submit' ] ) ) {
     $phone = $_POST[ 'phone' ];
     $address = $_POST[ 'address' ];
     $purpose = $_POST[ 'purpose' ];
+    $lead_type = $_POST[ 'lead_type' ];
     $date = $_POST[ 'visit_date' ];
     $time = $_POST[ 'visit_time' ];
     $comments = $_POST[ 'comments' ];
@@ -24,6 +25,7 @@ if ( isset( $_POST[ 'submit' ] ) ) {
                 phone='$phone',
                 address='$address',
                 purpose='$purpose',
+                lead_type='$lead_type',
                 visit_date='$date',
                 visit_time='$time',
                 comments='$comments',
@@ -63,6 +65,14 @@ include 'sidebar.php';
             <div class='col-md-6'>
                 <label>Purpose</label>
                 <input type='text' name='purpose' value="<?php echo $data['purpose'] ?>" class='form-control'>
+            </div>
+            <div class="col-md-6">
+                <label>Guest Type</label>
+                <select name="lead_type" class="form-control" required>
+                    <option value="">-- Select --</option>
+                    <option value="Hot" style="color:red;">Hot</option>
+                    <option value="Cold" style="color:green;">Cold</option>
+                </select>
             </div>
 
             <div class='col-md-3'>

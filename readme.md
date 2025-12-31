@@ -1,21 +1,40 @@
-exams/exam_add.php
-exams/exam_list.php
-exams/exam_edit.php
-exams/exam_delete.php
+/institute_exam_system
 │
-├── exam_registration/
-│ ├── exam_register.php
-│ ├── registered_students.php
+├── /admin/ 👉 ADMIN PANEL
+│ ├── dashboard.php
+│ ├── login.php
+│ ├── logout.php
+│ ├── exams/
+│ │ ├── add_exam.php
+│ │ ├── manage_exam.php
+│ ├── questions/
+│ │ ├── add_question.php
+│ │ ├── manage_questions.php
+│ ├── students/
+│ │ ├── all_students.php
+│ │ ├── view_student.php
+│ ├── results/
+│ │ ├── view_results.php
+│ ├── includes/
+│ │ ├── header.php
+│ │ ├── sidebar.php
+│ │ ├── footer.php
 │
-├── exam_results/
-│ ├── marks_entry.php
-│ ├── result_view.php
-│ ├── certificate.php
+├── /student/ 👉 STUDENT PANEL (NEW IDEA)
+│ ├── login.php
+│ ├── logout.php
+│ ├── dashboard.php
+│ ├── exams.php
+│ ├── start_exam.php
+│ ├── submit_exam.php
+│ ├── result.php
+│ ├── profile.php
+│ ├── includes/
+│ │ ├── header.php
+│ │ ├── footer.php
 │
-├── certificates/
-│ └── student_certificates/
+├── /uploads/
+│ ├── student_photos/
 │
-├── student_img/
-├── connection.php
-├── sidebar.php
-├── footer.php
+├── connection.php 👉 SAME DATABASE
+└── index.php 👉 Main Website
