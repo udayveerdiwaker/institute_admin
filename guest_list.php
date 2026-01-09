@@ -1,4 +1,16 @@
 <?php
+session_start();
+
+if (!isset($_SESSION['admin_logged'])) {
+    header("Location: login.php");
+    exit;
+}
+// dashboard.php - full UI + PHP + Charts (monthly & yearly)
+// Turn on errors for debugging (remove in production)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include 'connection.php';
 include 'sidebar.php';
 
@@ -23,7 +35,7 @@ if (!empty($date)) {
     $sql .= " AND visit_date = '" . mysqli_real_escape_string($conn, $date) . "'";
 }
 
-$sql .= " ORDER BY id DESC";
+$sql .= " ORDER BY visit_date DESC, id DESC";
 $q = mysqli_query($conn, $sql);
 ?>
 
@@ -61,7 +73,7 @@ $q = mysqli_query($conn, $sql);
                 <th>Guest Name</th>
                 <th>Phone</th>
                 <th>Purpose</th>
-                <th>Guest Type</th>
+                <th>Lead Type</th>
                 <th>Date</th>
                 <th>Time</th>
                 <th>Attended By</th>
@@ -80,15 +92,29 @@ $q = mysqli_query($conn, $sql);
                 <td><?= htmlspecialchars($row['guest_name']) ?></td>
                 <td><?= htmlspecialchars($row['phone']) ?></td>
                 <td><?= htmlspecialchars($row['purpose']) ?></td>
-                <td><?= htmlspecialchars($row['lead_type']) ?></td>
+                <?php
+                    $color = 'secondary';
+                    if ($row['lead_type'] === 'Hot') $color = 'danger';
+                    elseif ($row['lead_type'] === 'Cold') $color = 'info';
+                    elseif ($row['lead_type'] === 'Close') $color = 'primary';
+                    elseif ($row['lead_type'] === 'Success') $color = 'success';
+                    ?>
+                <td>
+                    <span class="badge bg-<?= $color ?>">
+                        <?= htmlspecialchars($row['lead_type']) ?>
+                    </span>
+                </td>
+
                 <td><?= htmlspecialchars($row['visit_date']) ?></td>
                 <td><?= htmlspecialchars($row['visit_time']) ?></td>
                 <td><?= htmlspecialchars($row['attended_by']) ?></td>
                 <td>
-                    <a href="guest_view.php?id=<?= $row['id'] ?>" class="btn btn-info btn-sm">View</a>
-                    <a href="guest_edit.php?id=<?= $row['id'] ?>" class="btn btn-primary btn-sm">Edit</a>
-                    <a href="guest_delete.php?id=<?= $row['id'] ?>" class="btn btn-danger btn-sm"
-                        onclick="return confirm('Delete this guest?')">Delete</a>
+                    <a href="guest_view.php?id=<?= $row['id'] ?>" class="btn btn-info btn-sm"><i
+                            class='bi bi-eye'></i></a>
+                    <a href="guest_edit.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i
+                            class='bi bi-pencil-square'></i></a>
+                    <!-- <a href="guest_delete.php?id=<?= $row['id'] ?>" class="btn btn-danger btn-sm"
+                        onclick="return confirm('Delete this guest?')"><i class='bi bi-trash'></i></a> -->
                 </td>
             </tr>
             <?php

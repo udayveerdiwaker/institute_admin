@@ -66,15 +66,18 @@ include 'sidebar.php';
                 <label>Purpose</label>
                 <input type='text' name='purpose' value="<?php echo $data['purpose'] ?>" class='form-control'>
             </div>
+
             <div class="col-md-6">
                 <label>Guest Type</label>
                 <select name="lead_type" class="form-control" required>
                     <option value="">-- Select --</option>
-                    <option value="Hot" style="color:red;">Hot</option>
-                    <option value="Cold" style="color:green;">Cold</option>
+                    <option value="Hot" class="text-danger">Hot</option>
+                    <option value="Cold" class="text-info">Cold</option>
+                    <option value="Close" class="text-primary">Close</option>
+                    <option value="Success" class="text-success">Success</option>
+
                 </select>
             </div>
-
             <div class='col-md-3'>
                 <label>Date</label>
                 <input type='date' name='visit_date' value="<?php echo $data['visit_date'] ?>" class='form-control'>

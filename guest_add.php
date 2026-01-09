@@ -23,13 +23,14 @@ if ( isset( $_POST[ 'submit' ] ) ) {
     $phone = $_POST[ 'phone' ];
     $address = $_POST[ 'address' ];
     $purpose = $_POST[ 'purpose' ];
+    $lead_type = $_POST[ 'lead_type' ];
     $date = $_POST[ 'visit_date' ];
     $time = $_POST[ 'visit_time' ];
     $comments = $_POST[ 'comments' ];
     $attended = $_POST[ 'attended_by' ];
 
-    $insert = "INSERT INTO guests (guest_name, phone, address, purpose, visit_date, visit_time, comments, attended_by)
-                   VALUES ('$name','$phone','$address','$purpose','$date','$time','$comments','$attended')";
+    $insert = "INSERT INTO guests (guest_name, phone, address, purpose, lead_type, visit_date, visit_time, comments, attended_by)
+                   VALUES ('$name','$phone','$address','$purpose','$lead_type','$date','$time','$comments','$attended')";
 
     if ( mysqli_query( $conn, $insert ) ) {
         header( 'Location: guest_list.php' );
@@ -69,11 +70,12 @@ include 'sidebar.php';
                 <label>Guest Type</label>
                 <select name="lead_type" class="form-control" required>
                     <option value="">-- Select --</option>
-                    <option value="Hot" style="color:red;">Hot</option>
-                    <option value="Cold" style="color:green;">Cold</option>
+                    <option value="Hot" class="text-danger">Hot</option>
+                    <option value="Cold" class="text-info">Cold</option>
+                    <option value="Close" class="text-primary">Close</option>
+                    <option value="Success" class="text-success">Success</option>
                 </select>
             </div>
-
 
             <div class='col-md-3'>
                 <label>Date</label>

@@ -29,9 +29,23 @@ $data = mysqli_fetch_assoc( $q );
                 <?php echo $data[ 'purpose' ];
 ?>
             </p>
+            <?php 
+            if ($data['lead_type'] == 'Hot') {
+                $badge_class = 'danger';
+            } elseif ($data['lead_type'] == 'Cold') {
+                $badge_class = 'info';
+            } elseif ($data['lead_type'] == 'Close') {
+                $badge_class = 'primary';
+            } elseif ($data['lead_type'] == 'Success') {
+                $badge_class = 'success';
+            } else {
+                $badge_class = 'secondary';
+            }
+            ?>
             <p><strong>Guest Type:</strong>
-                <?php echo $data[ 'lead_type' ];
-?>
+                <span class="badge bg-<?= $badge_class ?>">
+                    <?php echo $data[ 'lead_type' ]; ?>
+                </span>
             </p>
             <p><strong>Date:</strong>
                 <?php echo $data[ 'visit_date' ];
