@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Timer Script</title>
+</head>
+<body>
+
+<div id="timer">60:00</div>
+
+<script>
+// Set the initial time in seconds (60 minutes)
+var timeInSeconds = 60 * 60;
+
+function updateTimer() {
+    var timerElement = document.getElementById('timer');
+
+    // Calculate minutes and seconds
+    var minutes = Math.floor(timeInSeconds / 60);
+    var seconds = timeInSeconds % 60;
+
+    // Display the timer in the format MM:SS
+    timerElement.innerHTML = minutes + ':' + (seconds < 10 ? '0' : '') + seconds;
+
+    // Check if the timer has reached zero
+    if (timeInSeconds === 0) {
+        timerElement.innerHTML = 'Time expired!';
+        // You can perform additional actions here when the timer reaches zero
+    } else {
+        // Decrease the time by 1 second
+        timeInSeconds--;
+        // Update the timer every second
+        setTimeout(updateTimer, 1000);
+    }
+}
+
+// Initial call to start the timer
+updateTimer();
+</script>
+
+</body>
+</html>

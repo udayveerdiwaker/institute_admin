@@ -1,7 +1,12 @@
 <?php
-include 'connection.php';
-?>
+session_start();
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 'admin') {
+    header("Location: login.php");
+    exit;
+}
 
+
+?>
 <!DOCTYPE html>
 <html lang='en'>
 
@@ -19,6 +24,9 @@ include 'connection.php';
     <link rel='stylesheet' href='assets/style.css'>
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css'>
 
+</head>
+
+<body>
     <style>
     body {
         background-color: #f4f6f9;
@@ -122,10 +130,6 @@ include 'connection.php';
         }
     }
     </style>
-</head>
-
-<body>
-
     <!-- Header -->
     <header>
         <button class='menu-toggle' onclick='toggleSidebar()'><i class='bi bi-list'></i></button>
@@ -141,20 +145,21 @@ include 'connection.php';
         <a href='dashboard.php' class="<?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : '' ?>">
             <i class='bi bi-speedometer2 me-2'></i> Dashboard
         </a>
-        <a href='course_list.php'
-            class="<?php echo basename($_SERVER['PHP_SELF']) == 'course_list.php' ? 'active' : '' ?>">
-            <i class='bi bi-journal-bookmark me-2'></i> Course List
+        <a href='exams/add_exam.php'
+            class="<?php echo basename($_SERVER['PHP_SELF']) == 'add_exam.php' ? 'active' : '' ?>">
+            <i class='bi bi-journal-bookmark me-2'></i> Add Exam
         </a>
-        <a href='fees_list.php' class="<?php echo basename($_SERVER['PHP_SELF']) == 'fees_list.php' ? 'active' : '' ?>">
-            <i class='bi bi-cash-stack me-2'></i> Fees Student
+        <a href='questions/add_question.php'
+            class="<?php echo basename($_SERVER['PHP_SELF']) == 'add_question.php' ? 'active' : '' ?>">
+            <i class='bi bi-cash-stack me-2'></i> Add Questions
         </a>
 
-        <a href='   all_students.php'
+        <a href='students/all_students.php'
             class="<?php echo basename($_SERVER['PHP_SELF']) == 'all_students.php' ? 'active' : '' ?>">
             <i class='bi bi-person-lines-fill me-2'></i> All Students
         </a>
 
-        <a href='guest_list.php'
+        <!-- <a href='guest_list.php'
             class="<?php echo basename($_SERVER['PHP_SELF']) == 'guest_list.php' ? 'active' : '' ?>">
             <i class='bi bi-person-lines-fill me-2'></i> Guest Entries
         </a>
@@ -166,7 +171,7 @@ include 'connection.php';
         <a href='expense_list.php'
             class="<?php echo basename($_SERVER['PHP_SELF']) == 'expense_list.php' ? 'active' : '' ?>">
             <i class='bi bi-person-lines-fill me-2'></i> Expense List
-        </a>
+        </a> -->
 
 
         <!-- <a href='list_exam.php' class="<?php echo basename($_SERVER['PHP_SELF']) == 'list_exam.php' ? 'active' : '' ?>">
@@ -183,6 +188,17 @@ include 'connection.php';
         sidebar.classList.toggle('show');
     }
     </script>
-</body>
+    <div class="bg-dark text-white p-3" style="width:220px; height:100vh; position:fixed;">
 
-</html>
+
+
+
+
+        <h5>Admin Panel</h5>
+        <hr>
+        <a href="dashboard.php" class="text-white d-block mb-2">Dashboard</a>
+        <a href="exams/add_exam.php" class="text-white d-block mb-2">Add Exam</a>
+        <a href="questions/add_question.php" class="text-white d-block mb-2">Add Questions</a>
+        <a href="students/all_students.php" class="text-white d-block mb-2">Students</a>
+        <a href="logout.php" class="text-danger d-block mt-3">Logout</a>
+    </div>
