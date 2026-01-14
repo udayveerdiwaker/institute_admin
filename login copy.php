@@ -1,23 +1,15 @@
 <?php
+// include 'check_login.php';
 session_start();
 
-if (isset($_SESSION['role'])) {
-    if ($_SESSION['role'] == 'student') {
-        header("Location: dashboard.php");
-    }
-    elseif ($_SESSION['role'] == 'exam_admin') {
-        header("Location: admin/dashboard.php");
-    }
-    elseif ($_SESSION['role'] == 'exam_user') {
-        header("Location: exam-root/registration.php");
-    }
+// if already logged in → go to dashboard
+if ( isset( $_SESSION[ 'admin_logged' ] ) ) {
+    header( 'Location: dashboard.php' );
     exit;
 }
 
-$username_cookie = $_COOKIE['login_user'] ?? '';
+$username_cookie = $_COOKIE[ 'admin_user' ] ?? '';
 ?>
-
-
 <!DOCTYPE html>
 <html>
 
