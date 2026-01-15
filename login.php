@@ -9,7 +9,7 @@ if (isset($_SESSION['role'])) {
         header("Location: admin/dashboard.php");
     }
     elseif ($_SESSION['role'] == 'exam_user') {
-        header("Location: exam-root/registration.php");
+        header("Location: exam-root/dashboard.php");
     }
     exit;
 }

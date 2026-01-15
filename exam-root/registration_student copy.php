@@ -49,7 +49,7 @@ $_SESSION['fname'] =$fname;
   //  header("Location: http://localhost:/project-root/registration.php");
 
 
-  header( "refresh:5;url=http://localhost:/institute_admin/exam-root/user_logins.php" );
+  header( "refresh:5;url=http://localhost:/institute_admin/exam-root/examsection.php" );
 
   echo '<div style="color:#fff; width:700px; height:100px; background-color:#D22B2B; position:absolute; left:50%; top:15%; transform: translate(-50%, -50%);  border-radius: 10px;"> <h2 class="display-6">You will be redirected in within 5 second do not press any key.</h2></div>';
 
@@ -103,7 +103,7 @@ $_SESSION['fname'] =$fname;
             </div>
             <div class="col-sm-5 col-md-6 mt-5">
                 <h1 class="display-4 mb-4">Registrations Here</h1>
-                <form action="registration.php" method="POST">
+                <form action="registration_student.php" method="POST">
 
                     <div class="input-group mb-3">
                         <span class="input-group-text">First and last name</span>

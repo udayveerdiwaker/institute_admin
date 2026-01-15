@@ -50,7 +50,8 @@ $total_questions = mysqli_num_rows(mysqli_query($conn, $query3));
 
 <body>
     <div class="container">
-        <h2 class="display-6 mt-2">Welcome To You <?php echo $_SESSION['fname'] ?></h2>
+        <!-- <h2 class="display-6 mt-2">Welcome To You <?php echo $_SESSION['fname'] ?></h2> -->
+        <h2 class="display-6 mt-2">Welcome To You </h2>
 
 
         <div class="me-5 d-grid gap-2 d-md-flex justify-content-end">

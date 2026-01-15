@@ -30,7 +30,7 @@ if ($res && mysqli_num_rows($res) == 1) {
             header("Location: admin/dashboard.php");       // ADMIN
         }
         elseif ($row['role'] == 'exam_user') {
-            header("Location: exam-root/registration.php");        // EXAM USER
+            header("Location: exam-root/dashboard.php");        // EXAM USER
         }
         exit;
     }
