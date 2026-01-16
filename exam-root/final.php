@@ -1,127 +1,143 @@
 <?php
-include 'connection.php';
-
-if (isset($_POST['submit'])) {
-  $result = $_POST['score'] = $_SESSION['score'];
-  $username = $_POST['fname'] = $_SESSION['fname'];
-  $insert = "INSERT INTO `result`(`student_name`, `student_marks`)  VALUES ('$username','$result' )";
-
-  $query = mysqli_query($conn, $insert) or die(mysqli_error($conn));
-
-  if ($query) {
-    echo '<script>alert("Thank You")</script>';
-  } else {
-    echo "Connection faild" . mysqli_connect_error();
-  }
+session_start();
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 'exam_user') {
+    header("Location: ../login.php");
+    exit;
 }
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+$student = $_SESSION['student_name'];
+$score   = $_SESSION['score'];
+
+/* Save score only once */
+if (isset($_POST['save'])) {
+
+    $check = mysqli_query($conn,"
+        SELECT id FROM result 
+        WHERE student_name='$student'
+        LIMIT 1
+    ");
+
+    if (mysqli_num_rows($check) == 0) {
+        mysqli_query($conn,"
+            INSERT INTO result (student_name, student_marks)
+            VALUES ('$student','$score')
+        ");
+    }
+     header("Location: results.php");
+    exit;
+}
+// if ($number >= $total_q) {
+
+//     mysqli_query($conn,"
+//         INSERT INTO result (student_name, student_marks)
+//         VALUES ('$student','{$_SESSION['score']}')
+//     ");
+
+   
+
+// }
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <style>
-    .container{
-      background-image: url("video.mp4");
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exam Result</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+    <style>
     body {
-      background-image: url('bg.svg');
-      background-repeat: no-repeat;
-      background-size: cover;
+        background: linear-gradient(135deg, #e3f2fd, #f8f9fa);
+        min-height: 100vh;
     }
-    button{
-      width: 150px;
-    }
-    #btn{
-      background-color: #77b1b9;
-      padding: 0.5rem;
-      border-radius: 10px;
-      border: none;
-      color: white;
-    }
-    #btn:hover{
-      background-color: #537b81;
-    }
-    #btnbtn{
-      background-color: #92c0c7;
-      padding: 0.5rem;
-      border-radius: 10px;
-      border: none;
-      color: white;
-    }
-    #btnbtn:hover{
-      background-color: #537b81;
-    }
-    h2{
-      color: #77b1b9;
-    }
-  </style>
-  <script>
-var duration = 15 * 1000;
-var animationEnd = Date.now() + duration;
-var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
 
-function randomInRange(min, max) {
-  return Math.random() * (max - min) + min;
-}
+    .result-card {
+        border-radius: 20px;
+    }
 
-var interval = setInterval(function() {
-  var timeLeft = animationEnd - Date.now();
-
-  if (timeLeft <= 0) {
-    return clearInterval(interval);
-  }
-
-  var particleCount = 50 * (timeLeft / duration);
-  // since particles fall down, start a bit higher than random
-  confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } });
-  confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } });
-}, 250);
-
-
-  </script>
+    .score {
+        font-size: 4rem;
+        font-weight: 800;
+        color: #0d6efd;
+    }
+    </style>
 </head>
 
 <body>
-  <div class="container">
 
-    <div>
-      <h2 class="display-3 text-center mt-5 fw-bold">Your Result</h2>
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+
+        <div class="card shadow-lg result-card p-4 text-center col-lg-6 col-md-8 col-11">
+
+            <h2 class="fw-bold text-success">🎉 Exam Completed!</h2>
+
+            <p class="mt-3 fs-5">
+                Congratulations <strong><?= htmlspecialchars($student) ?></strong>
+            </p>
+
+            <div class="score my-3">
+                <?= $score ?>
+            </div>
+
+            <p class="text-muted">Your Final Score</p>
+
+            <form method="POST" class="d-grid gap-2">
+                <button name="save" class="btn btn-primary btn-lg">
+                    Save Result
+                </button>
+            </form>
+
+            <a href="logout.php" class="btn btn-outline-danger btn-lg mt-3">
+                Logout
+            </a>
+
+            <hr>
+
+            <small class="text-muted">
+                © <?= date("Y") ?> Computer Sikhe & Website Banaye
+            </small>
+
+        </div>
+
     </div>
-    <div>
-      <p class="display-6 text-center">Congratulation <?php echo  $_SESSION['fname'] ?> You have Completed This Test Successfully.</p>
 
-      <p class="display-6 text-center">Your <strong>Score</strong> is <?php echo $_SESSION['score']; ?></p>
+    <script>
+    /* Confetti */
+    var duration = 8 * 1000;
+    var end = Date.now() + duration;
 
-      <div class="d-flex justify-content-center">
-        <form action="final.php" method="POST">
-          <button type="submit" id="btnbtn" name="submit">Save Score</button>
-        </form>
-      </div>
+    (function frame() {
+        confetti({
+            particleCount: 4,
+            angle: 60,
+            spread: 55,
+            origin: {
+                x: 0
+            }
+        });
+        confetti({
+            particleCount: 4,
+            angle: 120,
+            spread: 55,
+            origin: {
+                x: 1
+            }
+        });
 
-
-      <div class="d-grid gap-2 d-md-flex justify-content-center mt-3">
-        <a href="logout.php">
-          <button id="btn" type="button">Logout</button>
-        </a>
-      </div>
-
-
-
-    </div>
-    <div class="d-flex justify-content-center mt-5">
-      <cite>
-      All Copyright ©  <?php echo date("Y")?> Reserved by - Computer Sikhe & Website Banaye
-      </cite>
-      
-    </div>
-  </div>
+        if (Date.now() < end) {
+            requestAnimationFrame(frame);
+        }
+    })();
+    </script>
 
 </body>
 

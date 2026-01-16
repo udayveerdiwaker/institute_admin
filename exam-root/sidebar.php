@@ -1,6 +1,3 @@
-<style>
-
-</style>
 <!-- Header -->
 <header>
     <button class='menu-toggle' onclick='toggleSidebar()'><i class='bi bi-list'></i></button>
@@ -21,7 +18,10 @@
     </a>
     <a href='register_students.php'
         class="<?php echo basename($_SERVER['PHP_SELF']) == 'register_students.php' ? 'active' : '' ?>">
-        <i class='bi bi-person-lines-fill me-2'></i> Register Students
+        <i class='bi bi-person-lines-fill me-2'></i> All Register Students
+    </a>
+    <a href='results.php' class="<?php echo basename($_SERVER['PHP_SELF']) == 'results.php' ? 'active' : '' ?>">
+        <i class='bi bi-person-lines-fill me-2'></i> All Results
     </a>
     <a href='../logout.php'><i class='bi bi-box-arrow-right me-2'></i> Logout</a>
 

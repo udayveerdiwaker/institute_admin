@@ -1,66 +1,81 @@
-<?php 
-include 'connection.php';
+<?php
+session_start();
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 'exam_user') {
+    header("Location: ../login.php");
+    exit;
+}
 
-//for first questions ,  score will be not be there
-if (!isset($_SESSION['score'])){
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+include '../connection.php';
+
+/* Initialize score */
+if (!isset($_SESSION['score'])) {
     $_SESSION['score'] = 0;
 }
-if($_POST){
-    //we need total questions in process file
-    $subjectName = $_GET['sub'];
-    $query = "SELECT * FROM questions WHERE sub= '$subjectName' ";
-    $total_questions = mysqli_num_rows(mysqli_query($conn, $query));
 
-    //captrue the question number where form was submitted
-    $number = $_POST['number'];
-    $sub = $_POST['subject'];
-    $Que = $_POST['question'];
+/* Ensure form submitted */
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    // Student details (from session / hidden input)
+    $student_name = $_POST['student_name'] ?? $_SESSION['student_name'];
 
+    // Question details
+    $number   = (int) $_POST['number'];          // display number
+    $subject  = $_POST['subject'];               // subject name
+    $Que      = (int) $_POST['question'];        // real question_number
+    $choice   = (int) $_POST['choice'];          // selected option id
 
+    /* Total questions for this subject */
+    $total_q = mysqli_num_rows(
+        mysqli_query($conn, "SELECT id FROM questions WHERE sub='$subject'")
+    );
 
-    //storing the selected options by user
-    $selected_choice = $_POST['choice'];
+    /* Get correct option */
+    $correct = mysqli_fetch_assoc(
+        mysqli_query(
+            $conn,
+            "SELECT id FROM options 
+             WHERE question_number='$Que' 
+             AND sub='$subject' 
+             AND is_correct=1"
+        )
+    );
 
+    $correct_choice = $correct['id'];
 
-    //what will be the next question number
-    $convertint = intval($number);
-
-
-  
-    //check the correct choice for current questions
-
-    $query1 ="SELECT * FROM options WHERE question_number = '$Que' AND is_correct = 1 ";
-
-    $result = mysqli_query($conn, $query1);
-    $row = mysqli_fetch_assoc($result);
-
-
-
-    $correct_choice = $row['id'];
-
-    // print_r($correct_choice);
-    // echo '<br>';
-    // print_r($selected_choice);
-    // print_r($_SESSION);
-    // print_r($convertint);
-    // exit;
-
-  //  imcrease the score if selected choice is correct
-    if($selected_choice == $correct_choice){
-       $results = $_SESSION['score']++;
+    /* Check answer */
+    if ($choice === (int)$correct_choice) {
+        $_SESSION['score']++;
     }
-    $Que++;
-    $next = base64_encode($convertint+1);
 
-    //redirect to next question or final page
-    if($convertint == $total_questions){
-        header("location:http://localhost/institute_admin/exam-root/final.php");
-    }
-    else
-    {
-        header("location:http://localhost/institute_admin/exam-root/questions.php?n=".$next."&sub=".$sub."&Q=".$Que);
+    /* Next question */
+    $next_question_number = $Que + 1;
+    $next_display_number  = $number + 1;
+    $next_encoded         = base64_encode($next_display_number);
+
+    /* Redirect */
+    if ($number >= $total_q) {
+
+        // Save final result (optional but recommended)
+        mysqli_query($conn,"
+            INSERT INTO result (student_name, student_marks)
+            VALUES ('$student_name','{$_SESSION['score']}')
+        ");
+
+        header("Location: final.php");
+        exit;
+
+    } else {
+
+        header(
+            "Location: questions.php?n=$next_encoded&sub="
+            . urlencode($subject) . "&Q=$next_question_number"
+        );
+        exit;
     }
 }
-
 ?>

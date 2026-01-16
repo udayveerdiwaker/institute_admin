@@ -1,104 +1,132 @@
 <?php
- include_once "../connection.php";
+session_start();
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 'exam_user') {
+    header("Location: ../login.php");
+    exit;
+}
 
 
-//Set Questions Number
-$n = base64_decode($_GET['n'] );
-$number = $n;
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+
+include_once "../connection.php";
+
+if (!isset($_SESSION['student_name'])) {
+    header("Location: registration_student.php");
+    exit;
+}
+
+$n = base64_decode($_GET['n']);
+$number = (int)$n;
 $n--;
 
-//Get Question from database by subject name 
-$subjectName = $_GET['sub'];
+$subject = $_GET['sub'];
+$current_question = (int)$_GET['Q'];
 
- //get the questions
-$query = "SELECT * FROM `questions`  WHERE   sub = '$subjectName'  order by id asc limit $n,1";
-$result = mysqli_query($conn, $query);
-$question = mysqli_fetch_assoc($result);
+/* Question */
+$q = mysqli_query($conn,"
+    SELECT * FROM questions 
+    WHERE sub='$subject'
+    ORDER BY id ASC
+    LIMIT $n,1
+");
+$question = mysqli_fetch_assoc($q);
 
+/* Options */
+$options = mysqli_query($conn,"
+    SELECT * FROM options 
+    WHERE question_number='$current_question' 
+    AND sub='$subject'
+");
 
-
-//get the current question number
-
-$current_question=$_GET['Q'];
-
-//Get Choice
-$query2 = "SELECT * FROM options WHERE question_number = '$current_question' AND sub ='$subjectName' ";
-$choices = mysqli_query($conn, $query2);
-
-
-//Get the total questions
-$query3 = "SELECT * FROM questions WHERE  sub = '$subjectName' ";
-$total_questions = mysqli_num_rows(mysqli_query($conn, $query3));
-
-
+/* Total questions */
+$total_questions = mysqli_num_rows(
+    mysqli_query($conn,"SELECT id FROM questions WHERE sub='$subject'")
+);
+include 'header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <link rel="stylesheet" href="questionstyle.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
-    </script>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>exam</title>
-</head>
+<style>
+body {
+    background: linear-gradient(135deg, #eef2ff, #f8f9fa);
+    min-height: 100vh;
+}
 
-<body>
-    <div class="container">
-        <!-- <h2 class="display-6 mt-2">Welcome To You <?php echo $_SESSION['fname'] ?></h2> -->
-        <h2 class="display-6 mt-2">Welcome To You </h2>
+.option-card {
+    border: 2px solid #dee2e6;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    transition: .2s;
+}
 
+.option-card:hover {
+    background: #f1f5ff;
+}
 
-        <div class="me-5 d-grid gap-2 d-md-flex justify-content-end">
-            <a href="logout.php">
-                <button class="btn w3-red" type="button">Logout</button>
-            </a>
-        </div>
+input[type=radio]:checked+.option-card {
+    background: #0d6efd;
+    color: #fff;
+    border-color: #0d6efd;
+}
+</style>
 
-        <div class="heading">
-            <h6 class="text-center card-header fs-4"><?php echo $_SESSION['fname'] ?> You have to select only 1 correct
-                answer out of 4 options.</h6>
-        </div>
-        <div class="maindiv mt-5">
-            <div class="current text-center">Question <?php echo $number; ?> of <?php echo $total_questions; ?></div>
+<div class="main-content">
+    <div class="container py-4">
 
-            <p class=" card questions card-header bg-white" id="qcard"><?php echo $number; ?> :
-                <?php echo $question['question_text']?></p>
-
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
             <div>
-                <form action="process.php?sub=<?php echo $subjectName?>" method="POST">
-                    <ol>
-                        <?php while ($row = mysqli_fetch_assoc($choices)) { 
-            
-            ?>
-                        <li>
-                            <input name="choice" required class="form-check-input p-2" type="radio" name="radioNoLabel"
-                                id="radioNoLabel1" value="<?php echo $row['id']; ?>">
-                            <?php echo $row['options']; ?>
-                        </li>
-                        <?php } ?>
-                    </ol>
-                    <input type="hidden" name="number" value="<?php echo $number ?>">
-                    <input type="hidden" name="subject" value="<?php echo $subjectName ?>">
-                    <input type="hidden" name="question" value="<?php echo $current_question ?>">
-                    <input type="submit" name="submit" value="Submit">
-                </form>
+                <h5 class="fw-bold mb-0"><?= htmlspecialchars($_SESSION['student_name']) ?></h5>
+                <small class="text-muted"><?= htmlspecialchars($subject) ?> Exam</small>
+            </div>
+            <span class="badge bg-primary px-3 py-2">
+                Question <?= $number ?>/<?= $total_questions ?>
+            </span>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress mb-4" style="height:10px">
+            <div class="progress-bar bg-success" style="width: <?= ($number/$total_questions)*100 ?>%">
             </div>
         </div>
 
-        <div id="cite">
-            <cite>
-                All Copyright © <?php echo date("Y")?> Reserved by - Computer Sikhe & Website Banaye
-            </cite>
+        <!-- Question Card -->
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
 
+                <h5 class="fw-bold mb-4">
+                    <?= $number ?>. <?= htmlspecialchars($question['question_text']) ?>
+                </h5>
+
+                <form action="process.php" method="POST">
+
+                    <?php while($o=mysqli_fetch_assoc($options)){ ?>
+                    <input type="radio" name="choice" id="opt<?= $o['id'] ?>" value="<?= $o['id'] ?>" hidden required>
+
+                    <label for="opt<?= $o['id'] ?>" class="option-card w-100">
+                        <?= htmlspecialchars($o['options']) ?>
+                    </label>
+                    <?php } ?>
+
+                    <!-- Hidden Inputs -->
+                    <input type="hidden" name="number" value="<?= $number ?>">
+                    <input type="hidden" name="question" value="<?= $current_question ?>">
+                    <input type="hidden" name="subject" value="<?= $subject ?>">
+                    <input type="hidden" name="student_name" value="<?= $_SESSION['student_name'] ?>">
+
+                    <div class="d-grid mt-4">
+                        <button class="btn btn-success btn-lg">
+                            <?= ($number == $total_questions) ? 'Finish Exam' : 'Next Question' ?>
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
         </div>
+
     </div>
-
-</body>
-
-</html>

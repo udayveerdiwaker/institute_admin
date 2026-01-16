@@ -14,7 +14,16 @@ error_reporting(E_ALL);
 include 'header.php';
 
 
-$students = mysqli_query($conn,"SELECT * FROM students ORDER BY id DESC");
+// $students = mysqli_query($conn,"SELECT * FROM students ORDER BY id DESC");
+// $students = mysqli_query($conn,"SELECT * FROM students ORDER BY id DESC");
+$students = mysqli_query($conn,"
+    SELECT *
+    FROM students
+    WHERE student_name NOT IN (
+        SELECT name FROM registered_user
+    )
+    ORDER BY id DESC
+");
 
 
 ?>
@@ -33,28 +42,48 @@ $students = mysqli_query($conn,"SELECT * FROM students ORDER BY id DESC");
         <!-- <a href="all_students.php" class="btn btn-dark mt-3">View All Students</a> -->
 
     </div>
-    <div class="card-box mt-4">
-        <table class="table table-bordered table-striped">
-            <tr>
-                <th>#</th>
-                <th>Student Name</th>
-                <th>Phone</th>
-                <th>Action</th>
-            </tr>
+    <div class="table-responsive mt-3">
+        <table class="table table-bordered table-striped align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Student Name</th>
+                    <th>Phone</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
 
-            <?php $i=1; while($s=mysqli_fetch_assoc($students)){ ?>
-            <tr>
-                <td><?= $i++ ?></td>
-                <td><?= $s['student_name'] ?></td>
-                <td><?= $s['phone'] ?></td>
-                <td>
-                    <?php $n = base64_encode($s['id']); ?>
-                    <a href="registration_student.php?n=<?= $n ?>" class="btn btn-primary btn-sm">
-                        Start Exam
-                    </a>
-                </td>
-            </tr>
-            <?php } ?>
+            <tbody>
+                <?php 
+            if(mysqli_num_rows($students) > 0){
+                $i=1;
+                while($s=mysqli_fetch_assoc($students)){ 
+            ?>
+                <tr>
+                    <td><?= $i++ ?></td>
+                    <td><?= htmlspecialchars($s['student_name']) ?></td>
+                    <td><?= htmlspecialchars($s['phone']) ?></td>
+                    <td>
+                        <span class="badge bg-danger">Not Registered</span>
+                    </td>
+                    <td>
+                        <a href="registration_student.php?sid=<?= $s['id'] ?>" class="btn btn-sm btn-primary">
+                            Register
+                        </a>
+                    </td>
+                </tr>
+                <?php 
+                }
+            } else { 
+            ?>
+                <tr>
+                    <td colspan="5" class="text-center text-muted">
+                        All students are registered 🎉
+                    </td>
+                </tr>
+                <?php } ?>
+            </tbody>
 
         </table>
     </div>
