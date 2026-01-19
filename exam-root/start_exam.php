@@ -1,11 +1,11 @@
 <?php
 session_start();
+
 /* Only exam user can start exam */
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'exam_user') {
+if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'exam_user') {
     header("Location: ../login.php");
     exit;
 }
-
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -13,59 +13,101 @@ error_reporting(E_ALL);
 
 include '../connection.php';
 
-
-
-/* Student id must be passed */
+/* ===============================
+   1. Student must be selected
+   =============================== */
 if (!isset($_GET['sid'])) {
-    die("Student not selected");
+    header("Location: register_students.php");
+    exit;
 }
 
 $sid = (int) $_GET['sid'];
 
-/* Fetch student */
-$student = mysqli_fetch_assoc(
-    mysqli_query($conn,"SELECT * FROM registered_user WHERE id='$sid'")
+/* ===============================
+   2. Fetch student from registered_user
+   =============================== */
+$student_q = mysqli_query(
+    $conn,
+    "SELECT * FROM registered_user WHERE id='$sid' LIMIT 1"
 );
 
-if (!$student) {
+if (mysqli_num_rows($student_q) !== 1) {
     die("Invalid student");
 }
 
-/* SET SESSIONS (THIS WAS MISSING) */
-$_SESSION['student_name'] = $student['name'];
-$_SESSION['student_exam'] = $student['exam_id'];
-$_SESSION['student_phone'] = $student['phone'] ?? '';
+$student = mysqli_fetch_assoc($student_q);
 
-/* Fetch exam */
-$exam = mysqli_fetch_assoc(
-    mysqli_query($conn,"SELECT exam_name FROM exams WHERE id='{$student['exam_id']}'")
+/* ===============================
+   3. SET SESSION (VERY IMPORTANT)
+   =============================== */
+$_SESSION['student_id']    = $student['id'];
+$_SESSION['student_name']  = $student['name'];
+$_SESSION['student_exam']  = $student['exam_id'];
+$_SESSION['student_phone'] = $student['phone'];
+
+// print_r($_SESSION);
+// exit;
+
+/* ===============================
+   4. CHECK ATTEMPT (AFTER SESSION)
+   =============================== */
+$student_id = $_SESSION['student_id'];
+$exam_id    = (int) $_SESSION['student_exam'];
+
+$attempt_q = mysqli_query(
+    $conn,
+    "SELECT id 
+     FROM result 
+     WHERE student_id='$student_id'
+     AND exam_id='$exam_id'
+     LIMIT 1"
 );
 
-if (!$exam) {
+if (mysqli_num_rows($attempt_q) > 0) {
+    header("Location: already_attempted.php");
+    exit;
+}
+
+/* ===============================
+   5. Fetch exam
+   =============================== */
+$exam_q = mysqli_query(
+    $conn,
+    "SELECT exam_name FROM exams WHERE id='$exam_id' LIMIT 1"
+);
+
+if (mysqli_num_rows($exam_q) !== 1) {
     die("Invalid exam");
 }
 
+$exam = mysqli_fetch_assoc($exam_q);
 $subject = $exam['exam_name'];
 
-/* Fetch FIRST question */
-$q = mysqli_fetch_assoc(
-    mysqli_query($conn,"
-        SELECT id 
-        FROM questions 
-        WHERE sub='$subject'
-        ORDER BY id ASC
-        LIMIT 1
-    ")
+/* ===============================
+   6. Fetch FIRST question
+   =============================== */
+$q_q = mysqli_query(
+    $conn,
+    "SELECT id 
+     FROM questions 
+     WHERE sub='$subject'
+     ORDER BY id ASC
+     LIMIT 1"
 );
 
-if (!$q) {
-    die("No questions found");
+if (mysqli_num_rows($q_q) === 0) {
+    die("No questions found for this exam");
 }
 
-/* Start exam */
+$first_question_id = mysqli_fetch_assoc($q_q)['id'];
+
+/* ===============================
+   7. START EXAM
+   =============================== */
+   
 header(
     "Location: questions.php?n=" . base64_encode(1) .
     "&sub=" . urlencode($subject) .
-    "&Q=" . $q['id']
+    "&Q=" . $first_question_id
 );
 exit;

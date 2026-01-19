@@ -101,7 +101,6 @@ input[type=radio]:checked+.option-card {
                 <h5 class="fw-bold mb-4">
                     <?= $number ?>. <?= htmlspecialchars($question['question_text']) ?>
                 </h5>
-
                 <form action="process.php" method="POST">
 
                     <?php while($o=mysqli_fetch_assoc($options)){ ?>
@@ -117,6 +116,7 @@ input[type=radio]:checked+.option-card {
                     <input type="hidden" name="question" value="<?= $current_question ?>">
                     <input type="hidden" name="subject" value="<?= $subject ?>">
                     <input type="hidden" name="student_name" value="<?= $_SESSION['student_name'] ?>">
+                    <!-- <?php print_r($current_question); ?> -->
 
                     <div class="d-grid mt-4">
                         <button class="btn btn-success btn-lg">

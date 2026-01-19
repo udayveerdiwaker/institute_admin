@@ -1,14 +1,12 @@
 <?php
 session_start();
-/* Only exam user can start exam */
+/* Only exam user */
 if (!isset($_SESSION['role']) || $_SESSION['role'] != 'exam_user') {
     header("Location: ../login.php");
     exit;
 }
 
-
 ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include 'header.php';
@@ -21,81 +19,165 @@ if (!isset($_GET['id'])) {
 $id = (int)$_GET['id'];
 
 $res = mysqli_query($conn,"SELECT * FROM result WHERE id='$id' LIMIT 1");
-
 if (mysqli_num_rows($res) != 1) {
     die("Invalid result");
 }
 
 $r = mysqli_fetch_assoc($res);
-$status = ($r['student_marks'] >= 33) ? 'Pass' : 'Fail';
+
+$marks = (int)$r['student_marks'];
+$passMarks = 33;
+$status = ($marks >= $passMarks) ? 'PASS' : 'FAIL';
+$statusClass = ($status === 'PASS') ? 'success' : 'danger';
 ?>
+
+<style>
+.result-card {
+    border-radius: 22px;
+    animation: slideUp .7s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* PASS pulse */
+.pass-animate {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* FAIL shake */
+.fail-animate {
+    animation: shake .6s;
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-6px);
+    }
+
+    50% {
+        transform: translateX(6px);
+    }
+
+    75% {
+        transform: translateX(-6px);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
+
+.score {
+    font-size: 3.8rem;
+    font-weight: 800;
+}
+
+.progress {
+    height: 22px;
+}
+</style>
 
 <div class="main-content">
     <div class="container mt-4">
 
-        <!-- Page Header -->
+        <!-- Header -->
         <div class="d-flex justify-content-between align-items-center mb-3">
-            <h4 class="fw-bold mb-0">Student Result</h4>
+            <h4 class="fw-bold">Student Result</h4>
             <a href="results.php" class="btn btn-outline-secondary btn-sm">
-                ← Back to Results
+                ← Back
             </a>
         </div>
 
         <!-- Result Card -->
         <div class="row justify-content-center">
             <div class="col-lg-6 col-md-8 col-12">
-                <div class="card shadow-sm border-0">
 
-                    <div class="card-header bg-white text-center">
-                        <h5 class="mb-0 fw-bold">
+                <div class="card shadow-lg border-0 result-card text-center">
+
+                    <div class="card-body p-4">
+
+                        <h5 class="fw-bold mb-1">
                             <?= htmlspecialchars($r['student_name']) ?>
                         </h5>
-                        <span class="badge <?= $status=='Pass'?'bg-success':'bg-danger' ?> mt-2">
-                            <?= $status ?>
+
+                        <span class="badge bg-<?= $statusClass ?> my-2 
+                        <?= ($status=='PASS')?'pass-animate':'fail-animate' ?>">
+                            <?= ($status=='PASS')?'🎉 PASS':'❌ FAIL' ?>
                         </span>
-                    </div>
 
-                    <div class="card-body">
+                        <div class="score text-<?= $statusClass ?> my-3">
+                            <?= $marks ?>
+                        </div>
 
-                        <div class="row text-center">
-                            <div class="col-6 border-end">
-                                <small class="text-muted">Marks Obtained</small>
-                                <h3 class="fw-bold text-primary">
-                                    <?= $r['student_marks'] ?>
-                                </h3>
-                            </div>
-                            <div class="col-6">
-                                <small class="text-muted">Result Status</small>
-                                <h3 class="fw-bold <?= $status=='Pass'?'text-success':'text-danger' ?>">
-                                    <?= $status ?>
-                                </h3>
+                        <p class="text-muted mb-1">Marks Obtained</p>
+
+                        <!-- Progress -->
+                        <?php
+                        $percent = min(100, round(($marks / 100) * 100));
+                        ?>
+                        <div class="progress my-3">
+                            <div class="progress-bar bg-<?= $statusClass ?>"
+                                style="width: <?= $percent ?>%; transition: width 1.5s ease;">
+                                <?= $percent ?>%
                             </div>
                         </div>
 
                         <hr>
 
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item d-flex justify-content-between">
-                                <span>Exam Date</span>
-                                <strong><?= date("d M Y") ?></strong>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between">
-                                <span>Exam Type</span>
+                        <div class="row text-start">
+                            <div class="col-6 mb-2">
+                                <small class="text-muted">Exam Type</small><br>
                                 <strong>MCQ</strong>
-                            </li>
-                            <li class="list-group-item d-flex justify-content-between">
-                                <span>Passing Marks</span>
-                                <strong>33</strong>
-                            </li>
-                        </ul>
+                            </div>
+                            <div class="col-6 mb-2">
+                                <small class="text-muted">Passing Marks</small><br>
+                                <strong><?= $passMarks ?></strong>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted">Exam Date</small><br>
+                                <strong><?= date("d M Y", strtotime($r['created_at'] ?? date('Y-m-d'))) ?></strong>
+                            </div>
+                            <div class="col-6">
+                                <small class="text-muted">Status</small><br>
+                                <strong class="text-<?= $statusClass ?>"><?= $status ?></strong>
+                            </div>
+                        </div>
 
                     </div>
 
-                    <!-- Actions -->
+                    <!-- Footer -->
                     <div class="card-footer bg-white text-center">
                         <a href="print_result.php?id=<?= $r['id'] ?>" target="_blank"
                             class="btn btn-outline-primary me-2">
-                            🖨 Print Result
+                            🖨 Print
                         </a>
 
                         <a href="results.php" class="btn btn-outline-dark">
@@ -104,6 +186,7 @@ $status = ($r['student_marks'] >= 33) ? 'Pass' : 'Fail';
                     </div>
 
                 </div>
+
             </div>
         </div>
 
