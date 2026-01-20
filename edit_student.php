@@ -1,6 +1,18 @@
-<?php include 'connection.php'; ?>
+<?php 
+session_start();
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
+    header("Location: login.php");
+    exit;
+}
 
-<?php
+// dashboard.php - full UI + PHP + Charts (monthly & yearly)
+// Turn on errors for debugging (remove in production)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+include 'connection.php'; 
+
 $id = $_GET['id'];
 $result = mysqli_query($conn, "SELECT * FROM students WHERE id = $id");
 $student = mysqli_fetch_assoc($result);
@@ -46,8 +58,7 @@ if (isset($_POST['update'])) {
             <label>Course</label>
             <select name="course" class="form-control" required>
                 <?php while($c = mysqli_fetch_assoc($courses)) { ?>
-                <option value="<?= $c['id']; ?>"
-                    <?= ($student['course'] == $c['id']) ? 'selected' : '' ?>>
+                <option value="<?= $c['id']; ?>" <?= ($student['course'] == $c['id']) ? 'selected' : '' ?>>
                     <?= $c['course']; ?>
                 </option>
                 <?php } ?>

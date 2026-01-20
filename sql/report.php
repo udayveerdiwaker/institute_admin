@@ -5,15 +5,13 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
     exit;
 }
 
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
+
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
 include 'connection.php';
 include 'sidebar.php';
-
 
 /* ================= FILTERS ================= */
 $from = $_GET['from'] ?? '';
@@ -105,27 +103,33 @@ while($r=mysqli_fetch_assoc($yq)){ $years[]=$r['y']; $year_amt[]=$r['amt']; }
 
         <!-- ================= FILTER ================= -->
         <form class="row g-2 mb-4">
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <input type="date" name="from" class="form-control" value="<?php echo $from ?>">
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <input type="date" name="to" class="form-control" value="<?php echo $to ?>">
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <select name="type" class="form-control">
                     <option value="all">All</option>
                     <option value="monthly" <?php echo $type=='monthly'?'selected':'' ?>>Monthly</option>
                     <option value="yearly" <?php echo $type=='yearly'?'selected':'' ?>>Yearly</option>
                 </select>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3">
                 <input type="number" name="year" class="form-control" value="<?php echo $year ?>">
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3 mt-2">
                 <input type="number" name="month" class="form-control" min="1" max="12" value="<?php echo $month ?>">
             </div>
-            <div class="col-md-2">
+            <div class="col-md-3 mt-2">
                 <button class="btn btn-primary w-100">Filter</button>
+            </div>
+
+            <div class="col-md-3 mt-2">
+                <a href="report.php" class="btn btn-secondary w-100">
+                    Reset
+                </a>
             </div>
         </form>
 

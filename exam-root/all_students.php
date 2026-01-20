@@ -101,13 +101,16 @@ $students = mysqli_query($conn,"
                     <th>Action</th>
                 </tr>
             </thead>
-
             <tbody>
+
                 <?php
-            if (mysqli_num_rows($students) > 0) {
-                $i = $offset + 1;
-                while ($s = mysqli_fetch_assoc($students)) {
-            ?>
+$count = mysqli_num_rows($students);
+
+if ($count > 0) {
+    $i = 1;
+    while ($s = mysqli_fetch_assoc($students)) {
+        print_r($students);
+?>
                 <tr>
                     <td><?= $i++ ?></td>
                     <td><?= htmlspecialchars($s['student_name']) ?></td>
@@ -122,16 +125,43 @@ $students = mysqli_query($conn,"
                     </td>
                 </tr>
                 <?php
-                }
-            } else {
-            ?>
+    }
+} else {
+
+    /* CASE 1: SEARCH USED BUT NO RESULT */
+    if ($search_sql != '') {
+?>
                 <tr>
-                    <td colspan="5" class="text-center text-muted">
-                        All students are registered 🎉
+                    <td colspan="5" class="text-center py-5">
+                        <div class="fs-5 text-danger">
+                            🔍 <strong>No Student Found</strong>
+                        </div>
+                        <small class="text-muted">
+                            Try a different name or clear search.
+                        </small>
                     </td>
                 </tr>
-                <?php } ?>
+                <?php
+    } 
+    /* CASE 2: NO UNREGISTERED STUDENTS AT ALL */
+    else {
+?>
+                <tr>
+                    <td colspan="5" class="text-center py-5">
+                        <div class="fs-5 text-success">
+                            ✅ <strong>All Students Are Already Registered</strong>
+                        </div>
+                        <small class="text-muted">
+                            There are no pending registrations 🎉
+                        </small>
+                    </td>
+                </tr>
+                <?php
+    }
+}
+?>
             </tbody>
+
         </table>
     </div>
 

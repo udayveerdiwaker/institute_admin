@@ -1,4 +1,16 @@
 <?php
+session_start();
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
+    header("Location: login.php");
+    exit;
+}
+
+// dashboard.php - full UI + PHP + Charts (monthly & yearly)
+// Turn on errors for debugging (remove in production)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 // combined_receipt.php
 include 'connection.php';
 
@@ -32,18 +44,18 @@ $institute_address = "Address line, City";
     <title>Combined Receipt - <?= htmlspecialchars($student['student_name']) ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background: #f4f6f9;
-            font-family: Arial
-        }
+    body {
+        background: #f4f6f9;
+        font-family: Arial
+    }
 
-        .wrap {
-            max-width: 900px;
-            margin: 20px auto;
-            background: #fff;
-            padding: 20px;
-            border: 1px solid #eee
-        }
+    .wrap {
+        max-width: 900px;
+        margin: 20px auto;
+        background: #fff;
+        padding: 20px;
+        border: 1px solid #eee
+    }
     </style>
 </head>
 
@@ -54,7 +66,8 @@ $institute_address = "Address line, City";
                 <h3><?= $institute_name ?></h3>
                 <div><?= $institute_address ?></div>
             </div>
-            <div><strong>Student:</strong> <?= htmlspecialchars($student['student_name']) ?><br><strong>Course:</strong> <?= htmlspecialchars($student['course_name']) ?></div>
+            <div><strong>Student:</strong> <?= htmlspecialchars($student['student_name']) ?><br><strong>Course:</strong>
+                <?= htmlspecialchars($student['course_name']) ?></div>
         </div>
 
         <hr>
@@ -99,7 +112,8 @@ $institute_address = "Address line, City";
         </div>
 
         <div class="mt-4">
-            <a href="combined_receipt_pdf.php?student_id=<?= $student_id ?>" class="btn btn-danger" target="_blank">Download Combined PDF</a>
+            <a href="combined_receipt_pdf.php?student_id=<?= $student_id ?>" class="btn btn-danger"
+                target="_blank">Download Combined PDF</a>
             <button class="btn btn-primary" onclick="window.print()">Print</button>
             <a href="student_view.php?id=<?= $student_id ?>" class="btn btn-secondary">Back</a>
         </div>

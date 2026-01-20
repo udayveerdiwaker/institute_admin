@@ -3,12 +3,12 @@
 
     <?php
 
-    session_start();
-
-if (!isset($_SESSION['admin_logged'])) {
+session_start();
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
     header("Location: login.php");
     exit;
 }
+
 // dashboard.php - full UI + PHP + Charts (monthly & yearly)
 // Turn on errors for debugging (remove in production)
 ini_set('display_errors', 1);

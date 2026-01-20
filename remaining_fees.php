@@ -1,4 +1,16 @@
 <?php
+session_start();
+if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
+    header("Location: login.php");
+    exit;
+}
+
+// dashboard.php - full UI + PHP + Charts (monthly & yearly)
+// Turn on errors for debugging (remove in production)
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include 'connection.php';
 include 'sidebar.php';
 
@@ -41,44 +53,46 @@ if (isset($_POST['submit'])) {
 ?>
 
 <div class="main-content">
-  <div class="container mt-4">
-    <div class="card shadow-sm p-4">
-      <h4>Add Payment — <?= htmlspecialchars($student['student_name']) ?></h4>
-      <?= $msg ?>
+    <div class="container mt-4">
+        <div class="card shadow-sm p-4">
+            <h4>Add Payment — <?= htmlspecialchars($student['student_name']) ?></h4>
+            <?= $msg ?>
 
-      <div class="row mb-3">
-        <div class="col-md-4"><strong>Course:</strong> <?= htmlspecialchars($student['course']) ?></div>
-        <div class="col-md-4"><strong>Total Fee:</strong> ₹<?= number_format($total_fee,2) ?></div>
-        <div class="col-md-4"><strong>Already Paid:</strong> ₹<?= number_format($total_paid,2) ?></div>
-      </div>
+            <div class="row mb-3">
+                <div class="col-md-4"><strong>Course:</strong> <?= htmlspecialchars($student['course']) ?></div>
+                <div class="col-md-4"><strong>Total Fee:</strong> ₹<?= number_format($total_fee,2) ?></div>
+                <div class="col-md-4"><strong>Already Paid:</strong> ₹<?= number_format($total_paid,2) ?></div>
+            </div>
 
-      <form method="post">
-        <div class="row g-3">
-          <div class="col-md-4">
-            <label class="form-label">New Payment (₹)</label>
-            <input type="number" step="0.01" name="new_payment" class="form-control" required>
-          </div>
+            <form method="post">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">New Payment (₹)</label>
+                        <input type="number" step="0.01" name="new_payment" class="form-control" required>
+                    </div>
 
-          <div class="col-md-4">
-            <label class="form-label">Payment Mode</label>
-            <select name="payment_mode" class="form-control">
-              <option>Cash</option><option>Online</option><option>Cheque</option>
-            </select>
-          </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Payment Mode</label>
+                        <select name="payment_mode" class="form-control">
+                            <option>Cash</option>
+                            <option>Online</option>
+                            <option>Cheque</option>
+                        </select>
+                    </div>
 
-          <div class="col-md-4">
-            <label class="form-label">Remarks</label>
-            <input type="text" name="remarks" class="form-control">
-          </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Remarks</label>
+                        <input type="text" name="remarks" class="form-control">
+                    </div>
 
-          <div class="col-12 mt-3">
-            <button class="btn btn-primary" name="submit">Add Payment</button>
-            <a href="fees_list.php" class="btn btn-secondary">Back</a>
-          </div>
+                    <div class="col-12 mt-3">
+                        <button class="btn btn-primary" name="submit">Add Payment</button>
+                        <a href="fees_list.php" class="btn btn-secondary">Back</a>
+                    </div>
+                </div>
+            </form>
         </div>
-      </form>
     </div>
-  </div>
 </div>
 
 <?php include 'footer.php'; ?>
