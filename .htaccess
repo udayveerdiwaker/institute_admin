@@ -1,0 +1,10 @@
+RewriteEngine On
+RewriteBase /institute_admin/
+
+# Custom 404 Page
+ErrorDocument 404 /institute_admin/404.php
+
+# Remove .php extension
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.php [L]

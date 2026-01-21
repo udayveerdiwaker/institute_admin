@@ -13,6 +13,7 @@ error_reporting(E_ALL);
 
 
 include 'connection.php';
+include 'sidebar.php';
 
 $limit = 10;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
@@ -60,7 +61,6 @@ $res = mysqli_query($conn, $sql);
 /* ===== COURSE LIST ===== */
 $courseList = mysqli_query($conn, "SELECT id, course FROM courses ORDER BY course");
 
-include 'sidebar.php';
 ?>
 <div class="main-content">
 

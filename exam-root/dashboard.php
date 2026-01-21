@@ -16,7 +16,11 @@ $attempted = mysqli_num_rows(mysqli_query($conn,"SELECT DISTINCT student_name FR
 
 $students = mysqli_query($conn,"
     SELECT student_name, phone 
-    FROM students 
+    FROM students s
+     WHERE s.course_id NOT IN (10,11)
+      AND s.student_name NOT IN (
+          SELECT name FROM registered_user
+      )
     ORDER BY id DESC 
     LIMIT 8
 ");

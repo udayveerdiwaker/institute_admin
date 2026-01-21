@@ -11,14 +11,14 @@ error_reporting(E_ALL);
 
 include 'header.php';
 /* Search */
-/* Search */
 $stu_search = $_GET['stu_search'] ?? '';
-$search_sql = "";
+$search_sql = '';
 
 if ($stu_search != '') {
     $search_safe = mysqli_real_escape_string($conn, $stu_search);
-    $search_sql = " AND student_name LIKE '$search_safe%'";
+    $search_sql = " AND s.student_name LIKE '$search_safe%'";
 }
+
 
 /* Pagination settings */
 $limit = 10;
@@ -27,29 +27,66 @@ if ($page < 1) $page = 1;
 $offset = ($page - 1) * $limit;
 
 /* Total unregistered students */
+// $total_q = mysqli_query($conn,"
+//     SELECT COUNT(*) AS total
+//     FROM students
+//     WHERE student_name NOT IN (
+//         SELECT name FROM registered_user
+//     )
+//     $search_sql
+// ");
+
 $total_q = mysqli_query($conn,"
     SELECT COUNT(*) AS total
-    FROM students
-    WHERE student_name NOT IN (
-        SELECT name FROM registered_user
-    )
-    $search_sql
+    FROM students s
+    WHERE s.course_id NOT IN (10,11)
+      AND s.student_name NOT IN (
+          SELECT name FROM registered_user
+      )
+      $search_sql
 ");
 
-$total = mysqli_fetch_assoc($total_q)['total'];
+if (!$total_q) {
+    die(mysqli_error($conn));
+}
+
+$total_row = mysqli_fetch_assoc($total_q);
+$total = $total_row['total'] ?? 0;
 $total_pages = ceil($total / $limit);
 
+
+
+// $total = mysqli_fetch_assoc($total_q)['total'];
+// $total_pages = ceil($total / $limit);
+
 /* Fetch unregistered students */
+// $students = mysqli_query($conn,"
+//     SELECT *
+//     FROM students
+//     WHERE student_name NOT IN (
+//         SELECT name FROM registered_user
+//     )
+//     $search_sql
+//     ORDER BY id DESC
+//     LIMIT $limit OFFSET $offset
+// ");
+
 $students = mysqli_query($conn,"
-    SELECT *
-    FROM students
-    WHERE student_name NOT IN (
-        SELECT name FROM registered_user
-    )
-    $search_sql
-    ORDER BY id DESC
+    SELECT s.*
+    FROM students s
+    WHERE s.course_id NOT IN (10,11)
+      AND s.student_name NOT IN (
+          SELECT name FROM registered_user
+      )
+      $search_sql
+    ORDER BY s.id DESC
     LIMIT $limit OFFSET $offset
 ");
+
+if (!$students) {
+    die(mysqli_error($conn));
+}
+
 
 ?>
 
@@ -66,16 +103,6 @@ $students = mysqli_query($conn,"
                 value="<?php echo htmlspecialchars($stu_search); ?>">
         </div>
 
-        <!-- <div class="col-md-4">
-                <select name="course_id" class="form-control">
-                    <option value="">-- Select Course --</option>
-                    <?php while ($c = mysqli_fetch_assoc($courseList)) { ?>
-                    <option value="<?php echo $c['id']; ?>" <?php echo ($course_id == $c['id']) ? 'selected' : ''; ?>>
-                        <?php echo htmlspecialchars($c['course']); ?>
-                    </option>
-                    <?php } ?>
-                </select>
-            </div> -->
 
         <div class="col-md-2">
             <button class="btn btn-primary w-100">
@@ -104,12 +131,14 @@ $students = mysqli_query($conn,"
             <tbody>
 
                 <?php
-$count = mysqli_num_rows($students);
+// $count = mysqli_num_rows($students);
+$count = ($students) ? mysqli_num_rows($students) : 0;
+
 
 if ($count > 0) {
     $i = 1;
     while ($s = mysqli_fetch_assoc($students)) {
-        print_r($students);
+        // print_r($students);
 ?>
                 <tr>
                     <td><?= $i++ ?></td>

@@ -1,0 +1,59 @@
+# ===============================
+# ENABLE REWRITE ENGINE
+# ===============================
+RewriteEngine On
+# RewriteBase /institute_admin/exam-root/
+RewriteBase /institute_admin
+
+# ===============================
+# CUSTOM 404 PAGE
+# ===============================
+ErrorDocument 404 /institute_admin/exam-root/404.php
+
+# ===============================
+# HIDE PHP EXTENSION
+# example: /dashboard -> dashboard.php
+# ===============================
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^([^/]+)/?$ $1.php [L]
+
+# ===============================
+# BLOCK DIRECT ACCESS TO CORE FILES
+# ===============================
+<FilesMatch "(^connection\.php|^header\.php|^sidebar\.php|^process\.php)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# ===============================
+# BLOCK INCLUDE / SYSTEM FOLDERS
+# ===============================
+RewriteRule ^(includes|vendor|config|dompdf|all_students)/ - [F,L]
+
+# ===============================
+# DISABLE DIRECTORY LISTING
+# ===============================
+Options -Indexes
+
+# ===============================
+# SECURITY HEADERS
+# ===============================
+<IfModule mod_headers.c>
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# ===============================
+# BLOCK ACCESS TO SENSITIVE FILE TYPES
+# ===============================
+<FilesMatch "\.(env|log|sql|ini|bak|conf|sh)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# ===============================
+# FORCE UTF-8
+# ===============================
+AddDefaultCharset UTF-8
