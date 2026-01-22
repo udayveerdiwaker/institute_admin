@@ -3,13 +3,13 @@ session_start();
 
 if (isset($_SESSION['role'])) {
     if ($_SESSION['role'] == 'student') {
-        header("Location: dashboard.php");
+        header("Location: dashboard");
     }
     elseif ($_SESSION['role'] == 'exam_admin') {
-        header("Location: admin/dashboard.php");
+        header("Location: admin/dashboard");
     }
     elseif ($_SESSION['role'] == 'exam_user') {
-        header("Location: exam-root/dashboard.php");
+        header("Location: exam-root/dashboard");
     }
     exit;
 }
@@ -40,7 +40,7 @@ $username_cookie = $_COOKIE['login_user'] ?? '';
             <?php }
     ?>
 
-            <form method='POST' action='check_login.php'>
+            <form method='POST' action='check_login'>
                 <div class='mb-3'>
                     <label class='form-label'>Username</label>
                     <input required type='text' name='username' class='form-control'

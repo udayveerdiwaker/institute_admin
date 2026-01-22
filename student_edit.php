@@ -1,21 +1,8 @@
 <?php
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
-
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-
-include 'connection.php';
+include 'session.php';
 
 if (!isset($_GET['id'])) {
-    header("Location: all_students.php");
+    header("Location: students");
     exit;
 }
 
@@ -24,7 +11,7 @@ $id = (int)$_GET['id'];
 /* ===== FETCH STUDENT ===== */
 $student_q = mysqli_query($conn, "SELECT * FROM students WHERE id = $id");
 if (!$student_q || mysqli_num_rows($student_q) == 0) {
-    header("Location: all_students.php");
+    header("Location: students");
     exit;
 }
 $student = mysqli_fetch_assoc($student_q);
@@ -81,7 +68,7 @@ $upd = "UPDATE students SET
 WHERE id=$id";
 
     if (mysqli_query($conn, $upd)) {
-        header("Location: student_view.php?id=$id");
+        header("Location: student_view?id=$id");
         exit;
     } else {
         $err = mysqli_error($conn);
@@ -206,7 +193,7 @@ include 'sidebar.php';
             <button name="update" class="btn btn-primary">
                 <i class="bi bi-save"></i> Update Student
             </button>
-            <a href="student_view.php?id=<?= $id ?>" class="btn btn-secondary">Cancel</a>
+            <a href="student_view?id=<?= $id ?>" class="btn btn-secondary">Cancel</a>
 
         </form>
 

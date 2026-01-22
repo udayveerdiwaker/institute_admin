@@ -1,20 +1,10 @@
 <?php
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
 
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-// student_view.php
-include 'connection.php';
+include 'session.php';
 include 'sidebar.php';
 
 if ( !isset( $_GET[ 'id' ] ) ) {
-    header( 'Location: all_students.php' );
+    header( 'Location: students' );
     exit;
 }
 $student_id = ( int ) $_GET[ 'id' ];
@@ -104,8 +94,8 @@ $overall_remaining = $total_fee - $total_paid;
 
                 <!-- Buttons -->
                 <div class='action-buttons mt-3 d-grid'>
-                    <a href="student_edit.php?id=<?= $student['id'] ?>" class='btn btn-warning'>Edit Student</a>
-                    <a href="student_delete.php?id=<?= $student['id'] ?>"
+                    <a href="student_edit?id=<?= $student['id'] ?>" class='btn btn-warning'>Edit Student</a>
+                    <a href="student_delete?id=<?= $student['id'] ?>"
                         onclick="return confirm('Are you sure? This will delete student and image!')"
                         class="btn btn-danger btn-sm">
                         <i class="bi bi-trash"></i>
@@ -230,10 +220,10 @@ while ($fee = mysqli_fetch_assoc($fees_res)) {
         <td>".htmlspecialchars($fee['payment_mode'])."</td>
         <td>".htmlspecialchars($fee['remarks'])."</td>
         <td>
-            <a href='fees_receipt.php?fee_id={$fee['id']}' target='_blank'
+            <a href='fees_receipt?fee_id={$fee['id']}' target='_blank'
                class='btn btn-sm btn-success'><i class='bi bi-receipt'></i></a>
 
-            <a href='fees_edit.php?id={$fee['id']}'
+            <a href='fees_edit?id={$fee['id']}'
                class='btn btn-sm btn-warning'><i class='bi bi-pencil-square'></i></a>
 
             

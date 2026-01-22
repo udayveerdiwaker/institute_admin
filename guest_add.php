@@ -2,21 +2,7 @@
     <h3>Add Guest Entry</h3>
 
     <?php
-
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
-
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-
-include 'connection.php';
+include 'session.php';
 
 if ( isset( $_POST[ 'submit' ] ) ) {
     $name = $_POST[ 'guest_name' ];
@@ -33,7 +19,7 @@ if ( isset( $_POST[ 'submit' ] ) ) {
                    VALUES ('$name','$phone','$address','$purpose','$lead_type','$date','$time','$comments','$attended')";
 
     if ( mysqli_query( $conn, $insert ) ) {
-        header( 'Location: guest_list.php' );
+        header( 'Location: guest_list' );
         exit;
     } else {
         echo "<div class='alert alert-danger'>Error Adding Guest</div>";

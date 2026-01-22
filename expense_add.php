@@ -1,18 +1,6 @@
 <?php
 
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
-
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-include 'connection.php';
+include 'session.php';
 
 $msg = '';
 
@@ -27,7 +15,7 @@ if (isset($_POST['submit'])) {
             VALUES ('$expense_date', '$name', '$description', '$amount')";
 
     if (mysqli_query($conn, $sql)) {
-        header("Location: expense_list.php");
+        header("Location: expense_list");
         exit;
     } else {
         $msg = "<div class='alert alert-danger'>Error: " . mysqli_error($conn) . "</div>";
@@ -68,7 +56,7 @@ include 'sidebar.php';
 
                     <div class="col-12">
                         <button class="btn btn-primary" name="submit">Save</button>
-                        <a href="expense_list.php" class="btn btn-secondary">Back</a>
+                        <a href="expense_list" class="btn btn-secondary">Back</a>
                     </div>
 
                 </div>

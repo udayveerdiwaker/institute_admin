@@ -1,14 +1,5 @@
 <?php
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'exam_user') {
-    header("Location: ../login.php");
-    exit;
-}
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
+include 'session.php';
 include 'header.php';
 
 /* Search */
@@ -52,7 +43,7 @@ $students = mysqli_query($conn,"
 
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4>All Registered Students</h4>
-            <a href="dashboard.php" class="btn btn-secondary btn-sm">Back</a>
+            <a href="dashboard" class="btn btn-secondary btn-sm">Back</a>
         </div>
 
         <!-- Search -->
@@ -86,7 +77,7 @@ $students = mysqli_query($conn,"
             </div>
 
             <div class="col-md-2">
-                <a href="register_students.php" class="btn btn-secondary w-100">
+                <a href="register_students" class="btn btn-secondary w-100">
                     Reset
                 </a>
             </div>
@@ -127,7 +118,7 @@ $students = mysqli_query($conn,"
                         ?>
                         </td>
                         <td>
-                            <a href="start_exam.php?sid=<?= $s['id'] ?>" class="btn btn-primary btn-sm">
+                            <a href="start_exam?sid=<?= $s['id'] ?>" class="btn btn-primary btn-sm">
                                 Start Exam
                             </a>
                         </td>

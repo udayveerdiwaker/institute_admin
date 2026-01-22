@@ -1,23 +1,11 @@
 <?php
-session_start();
-
-/* Only exam user can start exam */
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'exam_user') {
-    header("Location: ../login.php");
-    exit;
-}
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-include '../connection.php';
+include 'session.php';
 
 /* ===============================
    1. Student must be selected
    =============================== */
 if (!isset($_GET['sid'])) {
-    header("Location: register_students.php");
+    header("Location: register_students");
     exit;
 }
 
@@ -64,7 +52,7 @@ $attempt_q = mysqli_query(
 );
 
 if (mysqli_num_rows($attempt_q) > 0) {
-    header("Location: already_attempted.php");
+    header("Location: already_attempted");
     exit;
 }
 
@@ -106,7 +94,7 @@ $first_question_id = mysqli_fetch_assoc($q_q)['id'];
    =============================== */
    
 header(
-    "Location: questions.php?n=" . base64_encode(1) .
+    "Location: questions?n=" . base64_encode(1) .
     "&sub=" . urlencode($subject) .
     "&Q=" . $first_question_id
 );

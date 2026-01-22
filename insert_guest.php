@@ -1,17 +1,6 @@
 <?php
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
 
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-include 'connection.php';
+include 'session.php';
 
 if ( $_POST ) {
     $gname = $_POST[ 'guest_name' ];
@@ -30,5 +19,5 @@ if ( $_POST ) {
     mysqli_query( $conn, $sql );
 }
 
-header( 'Location: list_guest.php' );
+header( 'Location: list_guest' );
 exit;

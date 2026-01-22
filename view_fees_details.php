@@ -1,10 +1,10 @@
 <?php
-include 'connection.php';
+include 'session.php';
 include 'sidebar.php';
 
 // FIX : redirect to fees list page instead of same page
 if (!isset($_GET['id'])) {
-    header('Location: student_fees.php');
+    header('Location: student_fees');
 
     echo "<div class='main-content container mt-4'>
             <div class='alert alert-danger'>Invalid Request: No Payment ID Found.</div>
@@ -55,11 +55,11 @@ $r = mysqli_fetch_assoc($q);
             </div>
 
             <div class="mt-3">
-                <a href="edit_fees.php?id=<?= $r['id'] ?>" class="btn btn-warning">Edit</a>
-                <a href="delete_fees.php?id=<?= $r['id'] ?>" class="btn btn-danger"
+                <a href="edit_fees?id=<?= $r['id'] ?>" class="btn btn-warning">Edit</a>
+                <a href="delete_fees?id=<?= $r['id'] ?>" class="btn btn-danger"
                     onclick="return confirm('Delete this payment?')">Delete</a>
-                <a href="student_fees.php" class="btn btn-secondary">Back</a>
-        
+                <a href="student_fees" class="btn btn-secondary">Back</a>
+
 
             </div>
         </div>

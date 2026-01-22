@@ -1,20 +1,8 @@
 <?php
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
-
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-include 'connection.php';
+include 'session.php';
 include 'sidebar.php';
 
-if (!isset($_GET['student_id'])) { header('Location: fees_list.php'); exit; }
+if (!isset($_GET['student_id'])) { header('Location: fees_list'); exit; }
 $student_id = (int)$_GET['student_id'];
 
 // fetch student and course info
@@ -46,7 +34,7 @@ if (isset($_POST['submit'])) {
                 VALUES ('$student_id','{$student['course_id']}','$total_fee','$new_pay','$prev_fee','$mode','$remarks')";
         mysqli_query($conn, $ins);
 
-        header("Location: view_fees.php?student_id=$student_id");
+        header("Location: view_fees?student_id=$student_id");
         exit;
     }
 }
@@ -87,7 +75,7 @@ if (isset($_POST['submit'])) {
 
                     <div class="col-12 mt-3">
                         <button class="btn btn-primary" name="submit">Add Payment</button>
-                        <a href="fees_list.php" class="btn btn-secondary">Back</a>
+                        <a href="fees_list" class="btn btn-secondary">Back</a>
                     </div>
                 </div>
             </form>

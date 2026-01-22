@@ -24,17 +24,17 @@ if ($res && mysqli_num_rows($res) == 1) {
         }
 
         if ($row['role'] == 'student') {
-            header("Location: dashboard.php");              // ROOT
+            header("Location: dashboard");              // ROOT
         }
         elseif ($row['role'] == 'exam_admin') {
-            header("Location: admin/dashboard.php");       // ADMIN
+            header("Location: admin/dashboard");       // ADMIN
         }
         elseif ($row['role'] == 'exam_user') {
-            header("Location: exam-root/dashboard.php");        // EXAM USER
+            header("Location: exam-root/dashboard");        // EXAM USER
         }
         exit;
     }
 }
 
-header("Location: login.php?error=Invalid Username or Password");
+header("Location: login?error=Invalid Username or Password");
 exit;

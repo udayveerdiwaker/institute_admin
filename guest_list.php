@@ -1,17 +1,7 @@
 <?php
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
 
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 
-include 'connection.php';
+include 'session.php';
 include 'sidebar.php';
 
 // Filters
@@ -60,8 +50,8 @@ $q = mysqli_query($conn, $sql);
 
         <div class="col-md-6 d-flex gap-2">
             <button class="btn btn-primary">Search</button>
-            <a href="guest_list.php" class="btn btn-secondary">Reset</a>
-            <a href="guest_add.php" class="btn btn-success">+ Add Guest</a>
+            <a href="guest_list" class="btn btn-secondary">Reset</a>
+            <a href="guest_add" class="btn btn-success">+ Add Guest</a>
         </div>
     </form>
 
@@ -109,11 +99,10 @@ $q = mysqli_query($conn, $sql);
                 <td><?= htmlspecialchars($row['visit_time']) ?></td>
                 <td><?= htmlspecialchars($row['attended_by']) ?></td>
                 <td>
-                    <a href="guest_view.php?id=<?= $row['id'] ?>" class="btn btn-info btn-sm"><i
-                            class='bi bi-eye'></i></a>
-                    <a href="guest_edit.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i
+                    <a href="guest_view?id=<?= $row['id'] ?>" class="btn btn-info btn-sm"><i class='bi bi-eye'></i></a>
+                    <a href="guest_edit?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i
                             class='bi bi-pencil-square'></i></a>
-                    <!-- <a href="guest_delete.php?id=<?= $row['id'] ?>" class="btn btn-danger btn-sm"
+                    <!-- <a href="guest_delete?id=<?= $row['id'] ?>" class="btn btn-danger btn-sm"
                         onclick="return confirm('Delete this guest?')"><i class='bi bi-trash'></i></a> -->
                 </td>
             </tr>

@@ -129,52 +129,49 @@ include 'connection.php';
     <!-- Header -->
     <header>
         <button class='menu-toggle' onclick='toggleSidebar()'><i class='bi bi-list'></i></button>
-        <h5>Admin Panel</h5>
-        <!-- <div class = 'd-flex align-items-center'>
-<i class = 'bi bi-person-circle me-2'></i> Admin
-</div> -->
+        <!-- <h5>Admin Panel</h5> -->
+        <div class='d-flex align-items-center'>
+            <i class='bi bi-person-circle me-2'></i> Admin
+        </div>
     </header>
 
     <!-- Sidebar -->
     <div class='sidebar' id='sidebar'>
-        <!-- <h4>Menu</h4> -->
-        <a href='dashboard.php' class="<?php echo basename($_SERVER['PHP_SELF']) == 'dashboard.php' ? 'active' : '' ?>">
+        <h4 class="text-white mb-4">🎓 Student Admin</h4>
+
+        <a href='dashboard' class="<?php echo basename($_SERVER['PHP_SELF']) == 'dashboard' ? 'active' : '' ?>">
             <i class='bi bi-speedometer2 me-2'></i> Dashboard
         </a>
-        <a href='course_list.php'
-            class="<?php echo basename($_SERVER['PHP_SELF']) == 'course_list.php' ? 'active' : '' ?>">
+        <a href='course_list' class="<?php echo basename($_SERVER['PHP_SELF']) == 'course_list' ? 'active' : '' ?>">
             <i class='bi bi-journal-bookmark me-2'></i> Course List
         </a>
-        <a href='fees_list.php' class="<?php echo basename($_SERVER['PHP_SELF']) == 'fees_list.php' ? 'active' : '' ?>">
+        <a href='fees_list' class="<?php echo basename($_SERVER['PHP_SELF']) == 'fees_list' ? 'active' : '' ?>">
             <i class='bi bi-cash-stack me-2'></i> Fees Student
         </a>
 
-        <a href='   all_students.php'
-            class="<?php echo basename($_SERVER['PHP_SELF']) == 'all_students.php' ? 'active' : '' ?>">
-            <i class='bi bi-person-lines-fill me-2'></i> All Students
+        <a href='   students' class="<?php echo basename($_SERVER['PHP_SELF']) == 'students' ? 'active' : '' ?>">
+            <i class='bi bi-people-fill me-2'></i> All Students
         </a>
 
-        <a href='guest_list.php'
-            class="<?php echo basename($_SERVER['PHP_SELF']) == 'guest_list.php' ? 'active' : '' ?>">
+        <a href='guest_list' class="<?php echo basename($_SERVER['PHP_SELF']) == 'guest_list' ? 'active' : '' ?>">
             <i class='bi bi-person-lines-fill me-2'></i> Guest Entries
         </a>
 
-        <a href='report.php' class="<?php echo basename($_SERVER['PHP_SELF']) == 'report.php' ? 'active' : '' ?>">
+        <a href='report' class="<?php echo basename($_SERVER['PHP_SELF']) == 'report' ? 'active' : '' ?>">
             <i class='bi bi-person-lines-fill me-2'></i> Reporting
         </a>
 
-        <a href='expense_list.php'
-            class="<?php echo basename($_SERVER['PHP_SELF']) == 'expense_list.php' ? 'active' : '' ?>">
+        <a href='expense_list' class="<?php echo basename($_SERVER['PHP_SELF']) == 'expense_list' ? 'active' : '' ?>">
             <i class='bi bi-person-lines-fill me-2'></i> Expense List
         </a>
 
 
-        <!-- <a href='list_exam.php' class="<?php echo basename($_SERVER['PHP_SELF']) == 'list_exam.php' ? 'active' : '' ?>">
+        <!-- <a href='list_exam.php' class="<?php echo basename($_SERVER['PHP_SELF']) == 'list_exam' ? 'active' : '' ?>">
             <i class='bi bi-person-lines-fill me-2'></i> List Exam
         </a> -->
 
         <!-- <a href = '#'><i class = 'bi bi-gear me-2'></i> Settings</a> -->
-        <a href='logout.php'><i class='bi bi-box-arrow-right me-2'></i> Logout</a>
+        <a href='logout'><i class='bi bi-box-arrow-right me-2'></i> Logout</a>
     </div>
 
     <script>

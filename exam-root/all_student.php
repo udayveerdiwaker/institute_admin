@@ -1,14 +1,5 @@
 <?php
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'exam_user') {
-    header("Location: ../login.php");
-    exit;
-}
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
+include 'session.php';
 include 'header.php';
 /* Search */
 $stu_search = $_GET['stu_search'] ?? '';
@@ -94,7 +85,7 @@ if (!$students) {
 
     <div class="d-flex justify-content-between align-items-center">
         <h5>Unregistered Students</h5>
-        <a href="dashboard.php" class="btn btn-secondary btn-sm">Back</a>
+        <a href="dashboard" class="btn btn-secondary btn-sm">Back</a>
     </div>
     <!-- ===== FILTER FORM ===== -->
     <form method="get" class="row g-3 mb-4 mt-2 align-items-center">
@@ -111,7 +102,7 @@ if (!$students) {
         </div>
 
         <div class="col-md-2">
-            <a href="all_students.php" class="btn btn-secondary w-100">
+            <a href="all_student" class="btn btn-secondary w-100">
                 Reset
             </a>
         </div>
@@ -148,7 +139,7 @@ if ($count > 0) {
                         <span class="badge bg-danger">Not Registered</span>
                     </td>
                     <td>
-                        <a href="registration_student.php?sid=<?= $s['id'] ?>" class="btn btn-sm btn-primary">
+                        <a href="registration_student?sid=<?= $s['id'] ?>" class="btn btn-sm btn-primary">
                             Register
                         </a>
                     </td>

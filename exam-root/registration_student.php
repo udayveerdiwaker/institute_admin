@@ -1,16 +1,5 @@
 <?php
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'exam_user') {
-    header("Location: login.php");
-    exit;
-}
-
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-include '../connection.php';
+include 'session.php';
 
 $fname = "";
 $phone = "";
@@ -69,7 +58,7 @@ if (isset($_POST['submit'])) {
             $_SESSION['student_name'] = $name;
 
             // redirect to register_students.php (or dashboard)
-            header("Location: register_students.php");
+            header("Location: register_students");
             exit;
 
         } else {

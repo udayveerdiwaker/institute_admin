@@ -1,14 +1,5 @@
 <?php
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'exam_user') {
-    header("Location: ../login.php");
-    exit;
-}
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
+include 'session.php';
 include 'header.php';
 
 /* Search */
@@ -48,7 +39,7 @@ $res = mysqli_query($conn,"
 
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4>All Registered Students</h4>
-            <a href="dashboard.php" class="btn btn-secondary btn-sm">Back</a>
+            <a href="dashboard" class="btn btn-secondary btn-sm">Back</a>
         </div>
         <!-- <form class="d-flex" method="GET">
                 <input type="text" name="search" class="form-control me-2" placeholder="Search student"
@@ -70,7 +61,7 @@ $res = mysqli_query($conn,"
             </div>
 
             <div class="col-md-2">
-                <a href="all_students.php" class="btn btn-secondary w-100">
+                <a href="results" class="btn btn-secondary w-100">
                     Reset
                 </a>
             </div>
@@ -104,9 +95,9 @@ $res = mysqli_query($conn,"
                             </span>
                         </td>
                         <td>
-                            <a href="view_result.php?id=<?= $r['id'] ?>" class="btn btn-sm btn-info">View</a>
+                            <a href="view_result?id=<?= $r['id'] ?>" class="btn btn-sm btn-info">View</a>
 
-                            <a href="print_result.php?id=<?= $r['id'] ?>" target="_blank"
+                            <a href="print_result?id=<?= $r['id'] ?>" target="_blank"
                                 class="btn btn-sm btn-secondary">Print</a>
                         </td>
                     </tr>

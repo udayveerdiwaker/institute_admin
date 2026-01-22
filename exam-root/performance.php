@@ -1,20 +1,11 @@
 <?php
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'exam_user') {
-    header("Location: ../login.php");
-    exit;
-}
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
+include 'session.php';
 include 'header.php';
 
 /* Stats */
 $total_results = mysqli_num_rows(mysqli_query($conn,"SELECT id FROM result"));
-$passed = mysqli_num_rows(mysqli_query($conn,"SELECT id FROM result WHERE student_marks >= 40"));
-$failed = mysqli_num_rows(mysqli_query($conn,"SELECT id FROM result WHERE student_marks < 40"));
+$passed = mysqli_num_rows(mysqli_query($conn,"SELECT id FROM result WHERE student_marks >= 33"));
+$failed = mysqli_num_rows(mysqli_query($conn,"SELECT id FROM result WHERE student_marks < 33"));
 
 $topper = mysqli_fetch_assoc(
     mysqli_query($conn,"SELECT student_name, MAX(student_marks) AS marks FROM result")
@@ -63,19 +54,7 @@ $results = mysqli_query($conn,"SELECT * FROM result ORDER BY student_marks DESC"
                 </div>
             </div>
 
-            <!-- <div class="col-md-3 col-12">
-                <div class="card shadow-sm border-0 text-center h-100">
-                    <div class="card-body">
-                        <h6 class="text-muted">Top Performer</h6>
-                        <h5 class="fw-bold text-primary">
-                            <?= $topper['student_name'] ?? 'N/A' ?>
-                        </h5>
-                        <small class="text-muted">
-                            <?= $topper['marks'] ?? 0 ?> Marks
-                        </small>
-                    </div>
-                </div>
-            </div> -->
+
 
         </div>
 

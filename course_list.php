@@ -1,19 +1,6 @@
 <?php
 
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
-
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-
-include 'connection.php';
+include 'session.php';
 include 'sidebar.php';
 
 $limit = 10;
@@ -36,7 +23,7 @@ $res = mysqli_query($conn,$sql);
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3>Course List</h3>
-            <a href="course_add.php" class="btn btn-primary">
+            <a href="course_add" class="btn btn-primary">
                 <i class="bi bi-plus-circle"></i> Add Course
             </a>
         </div>
@@ -61,13 +48,13 @@ $res = mysqli_query($conn,$sql);
                     <td>₹<?= number_format($row['fees'],2) ?></td>
                     <td>₹<?= number_format($row['monthly_fee'],2) ?></td>
                     <td>
-                        <a href="course_view.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-info">
+                        <a href="course_view?id=<?= $row['id'] ?>" class="btn btn-sm btn-info">
                             <i class="bi bi-eye"></i>
                         </a>
-                        <a href="course_add.php?edit=<?= $row['id'] ?>" class="btn btn-sm btn-warning">
+                        <a href="course_add?edit=<?= $row['id'] ?>" class="btn btn-sm btn-warning">
                             <i class="bi bi-pencil"></i>
                         </a>
-                        <a href="course_delete.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger"
+                        <a href="course_delete?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger"
                             onclick="return confirm('Are you sure you want to delete this course?');">
                             <i class="bi bi-trash"></i>
                     </td>

@@ -1,18 +1,6 @@
 <?php 
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
 
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-
-include 'connection.php';
+include 'session.php';
 
 ?>
 
@@ -28,7 +16,7 @@ if (isset($_POST['update'])) {
     $fees = $_POST['fees'];
   $sql = "UPDATE courses SET course='$course', duration='$duration', fees='$fees' WHERE id=$id";
   if (mysqli_query($conn, $sql)) {
-    header("Location: course_list.php");
+    header("Location: course_list");
     exit;
   } else {
     echo "Error: " . mysqli_error($conn);
@@ -153,7 +141,7 @@ body {
 
                     <button type="submit" name="update" class="btn btn-primary"><i class="bi bi-save"></i>
                         Update</button>
-                    <a href="index.php" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
+                    <a href="course_list" class="btn btn-secondary"><i class="bi bi-arrow-left"></i> Back</a>
                 </form>
             </div>
         </div>

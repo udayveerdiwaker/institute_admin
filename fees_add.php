@@ -1,20 +1,5 @@
 <?php
-
-use FontLib\Table\Type\head;
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
-
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-
-include 'connection.php';
+include 'session.php';
 
 
 $msg = '';
@@ -40,7 +25,7 @@ if (isset($_POST['submit'])) {
             VALUES ('$student_id','$course_id','$total_fee','$paid_amount','$prev_fee','$payment_mode','$remarks', '$date')";
     if (mysqli_query($conn, $ins)) {
         // $msg = "<div class='alert alert-success'>Payment recorded.</div>";
-        header("Location: fees_list.php?student_id=$student_id");
+        header("Location: fees_list?student_id=$student_id");
         exit;
     } else {
         $msg = "<div class='alert alert-danger'>Error: ".mysqli_error($conn)."</div>";
@@ -119,7 +104,7 @@ include 'sidebar.php';
                     <div class="col-12">
                         <button class="btn btn-primary" name="submit"><i class="bi bi-check-circle"></i> Save
                             Payment</button>
-                        <a href="fees_list.php" class="btn btn-secondary">Back</a>
+                        <a href="fees_list" class="btn btn-secondary">Back</a>
                     </div>
                 </div>
             </form>

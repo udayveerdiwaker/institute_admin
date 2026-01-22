@@ -54,7 +54,7 @@ http_response_code(404);
         </p>
 
         <div class="d-grid gap-2">
-            <a href="dashboard.php" class="btn btn-primary">
+            <a href="dashboard" class="btn btn-primary">
                 Go to Dashboard
             </a>
             <a href="javascript:history.back()" class="btn btn-outline-secondary">

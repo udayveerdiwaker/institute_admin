@@ -1,17 +1,6 @@
 <?php
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
 
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-include 'connection.php';
+include 'session.php';
 include 'sidebar.php';
 
 
@@ -212,9 +201,9 @@ if ($res) {
             <div class="d-flex justify-content-between align-items-center">
                 <h5 class="mb-0">Analytics</h5>
                 <div>
-                    <a class="btn btn-sm btn-primary" href="new_registration.php">New Registration</a>
-                    <a class="btn btn-sm btn-success" href="course_add.php">Add Course</a>
-                    <a class="btn btn-sm btn-warning" href="fees_add.php">Add Payment</a>
+                    <a class="btn btn-sm btn-primary" href="new_registration">New Registration</a>
+                    <a class="btn btn-sm btn-success" href="course_add">Add Course</a>
+                    <a class="btn btn-sm btn-warning" href="fees_add">Add Payment</a>
                 </div>
             </div>
 

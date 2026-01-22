@@ -1,13 +1,5 @@
 <?php 
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'exam_user') {
-    header("Location: ../login.php");
-    exit;
-}
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+include 'session.php';
 include 'header.php';
 
 $total_registration = mysqli_num_rows(mysqli_query($conn,"SELECT * FROM registered_user"));
@@ -105,17 +97,17 @@ $students = mysqli_query($conn,"
         <!-- Quick Actions -->
         <div class="row g-3 mt-4">
             <div class="col-md-4 col-12">
-                <a href="all_students.php" class="btn btn-outline-primary w-100 py-3">
+                <a href="all_student" class="btn btn-outline-primary w-100 py-3">
                     <i class="bi bi-people me-2"></i> View All Students
                 </a>
             </div>
             <div class="col-md-4 col-12">
-                <a href="results.php" class="btn btn-outline-success w-100 py-3">
+                <a href="results" class="btn btn-outline-success w-100 py-3">
                     <i class="bi bi-award me-2"></i> View Results
                 </a>
             </div>
             <div class="col-md-4 col-12">
-                <a href="performance.php" class="btn btn-outline-warning w-100 py-3">
+                <a href="performance" class="btn btn-outline-warning w-100 py-3">
                     <i class="bi bi-graph-up-arrow me-2"></i> Performance
                 </a>
             </div>

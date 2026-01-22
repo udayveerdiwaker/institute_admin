@@ -1,20 +1,8 @@
 <?php
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
-
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-include 'connection.php';
+include 'session.php';
 
 if ( !isset( $_GET[ 'student_id' ] ) ) {
-    header( 'Location: fees_list.php' );
+    header( 'Location: fees_list' );
     exit;
 }
 $student_id = ( int )$_GET[ 'student_id' ];
@@ -55,7 +43,7 @@ if ( isset( $_POST[ 'submit' ] ) ) {
 
         mysqli_query( $conn, $ins );
 
-        header( "Location: fees_view.php?student_id=$student_id" );
+        header( "Location: fees_view?student_id=$student_id" );
         exit;
     }
 }
@@ -112,7 +100,7 @@ include 'sidebar.php';
 
                     <div class='col-12 mt-3'>
                         <button class='btn btn-primary' name='submit'>Add Payment</button>
-                        <a href='fees_list.php' class='btn btn-secondary'>Back</a>
+                        <a href='fees_list' class='btn btn-secondary'>Back</a>
                     </div>
                 </div>
             </form>

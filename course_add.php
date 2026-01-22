@@ -1,19 +1,19 @@
 <?php
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
+// session_start();
+// if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
+//     header("Location: login");
+//     exit;
+// }
 
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// // dashboard.php - full UI + PHP + Charts (monthly & yearly)
+// // Turn on errors for debugging (remove in production)
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 
 
+include 'session.php';
 
-include 'connection.php';
 
 $edit_id = $_GET['edit'] ?? '';
 $course = $duration = $fees = $monthly_fee = $details = '';
@@ -53,7 +53,7 @@ if(isset($_POST['save'])){
         VALUES('$course','$duration','$fees','$monthly_fee','$details')
         ");
     }
-    header("Location: course_list.php");
+    header("Location: course_list");
     exit;
 }
 include 'sidebar.php';
@@ -93,7 +93,7 @@ include 'sidebar.php';
             </div>
 
             <button name="save" class="btn btn-success">Save</button>
-            <a href="course_list.php" class="btn btn-secondary">Cancel</a>
+            <a href="course_list" class="btn btn-secondary">Cancel</a>
 
         </form>
     </div>

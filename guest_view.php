@@ -1,4 +1,5 @@
 <?php
+include 'session.php';
 include 'sidebar.php';
 
 $id = $_GET[ 'id' ];
@@ -64,7 +65,7 @@ $data = mysqli_fetch_assoc( $q );
 ?>
             </p>
 
-            <a href='guest_list.php' class='btn btn-secondary mt-3'>Back</a>
+            <a href='guest_list' class='btn btn-secondary mt-3'>Back</a>
         </div>
 
     </div>

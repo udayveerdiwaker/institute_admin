@@ -1,17 +1,6 @@
 <?php
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
 
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-include 'connection.php';
+include 'session.php';
 include 'sidebar.php';
 
 $id = (int)($_GET['id'] ?? 0);
@@ -51,7 +40,7 @@ if(!$course){
                 </tr>
             </table>
 
-            <a href="course_list.php" class="btn btn-secondary mt-3">
+            <a href="course_list" class="btn btn-secondary mt-3">
                 <i class="bi bi-arrow-left"></i> Back
             </a>
 

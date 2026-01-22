@@ -1,18 +1,7 @@
-<?php
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
-
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+<?php   
 
 
-include 'connection.php';
+include 'session.php';
 include 'sidebar.php';
 
 $limit = 10;
@@ -68,7 +57,7 @@ $courseList = mysqli_query($conn, "SELECT id, course FROM courses ORDER BY cours
 
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3>All Students</h3>
-            <a href="new_registration.php" class="btn btn-success">
+            <a href="new_registration" class="btn btn-success">
                 <i class="bi bi-person-plus"></i> New Registration
             </a>
         </div>
@@ -98,7 +87,7 @@ $courseList = mysqli_query($conn, "SELECT id, course FROM courses ORDER BY cours
             </div>
 
             <div class="col-md-2">
-                <a href="all_students.php" class="btn btn-secondary w-100">
+                <a href="students" class="btn btn-secondary w-100">
                     Reset
                 </a>
             </div>
@@ -144,38 +133,15 @@ echo "<tr>
                 <td>" . htmlspecialchars($r['phone']) . "</td>
                 <td>" . htmlspecialchars($r['admission_date']) . "</td>
                 <td>
-                    <a href='student_view.php?id={$r['id']}' class='btn btn-sm btn-info'>View</a>
-                    <a href='student_edit.php?id={$r['id']}' class='btn btn-sm btn-warning'>Edit</a>
+                    <a href='student_view?id={$r['id']}' class='btn btn-sm btn-info'>View</a>
+                    <a href='student_edit?id={$r['id']}' class='btn btn-sm btn-warning'>Edit</a>
                    
                 </td>
               </tr>";
 
         $i++;
  
-                    ?>
-                    <!-- <a href='student_delete.php?id={$r['id']}' 
-                       class='btn btn-sm btn-danger' 
-                       onclick=\"return confirm('Delete this student?')\">
-                       Delete
-                    </a> -->
-                    <!-- <tr>
-                        <td><?= $r['id'] ?></td>
-                        <td>
-                            <img src="<?= $photo ?>" style="width:48px;height:48px;
-                                object-fit:cover;border-radius:6px">
-                        </td>
-                        <td><?= htmlspecialchars($r['student_name']) ?></td>
-                        <td><?= htmlspecialchars($r['course_name'] ?? '-') ?></td>
-                        <td><?= htmlspecialchars($r['phone']) ?></td>
-                        <td><?= htmlspecialchars($r['admission_date']) ?></td>
-                        <td>
-                            <a href="student_view.php?id=<?= $r['id'] ?>" class="btn btn-sm btn-info">View</a>
-                            <a href="student_edit.php?id=<?= $r['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
-                            <a href="student_delete.php?id=<?= $r['id'] ?>" class="btn btn-sm btn-danger"
-                                onclick="return confirm('Delete this student?')">Delete</a>
-                        </td>
-                    </tr> -->
-                    <?php
+                 
                     }
                 } else {
                     echo "<tr><td colspan='7' class='text-center'>No students found</td></tr>";

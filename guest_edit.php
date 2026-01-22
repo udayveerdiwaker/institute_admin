@@ -1,18 +1,5 @@
 <?php
-
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
-
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-include 'connection.php';
+include 'session.php';
 $id = $_GET[ 'id' ];
 $q = mysqli_query( $conn, "SELECT * FROM guests WHERE id=$id" );
 $data = mysqli_fetch_assoc( $q );
@@ -46,7 +33,7 @@ if ( isset( $_POST[ 'submit' ] ) ) {
                WHERE id=$id";
 
     if ( mysqli_query( $conn, $up ) ) {
-        header( "Location: guest_list.php?id=$id" );
+        header( "Location: guest_list?id=$id" );
         exit;
     } else {
         $err = mysqli_error( $conn );
@@ -83,7 +70,7 @@ include 'sidebar.php';
             <div class="col-md-6">
                 <label>Guest Type</label>
                 <select name="lead_type" class="form-control" required>
-                    <option value="">-- Select --</option>
+                    <option value="<?php echo $data['lead_type'] ?>"><?php echo $data['lead_type'] ?></option>
                     <option value="Hot" class="text-danger">Hot</option>
                     <option value="Cold" class="text-info">Cold</option>
                     <option value="Close" class="text-primary">Close</option>

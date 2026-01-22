@@ -1,17 +1,5 @@
 <?php
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
-
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-include 'connection.php';
+include 'session.php';
 include 'sidebar.php';
 
 /* ================= DATE FILTER ================= */
@@ -68,7 +56,7 @@ $courses = mysqli_query($conn,"SELECT id, course FROM courses ORDER BY course");
 
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3><i class="bi bi-cash-coin"></i> Fees / Students</h3>
-            <a href="fees_add.php" class="btn btn-primary">
+            <a href="fees_add" class="btn btn-primary">
                 <i class="bi bi-plus-circle"></i> Add Payment
             </a>
         </div>
@@ -102,9 +90,9 @@ $courses = mysqli_query($conn,"SELECT id, course FROM courses ORDER BY course");
             <!-- PAID / UNPAID -->
             <div class="col-md-2 d-flex align-items-center gap-2">
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="status[]" value="paid"
+                    <input class="form-check-input" form="check" type="checkbox" name="status[]" value="paid"
                         <?= (isset($_GET['status']) && in_array('paid', $_GET['status'])) ? 'checked' : '' ?>>
-                    <label class="form-check-label">Paid</label>
+                    <label class="form-check-label" id="check">Paid</label>
                 </div>
 
                 <div class="form-check">
@@ -121,7 +109,7 @@ $courses = mysqli_query($conn,"SELECT id, course FROM courses ORDER BY course");
             </div>
 
             <div class="col-md-2">
-                <a href="fee_list.php" class="btn btn-secondary w-100">Reset</a>
+                <a href="fee_list" class="btn btn-secondary w-100">Reset</a>
             </div>
         </form>
 
@@ -219,7 +207,7 @@ echo "<tr>
         </span>
     </td>
     <td>
-        <a href='fees_view.php?student_id={$row['student_id']}'
+        <a href='fees_view?student_id={$row['student_id']}'
            class='btn btn-sm btn-info'>
            <i class='bi bi-eye'></i>
         </a>

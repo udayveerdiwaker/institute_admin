@@ -1,18 +1,5 @@
 <?php
-
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
-
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-include 'connection.php';
+include 'session.php';
 include 'sidebar.php';
 
 // date filters via GET
@@ -69,7 +56,7 @@ $list_q = mysqli_query($conn, "SELECT * FROM expenses WHERE $where ORDER BY expe
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h3>Expenses</h3>
-            <a href="expense_add.php" class="btn btn-success">+ Add Expense</a>
+            <a href="expense_add" class="btn btn-success">+ Add Expense</a>
         </div>
 
         <div class="card p-3 mb-3">
@@ -94,7 +81,7 @@ $list_q = mysqli_query($conn, "SELECT * FROM expenses WHERE $where ORDER BY expe
                     <button class="btn btn-primary w-100">Filter</button>
                 </div>
                 <div class="col-md-2">
-                    <a href="expense_list.php" class="btn btn-secondary w-100">Reset</a>
+                    <a href="expense_list" class="btn btn-secondary w-100">Reset</a>
                 </div>
 
             </form>
@@ -137,8 +124,8 @@ $list_q = mysqli_query($conn, "SELECT * FROM expenses WHERE $where ORDER BY expe
                             <td><?= nl2br(htmlspecialchars($row['description'])) ?></td>
                             <td class="text-end">₹<?= number_format($row['amount'],2) ?></td>
                             <td class="text-center">
-                                <a href="expense_edit.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
-                                <a href="expense_delete.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger"
+                                <a href="expense_edit?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
+                                <a href="expense_delete?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger"
                                     onclick="return confirm('Delete this expense?')">Delete</a>
                             </td>
                         </tr>

@@ -1,20 +1,8 @@
 <?php
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'exam_user') {
-    header("Location: ../login.php");
-    exit;
-}
-
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-
-include_once "../connection.php";
+include_once "session.php";
 
 if (!isset($_SESSION['student_name'])) {
-    header("Location: registration_student.php");
+    header("Location: registration_student");
     exit;
 }
 
@@ -101,7 +89,7 @@ input[type=radio]:checked+.option-card {
                 <h5 class="fw-bold mb-4">
                     <?= $number ?>. <?= htmlspecialchars($question['question_text']) ?>
                 </h5>
-                <form action="process.php" method="POST">
+                <form action="process" method="POST">
 
                     <?php while($o=mysqli_fetch_assoc($options)){ ?>
                     <input type="radio" name="choice" id="opt<?= $o['id'] ?>" value="<?= $o['id'] ?>" hidden required>

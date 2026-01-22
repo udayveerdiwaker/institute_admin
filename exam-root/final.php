@@ -1,19 +1,11 @@
 <?php
-session_start();
 
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'exam_user') {
-    header("Location: ../login.php");
-    exit;
-}
 
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
-include '../connection.php';
+include 'session.php';
 
 /* REQUIRED SESSION */
 if (empty($_SESSION['student_name']) || !isset($_SESSION['student_exam'])) {
-    header("Location: registration_student.php");
+    header("Location: registration_student");
     exit;
 }
 
@@ -188,11 +180,11 @@ $statusClass = ($status === 'PASS') ? 'success' : 'danger';
             </div>
 
             <div class="d-grid gap-2 mt-3">
-                <a href="results.php" class="btn btn-primary btn-lg">
+                <a href="results" class="btn btn-primary btn-lg">
                     📄 View Result
                 </a>
 
-                <a href="dashboard.php" class="btn btn-outline-secondary">
+                <a href="dashboard" class="btn btn-outline-secondary">
                     ⬅ Back to Dashboard
                 </a>
             </div>

@@ -1,14 +1,5 @@
 <?php
-session_start();
-/* Only exam user */
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'exam_user') {
-    header("Location: ../login.php");
-    exit;
-}
-
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
+include 'session.php';
 include 'header.php';
 
 /* Validate result id */

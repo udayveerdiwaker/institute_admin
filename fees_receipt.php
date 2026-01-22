@@ -1,18 +1,5 @@
 <?php
-// receipt.php
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
-
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-include 'connection.php';
+include 'session.php';
 
 if (!isset($_GET['fee_id'])) die("Missing id");
 $fee_id = (int) $_GET['fee_id'];
@@ -147,7 +134,7 @@ $remarks = nl2br(htmlspecialchars($r['remarks'] ?? ''));
         <div class="mt-3 no-print text-center">
             <button class="btn btn-primary" onclick="window.print()">Print</button>
             <!-- <a href="receipt_pdf.php?fee_id=<?= $receipt_no ?>" class="btn btn-danger" target="_blank">Download PDF</a> -->
-            <a href="student_view.php?id=<?= $r['student_id'] ?>" class="btn btn-secondary">Back</a>
+            <a href="student_view?id=<?= $r['student_id'] ?>" class="btn btn-secondary">Back</a>
         </div>
     </div>
 </body>

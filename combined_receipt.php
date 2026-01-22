@@ -1,18 +1,5 @@
 <?php
-session_start();
-if (!isset($_SESSION['role']) || $_SESSION['role'] != 'student') {
-    header("Location: login.php");
-    exit;
-}
-
-// dashboard.php - full UI + PHP + Charts (monthly & yearly)
-// Turn on errors for debugging (remove in production)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-// combined_receipt.php
-include 'connection.php';
+include 'session.php';
 
 if (!isset($_GET['student_id'])) die("Missing student_id");
 $student_id = (int) $_GET['student_id'];
@@ -112,10 +99,10 @@ $institute_address = "Address line, City";
         </div>
 
         <div class="mt-4">
-            <a href="combined_receipt_pdf.php?student_id=<?= $student_id ?>" class="btn btn-danger"
-                target="_blank">Download Combined PDF</a>
+            <a href="combined_receipt_pdf?student_id=<?= $student_id ?>" class="btn btn-danger" target="_blank">Download
+                Combined PDF</a>
             <button class="btn btn-primary" onclick="window.print()">Print</button>
-            <a href="student_view.php?id=<?= $student_id ?>" class="btn btn-secondary">Back</a>
+            <a href="student_view?id=<?= $student_id ?>" class="btn btn-secondary">Back</a>
         </div>
     </div>
 </body>
