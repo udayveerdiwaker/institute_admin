@@ -1,10 +1,10 @@
 <!-- Header -->
 <header>
     <button class='menu-toggle' onclick='toggleSidebar()'><i class='bi bi-list'></i></button>
-    <h5>Admin Panel</h5>
-    <div class='d-flex align-items-center'>
+    <h5>Exam Panel</h5>
+    <!-- <div class='d-flex align-items-center'>
         <i class='bi bi-person-circle me-2'></i> User
-    </div>
+    </div> -->
 </header>
 <div class="sidebar" id="sidebar">
     <h4 class="text-white mb-4">🎓 Student Exam</h4>
