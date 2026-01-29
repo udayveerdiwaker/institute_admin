@@ -1,10 +1,21 @@
 <?php
 session_start();
-session_unset();
+
+/* Unset all session variables */
+$_SESSION = [];
+
+/* Destroy the session */
 session_destroy();
 
-setcookie( 'admin_user', '', time() - 3600, '/' );
+/* Delete cookie if exists */
+if (isset($_COOKIE['student'])) {
+    setcookie('student', '', time() - 3600, '/', '', false, true);
+}
+if (isset($_COOKIE['exam_user'])) {
+    setcookie('exam_user', '', time() - 3600, '/', '', false, true);
+}
 
 
-header( 'Location: login' );
+/* Redirect to login page (without .php if using htaccess) */
+header("Location: login");
 exit;

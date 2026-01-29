@@ -149,6 +149,91 @@ if ($res) {
         font-size: 18px
     }
 }
+
+/* ================= GENERAL ================= */
+.main-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.card-box {
+    padding: 18px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    height: 100%;
+}
+
+.icon {
+    font-size: 28px;
+    color: #0d6efd;
+}
+
+.stat-number {
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: 6px;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 576px) {
+    h3 {
+        font-size: 20px;
+    }
+
+    h5 {
+        font-size: 16px;
+    }
+
+    .stat-number {
+        font-size: 18px;
+    }
+
+    .card-box {
+        padding: 14px;
+    }
+
+    canvas {
+        max-width: 100% !important;
+        height: auto !important;
+    }
+
+
+    .btn {
+        margin-bottom: 5px;
+        width: 100%;
+
+    }
+}
+
+
+.chart-wrap {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+}
+
+.chart-wrap canvas {
+    width: 100% !important;
+    height: auto !important;
+}
+
+
+/* ================= TABLET ================= */
+@media (max-width: 768px) {
+    .stat-number {
+        font-size: 19px;
+    }
+
+    canvas {
+        max-width: 100%;
+    }
+}
+
+/* ================= CHART FIX ================= */
+canvas {
+    width: 100% !important;
+}
 </style>
 
 <div class="main-content">
@@ -198,9 +283,10 @@ if ($res) {
         </div>
 
         <div class="card p-3 mt-4 shadow-sm">
-            <div class="d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Analytics</h5>
-                <div>
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <h5 class="mb-0 w-100 w-md-auto">Analytics</h5>
+
+                <div class="d-flex flex-wrap gap-2">
                     <a class="btn btn-sm btn-primary" href="new_registration">New Registration</a>
                     <a class="btn btn-sm btn-success" href="course_add">Add Course</a>
                     <a class="btn btn-sm btn-warning" href="fees_add">Add Payment</a>
@@ -208,21 +294,28 @@ if ($res) {
             </div>
 
             <div class="row mt-3">
-                <div class="col-md-4 text-center">
+                <div class="col-lg-4 col-md-6 col-12 text-center mb-4">
                     <h6>Paid vs Pending</h6>
-                    <canvas id="paidPendingChart" height="160"></canvas>
+                    <div class="chart-wrap">
+                        <canvas id="paidPendingChart"></canvas>
+                    </div>
                 </div>
 
-                <div class="col-md-4 text-center">
+                <div class="col-lg-4 col-md-6 col-12 text-center mb-4">
                     <h6>Monthly Income</h6>
-                    <canvas id="monthlyIncomeChart" height="160"></canvas>
+                    <div class="chart-wrap">
+                        <canvas id="monthlyIncomeChart"></canvas>
+                    </div>
                 </div>
 
-                <div class="col-md-4 text-center">
+                <div class="col-lg-4 col-md-6 col-12 text-center mb-4">
                     <h6>Yearly Income</h6>
-                    <canvas id="yearlyIncomeChart" height="160"></canvas>
+                    <div class="chart-wrap">
+                        <canvas id="yearlyIncomeChart"></canvas>
+                    </div>
                 </div>
             </div>
+
 
             <div class="mt-4">
                 <h6>Course-wise Students</h6>
@@ -287,8 +380,18 @@ new Chart(document.getElementById('paidPendingChart'), {
             data: [totalPaid, totalPending],
             backgroundColor: ['#28a745', '#dc3545']
         }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom'
+            }
+        }
     }
 });
+
 
 // Monthly bar
 new Chart(document.getElementById('monthlyIncomeChart'), {

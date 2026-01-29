@@ -16,7 +16,7 @@ include 'connection.php';
     <!-- Bootstrap Icons -->
     <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css' rel='stylesheet'>
 
-    <link rel='stylesheet' href='assets/style.css'>
+    <!-- <link rel='stylesheet' href='assets/style.css'> -->
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css'>
 
     <style>
@@ -129,15 +129,38 @@ include 'connection.php';
     <!-- Header -->
     <header>
         <button class='menu-toggle' onclick='toggleSidebar()'><i class='bi bi-list'></i></button>
-        <!-- <h5>Admin Panel</h5> -->
-        <div class='d-flex align-items-center'>
-            <i class='bi bi-person-circle me-2'></i> Admin
+        <h5>Admin Panel</h5>
+        <div class="dropdown">
+            <div class="d-flex align-items-center dropdown-toggle" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false" style="cursor:pointer;">
+                <i class="bi bi-person-circle me-2"></i>
+                <span class="fw-semibold">Admin</span>
+            </div>
+
+            <!-- Dropdown card -->
+            <div class="dropdown-menu dropdown-menu-end p-3 shadow border-0" style="width:260px;">
+
+                <div class="text-center mb-3">
+                    <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" class="rounded-circle mb-2"
+                        width="80" height="80" alt="Admin">
+
+                    <h6 class="mb-0">Admin Panel</h6>
+                    <!-- <small class="text-muted">websitebanaye@gmail.com</small> -->
+                </div>
+
+                <hr>
+
+                <a href="logout" class="btn btn-outline-danger w-100">
+                    <i class="bi bi-power me-2"></i> Sign Out
+                </a>
+            </div>
         </div>
+
     </header>
 
     <!-- Sidebar -->
     <div class='sidebar' id='sidebar'>
-        <h4 class="text-white mb-4">🎓 Student Admin</h4>
+        <!-- <h4 class="text-white mb-4">🎓 Student Admin</h4> -->
 
         <a href='dashboard' class="<?php echo basename($_SERVER['PHP_SELF']) == 'dashboard' ? 'active' : '' ?>">
             <i class='bi bi-speedometer2 me-2'></i> Dashboard

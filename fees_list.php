@@ -49,6 +49,25 @@ if (!empty($_GET['course_id'])) {
 
 /* ================= COURSE LIST ================= */
 $courses = mysqli_query($conn,"SELECT id, course FROM courses ORDER BY course");
+
+
+
+/* ================= PAGINATION ================= */
+$limit = 10; // records per page
+$page  = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+$offset = ($page - 1) * $limit;
+
+$count_q = mysqli_query($conn, "
+    SELECT COUNT(DISTINCT s.id) AS total
+    FROM students s
+    LEFT JOIN student_fees sf ON sf.student_id = s.id $dateWhere
+    WHERE $where
+");
+
+$total_records = mysqli_fetch_assoc($count_q)['total'] ?? 0;
+$total_pages   = ceil($total_records / $limit);
+
+
 ?>
 
 <div class="main-content">
@@ -153,6 +172,23 @@ $courses = mysqli_query($conn,"SELECT id, course FROM courses ORDER BY course");
 $i=1;
 $statusFilter = $_GET['status'] ?? [];
 
+// $q = mysqli_query($conn, "
+//     SELECT 
+//         s.id AS student_id,
+//         s.student_name,
+//         c.course,
+//         c.fees AS course_fee,
+//         IFNULL(SUM(sf.paid_amount),0) AS paid_in_range,
+//         COUNT(sf.id) AS payment_count
+//     FROM students s
+//     LEFT JOIN courses c ON s.course_id = c.id
+//     LEFT JOIN student_fees sf 
+//         ON sf.student_id = s.id $dateWhere
+//     WHERE $where
+//     GROUP BY s.id
+//     ORDER BY s.id DESC
+// ");
+
 $q = mysqli_query($conn, "
     SELECT 
         s.id AS student_id,
@@ -168,6 +204,7 @@ $q = mysqli_query($conn, "
     WHERE $where
     GROUP BY s.id
     ORDER BY s.id DESC
+    LIMIT $offset, $limit
 ");
 
 
@@ -224,6 +261,34 @@ $i++;
 
                     </tbody>
                 </table>
+                <!-- PAGINATION -->
+                <?php if ($total_pages > 1): ?>
+                <div class="d-flex justify-content-center mt-4">
+                    <ul class="pagination">
+
+                        <li class="page-item <?= ($page==1)?'disabled':'' ?>">
+                            <a class="page-link" href="?page=1">First</a>
+                        </li>
+
+                        <li class="page-item <?= ($page==1)?'disabled':'' ?>">
+                            <a class="page-link" href="?page=<?= $page-1 ?>">Prev</a>
+                        </li>
+
+                        <li class="page-item active">
+                            <span class="page-link"><?= $page ?> / <?= $total_pages ?></span>
+                        </li>
+
+                        <li class="page-item <?= ($page==$total_pages)?'disabled':'' ?>">
+                            <a class="page-link" href="?page=<?= $page+1 ?>">Next</a>
+                        </li>
+
+                        <li class="page-item <?= ($page==$total_pages)?'disabled':'' ?>">
+                            <a class="page-link" href="?page=<?= $total_pages ?>">Last</a>
+                        </li>
+
+                    </ul>
+                </div>
+                <?php endif; ?>
 
             </div>
         </div>
